@@ -92,6 +92,16 @@ export {
   getElementRecommendations,
 } from "@/core/yongshen";
 
+export {
+  SOLAR_TERMS,
+  type SolarTerm,
+  type SolarTermName,
+  type SolarTermHanja,
+  type SolarTermInfo,
+  analyzeSolarTerms,
+  getSolarTermsForYear,
+} from "@/core/solar-terms";
+
 import type { DateAdapter } from "@/adapters/date-adapter";
 import { getFourPillars, type presetA } from "@/core/four-pillars";
 import { analyzeTenGods, type FourPillarsTenGods } from "@/core/ten-gods";
@@ -106,6 +116,7 @@ import {
   type YearlyLuckResult,
 } from "@/core/luck";
 import type { LunarDate } from "@/core/lunar";
+import { analyzeSolarTerms, type SolarTermInfo } from "@/core/solar-terms";
 
 export interface SajuResult {
   pillars: {
@@ -119,8 +130,9 @@ export interface SajuResult {
   strength: StrengthResult;
   relations: RelationsResult;
   yongShen: YongShenResult;
-  majorLuck?: MajorLuckResult;
-  yearlyLuck?: YearlyLuckResult[];
+  solarTerms: SolarTermInfo;
+  majorLuck: MajorLuckResult;
+  yearlyLuck: YearlyLuckResult[];
   meta: {
     solarYearUsed: number;
     sunLonDeg: number;
@@ -131,10 +143,10 @@ export interface SajuResult {
 
 export interface GetSajuOptions {
   longitudeDeg: number;
+  gender: Gender;
   tzOffsetHours?: number;
   preset?: typeof presetA;
-  gender?: Gender;
-  includeMajorLuck?: boolean;
+  currentYear?: number;
   yearlyLuckRange?: { from: number; to: number };
 }
 
@@ -155,6 +167,7 @@ export function getSaju<T>(
   const strength = analyzeStrength(year, month, day, hour);
   const relations = analyzeRelations(year, month, day, hour);
   const yongShen = analyzeYongShen(year, month, day, hour);
+  const solarTerms = analyzeSolarTerms(adapter, dtLocal);
 
   const result: SajuResult = {
     pillars: { year, month, day, hour },
@@ -163,6 +176,13 @@ export function getSaju<T>(
     strength,
     relations,
     yongShen,
+    solarTerms,
+    majorLuck: calculateMajorLuck(adapter, dtLocal, options.gender, year, month),
+    yearlyLuck: calculateYearlyLuck(
+      fourPillars.meta.solarYearUsed,
+      options.yearlyLuckRange?.from ?? (options.currentYear ?? new Date().getFullYear()) - 5,
+      options.yearlyLuckRange?.to ?? (options.currentYear ?? new Date().getFullYear()) + 10,
+    ),
     meta: {
       solarYearUsed: fourPillars.meta.solarYearUsed,
       sunLonDeg: fourPillars.meta.sunLonDeg,
@@ -170,19 +190,6 @@ export function getSaju<T>(
       adjustedDtForHour: fourPillars.meta.adjustedDtForHour,
     },
   };
-
-  if (options.gender && options.includeMajorLuck) {
-    result.majorLuck = calculateMajorLuck(adapter, dtLocal, options.gender, year, month);
-  }
-
-  if (options.yearlyLuckRange) {
-    const birthYear = fourPillars.meta.solarYearUsed;
-    result.yearlyLuck = calculateYearlyLuck(
-      birthYear,
-      options.yearlyLuckRange.from,
-      options.yearlyLuckRange.to,
-    );
-  }
 
   return result;
 }

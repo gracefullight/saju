@@ -206,10 +206,6 @@ Traditional interpretation with Zi hour (23:00) day boundary and solar time corr
 }
 ```
 
-#### Deprecated Aliases
-- `presetA` → Use `STANDARD_PRESET`
-- `presetB` → Use `TRADITIONAL_PRESET`
-
 ### Core Functions
 
 #### `getFourPillars(adapter, datetime, options)`

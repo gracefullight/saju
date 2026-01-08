@@ -15,12 +15,13 @@
 - **태양시 보정** - 경도 기반 평균 태양시 조정 옵션
 - **트리쉐이킹 지원** - 필요한 것만 import
 - **완전한 타입 지원** - TypeScript 정의 완비
-- **풍부한 테스트** - 158개 이상 테스트, 91% 이상 커버리지
+- **풍부한 테스트** - 176개 이상 테스트, 91% 이상 커버리지
 - **십신 분석** - 장간(藏干)을 포함한 상세 십신 및 오행 분포 분석
 - **신강/신약 판정** - 득령, 득지, 득세를 고려한 9단계 신강도 분석
 - **합충형파해** - 천간합, 육합, 삼합, 방합 및 충, 해, 형, 파 분석
 - **대운/세운 계산** - 성별 및 연간 음양을 고려한 대운 및 연도별 세운 계산
 - **용신 추출** - 억부, 조후 등을 고려한 용신 추천 및 개운법 가이드
+- **절기 분석** - 현재/다음 절기 정보 및 경과일 계산
 
 ## 사주(四柱)란?
 
@@ -73,21 +74,23 @@ const birthDateTime = DateTime.fromObject(
   { zone: "Asia/Seoul" }
 );
 
-// getSaju: 사주 팔자, 십신, 신강약, 합충, 용신, 대운을 한 번에 계산
+// getSaju: 사주 팔자, 십신, 신강약, 합충, 용신, 절기, 대운, 세운을 한 번에 계산
 const result = getSaju(adapter, birthDateTime, {
   longitudeDeg: 126.9778,
+  gender: "male",  // 필수: 대운 계산에 필요
   preset: STANDARD_PRESET,
-  gender: "male",
-  includeMajorLuck: true,
-  yearlyLuckRange: { from: 2024, to: 2025 },
+  currentYear: 2024,  // 세운 기본 범위 계산용 (선택)
+  yearlyLuckRange: { from: 2024, to: 2030 },  // 세운 범위 직접 지정 (선택)
 });
 
-console.log(result.pillars);   // { year: "己卯", month: "丙子", ... }
-console.log(result.tenGods);   // 십신 및 장간 분석
-console.log(result.strength);  // 신강/신약 판정 (예: "신약")
-console.log(result.relations); // 합충형파해 분석
-console.log(result.yongShen);  // 용신 및 개운법
-console.log(result.majorLuck); // 대운 정보
+console.log(result.pillars);     // { year: "己卯", month: "丙子", ... }
+console.log(result.tenGods);     // 십신 및 장간 분석
+console.log(result.strength);    // 신강/신약 판정 (예: "신약")
+console.log(result.relations);   // 합충형파해 분석
+console.log(result.yongShen);    // 용신 및 개운법
+console.log(result.solarTerms);  // 절기 정보 (현재/다음 절기, 경과일)
+console.log(result.majorLuck);   // 대운 정보
+console.log(result.yearlyLuck);  // 세운 정보
 ```
 
 ### 사주 팔자만 계산하기
@@ -224,10 +227,6 @@ const myAdapter: DateAdapter<MyDateType> = {
 }
 ```
 
-#### 사용 중단된 별칭
-- `presetA` → `STANDARD_PRESET` 사용 권장
-- `presetB` → `TRADITIONAL_PRESET` 사용 권장
-
 ### 핵심 함수
 
 #### `getSaju(adapter, datetime, options)`
@@ -240,11 +239,11 @@ function getSaju<T>(
   dtLocal: T,
   options: {
     longitudeDeg: number;
+    gender: "male" | "female";  // 필수
     tzOffsetHours?: number;
     preset?: typeof STANDARD_PRESET;
-    gender?: "male" | "female";
-    includeMajorLuck?: boolean;
-    yearlyLuckRange?: { from: number; to: number };
+    currentYear?: number;  // 세운 기본 범위 계산용
+    yearlyLuckRange?: { from: number; to: number };  // 세운 범위 직접 지정
   }
 ): SajuResult;
 ```
@@ -530,6 +529,41 @@ function analyzeYongShen(
 ): YongShenResult;
 ```
 
+#### `analyzeSolarTerms(adapter, datetime)`
+
+현재 및 다음 절기 정보와 경과일을 계산합니다.
+
+```typescript
+function analyzeSolarTerms<T>(
+  adapter: DateAdapter<T>,
+  dtLocal: T
+): SolarTermInfo;
+```
+
+**반환값:**
+```typescript
+{
+  current: { name: "소한", hanja: "小寒", longitude: 285 },
+  currentDate: { year: 2024, month: 1, day: 6, hour: 5, minute: 30 },
+  daysSinceCurrent: 5,
+  next: { name: "대한", hanja: "大寒", longitude: 300 },
+  nextDate: { year: 2024, month: 1, day: 20, hour: 12, minute: 15 },
+  daysUntilNext: 10
+}
+```
+
+#### `getSolarTermsForYear(adapter, year, timezone)`
+
+특정 연도의 24절기 날짜를 모두 계산합니다.
+
+```typescript
+function getSolarTermsForYear<T>(
+  adapter: DateAdapter<T>,
+  year: number,
+  timezone: string
+): Array<{ term: SolarTerm; date: {...} }>;
+```
+
 ## 고급 사용법
 
 ### 태양시 보정
@@ -610,7 +644,6 @@ const result = getFourPillars(adapter, dt, {
 const saju = getSaju(adapter, dt, {
   longitudeDeg: 126.9778,
   gender: "female",
-  includeMajorLuck: true,
   yearlyLuckRange: { from: 2024, to: 2030 }
 });
 
@@ -622,6 +655,28 @@ console.log(saju.majorLuck.startAge); // 대운 시작 나이
 saju.yearlyLuck.forEach(luck => {
   console.log(`${luck.year}년(${luck.pillar}): ${luck.age}세`);
 });
+```
+
+### 절기 정보 확인
+
+```typescript
+const saju = getSaju(adapter, dt, {
+  longitudeDeg: 126.9778,
+  gender: "male",
+});
+
+// 현재 절기
+console.log(saju.solarTerms.current.name);  // "소한"
+console.log(saju.solarTerms.current.hanja); // "小寒"
+console.log(saju.solarTerms.daysSinceCurrent); // 5 (절기 경과일)
+
+// 다음 절기
+console.log(saju.solarTerms.next.name);     // "대한"
+console.log(saju.solarTerms.daysUntilNext); // 10 (다음 절기까지 남은 일)
+
+// 절기 시작 날짜
+console.log(saju.solarTerms.currentDate);   // { year: 2024, month: 1, day: 6, ... }
+console.log(saju.solarTerms.nextDate);      // { year: 2024, month: 1, day: 20, ... }
 ```
 
 ### 십신 및 오행 분석

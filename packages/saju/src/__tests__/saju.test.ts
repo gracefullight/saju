@@ -4,7 +4,7 @@ import { createLuxonAdapter } from "@/adapters/luxon";
 import { getSaju, STANDARD_PRESET } from "@/index";
 
 describe("getSaju integration", () => {
-  it("returns complete saju analysis", async () => {
+  it("returns complete saju analysis with all required fields", async () => {
     const adapter = await createLuxonAdapter();
     const dt = DateTime.fromObject(
       { year: 1990, month: 2, day: 1, hour: 12, minute: 10 },
@@ -13,6 +13,7 @@ describe("getSaju integration", () => {
 
     const result = getSaju(adapter, dt, {
       longitudeDeg: 126.9778,
+      gender: "male",
       preset: STANDARD_PRESET,
     });
 
@@ -25,9 +26,33 @@ describe("getSaju integration", () => {
     expect(result.relations).toBeDefined();
     expect(result.yongShen).toBeDefined();
     expect(result.lunar).toBeDefined();
+    expect(result.solarTerms).toBeDefined();
+    expect(result.majorLuck).toBeDefined();
+    expect(result.yearlyLuck).toBeDefined();
   });
 
-  it("includes major luck when gender is provided", async () => {
+  it("includes solar terms with current and next term info", async () => {
+    const adapter = await createLuxonAdapter();
+    const dt = DateTime.fromObject(
+      { year: 2024, month: 1, day: 15, hour: 12 },
+      { zone: "Asia/Seoul" },
+    );
+
+    const result = getSaju(adapter, dt, {
+      longitudeDeg: 126.9778,
+      gender: "female",
+      preset: STANDARD_PRESET,
+    });
+
+    expect(result.solarTerms.current.name).toBe("소한");
+    expect(result.solarTerms.next.name).toBe("대한");
+    expect(result.solarTerms.daysSinceCurrent).toBeGreaterThanOrEqual(0);
+    expect(result.solarTerms.daysUntilNext).toBeGreaterThan(0);
+    expect(result.solarTerms.currentDate).toBeDefined();
+    expect(result.solarTerms.nextDate).toBeDefined();
+  });
+
+  it("includes major luck by default", async () => {
     const adapter = await createLuxonAdapter();
     const dt = DateTime.fromObject(
       { year: 1990, month: 2, day: 1, hour: 12, minute: 10 },
@@ -36,16 +61,16 @@ describe("getSaju integration", () => {
 
     const result = getSaju(adapter, dt, {
       longitudeDeg: 126.9778,
-      preset: STANDARD_PRESET,
       gender: "male",
-      includeMajorLuck: true,
+      preset: STANDARD_PRESET,
     });
 
     expect(result.majorLuck).toBeDefined();
-    expect(result.majorLuck?.pillars.length).toBeGreaterThan(0);
+    expect(result.majorLuck.pillars.length).toBeGreaterThan(0);
+    expect(result.majorLuck.startAge).toBeGreaterThanOrEqual(0);
   });
 
-  it("includes yearly luck when range is provided", async () => {
+  it("includes yearly luck by default with custom range", async () => {
     const adapter = await createLuxonAdapter();
     const dt = DateTime.fromObject(
       { year: 1990, month: 2, day: 1, hour: 12, minute: 10 },
@@ -54,12 +79,33 @@ describe("getSaju integration", () => {
 
     const result = getSaju(adapter, dt, {
       longitudeDeg: 126.9778,
+      gender: "female",
       preset: STANDARD_PRESET,
       yearlyLuckRange: { from: 2024, to: 2026 },
     });
 
     expect(result.yearlyLuck).toBeDefined();
-    expect(result.yearlyLuck?.length).toBe(3);
+    expect(result.yearlyLuck.length).toBe(3);
+    expect(result.yearlyLuck[0].year).toBe(2024);
+    expect(result.yearlyLuck[2].year).toBe(2026);
+  });
+
+  it("uses default yearly luck range when not specified", async () => {
+    const adapter = await createLuxonAdapter();
+    const dt = DateTime.fromObject(
+      { year: 1990, month: 2, day: 1, hour: 12, minute: 10 },
+      { zone: "Asia/Seoul" },
+    );
+
+    const result = getSaju(adapter, dt, {
+      longitudeDeg: 126.9778,
+      gender: "male",
+      currentYear: 2024,
+    });
+
+    expect(result.yearlyLuck.length).toBe(16);
+    expect(result.yearlyLuck[0].year).toBe(2019);
+    expect(result.yearlyLuck[15].year).toBe(2034);
   });
 
   it("calculates known test case correctly", async () => {
@@ -71,6 +117,7 @@ describe("getSaju integration", () => {
 
     const result = getSaju(adapter, dt, {
       longitudeDeg: 126.9778,
+      gender: "male",
       preset: STANDARD_PRESET,
     });
 
@@ -89,6 +136,7 @@ describe("getSaju integration", () => {
 
     const result = getSaju(adapter, dt, {
       longitudeDeg: 126.9778,
+      gender: "female",
       preset: STANDARD_PRESET,
     });
 
