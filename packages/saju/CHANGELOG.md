@@ -1,5 +1,11 @@
 # @gracefullight/saju
 
+## 0.4.2
+
+### Patch Changes
+
+- 3f1e5c1: Test release pipeline with GH_TOKEN
+
 ## 0.4.0
 
 ### Minor Changes
