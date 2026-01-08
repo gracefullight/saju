@@ -267,9 +267,11 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Button type="submit" size="lg" disabled={loading}>
-                {loading ? t("form.submitting") : t("form.submit")}
-              </Button>
+              <div className="flex justify-end">
+                <Button type="submit" size="lg" disabled={loading} className="cursor-pointer">
+                  {loading ? t("form.submitting") : t("form.submit")}
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>
