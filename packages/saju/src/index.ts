@@ -58,67 +58,92 @@ export {
 } from "@/core/relations";
 export {
   analyzeSinsals,
+  getSinsalLabel,
   SINSAL_INFO,
   SINSALS,
   type Sinsal,
+  type SinsalKey,
+  type SinsalLabel,
   type SinsalMatch,
   type SinsalResult,
+  type SinsalType,
 } from "@/core/sinsals";
 export {
   analyzeSolarTerms,
+  getSolarTermLabel,
   getSolarTermsForYear,
+  SOLAR_TERM_KEYS,
   SOLAR_TERMS,
   type SolarTerm,
   type SolarTermDateInfo,
   type SolarTermHanja,
   type SolarTermInfo,
+  type SolarTermKey,
+  type SolarTermLabel,
   type SolarTermName,
 } from "@/core/solar-terms";
 export {
   analyzeStrength,
+  getStrengthLevelLabel,
+  STRENGTH_LEVEL_KEYS,
   STRENGTH_LEVELS,
   type StrengthFactors,
   type StrengthLevel,
+  type StrengthLevelKey,
+  type StrengthLevelLabel,
   type StrengthResult,
 } from "@/core/strength";
 export {
   analyzeTenGods,
   countElements,
   countTenGods,
+  type DayMasterLabel,
   ELEMENTS,
   type Element,
+  type ElementLabel,
   type FourPillarsTenGods,
   getBranchElement,
   getBranchPolarity,
+  getElementLabel,
   getHiddenStems,
   getStemElement,
   getStemPolarity,
   getTenGod,
   getTenGodForBranch,
+  getTenGodLabel,
   getTenGodsForBranch,
   HIDDEN_STEMS,
   type Polarity,
   TEN_GOD_ENGLISH,
   TEN_GOD_HANJA,
+  TEN_GOD_KEYS,
   TEN_GODS,
   type TenGod,
+  type TenGodKey,
+  type TenGodLabel,
 } from "@/core/ten-gods";
 export {
   analyzeTwelveStages,
   getTwelveStage,
+  getTwelveStageLabel,
   STAGE_INFO,
   TWELVE_STAGES,
   type TwelveStage,
+  type TwelveStageKey,
+  type TwelveStageLabel,
   type TwelveStagesResult,
 } from "@/core/twelve-stages";
 
 export {
   analyzeYongShen,
   getElementRecommendations,
+  getYongShenMethodLabel,
   type YongShenMethod,
+  type YongShenMethodKey,
+  type YongShenMethodLabel,
   type YongShenResult,
 } from "@/core/yongshen";
-export type { Branch, Pillar, PillarPosition, Stem } from "@/types";
+export type { Branch, Label, Pillar, PillarPosition, Stem } from "@/types";
 
 import type { DateAdapter } from "@/adapters/date-adapter";
 import { getFourPillars, type presetA } from "@/core/four-pillars";

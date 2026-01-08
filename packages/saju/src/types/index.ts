@@ -2,6 +2,7 @@ export type {
   Branch,
   Element,
   Gender,
+  Label,
   Pillar,
   PillarPosition,
   Polarity,

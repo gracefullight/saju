@@ -1,42 +1,81 @@
 import type { DateAdapter } from "@/adapters/date-adapter";
+import type { Label } from "@/types";
 
-/**
- * 24 Solar Terms (二十四節氣)
- * Each term corresponds to a specific solar longitude
- */
-export const SOLAR_TERMS = [
-  { name: "소한", hanja: "小寒", longitude: 285 },
-  { name: "대한", hanja: "大寒", longitude: 300 },
-  { name: "입춘", hanja: "立春", longitude: 315 },
-  { name: "우수", hanja: "雨水", longitude: 330 },
-  { name: "경칩", hanja: "驚蟄", longitude: 345 },
-  { name: "춘분", hanja: "春分", longitude: 0 },
-  { name: "청명", hanja: "淸明", longitude: 15 },
-  { name: "곡우", hanja: "穀雨", longitude: 30 },
-  { name: "입하", hanja: "立夏", longitude: 45 },
-  { name: "소만", hanja: "小滿", longitude: 60 },
-  { name: "망종", hanja: "芒種", longitude: 75 },
-  { name: "하지", hanja: "夏至", longitude: 90 },
-  { name: "소서", hanja: "小暑", longitude: 105 },
-  { name: "대서", hanja: "大暑", longitude: 120 },
-  { name: "입추", hanja: "立秋", longitude: 135 },
-  { name: "처서", hanja: "處暑", longitude: 150 },
-  { name: "백로", hanja: "白露", longitude: 165 },
-  { name: "추분", hanja: "秋分", longitude: 180 },
-  { name: "한로", hanja: "寒露", longitude: 195 },
-  { name: "상강", hanja: "霜降", longitude: 210 },
-  { name: "입동", hanja: "立冬", longitude: 225 },
-  { name: "소설", hanja: "小雪", longitude: 240 },
-  { name: "대설", hanja: "大雪", longitude: 255 },
-  { name: "동지", hanja: "冬至", longitude: 270 },
+export const SOLAR_TERM_KEYS = [
+  "minorCold",
+  "majorCold",
+  "springBegins",
+  "rainWater",
+  "awakeningInsects",
+  "vernalEquinox",
+  "pureBrightness",
+  "grainRain",
+  "summerBegins",
+  "grainBuds",
+  "grainInEar",
+  "summerSolstice",
+  "minorHeat",
+  "majorHeat",
+  "autumnBegins",
+  "heatStops",
+  "whiteDew",
+  "autumnalEquinox",
+  "coldDew",
+  "frostDescends",
+  "winterBegins",
+  "minorSnow",
+  "majorSnow",
+  "winterSolstice",
 ] as const;
 
-export type SolarTermName = (typeof SOLAR_TERMS)[number]["name"];
-export type SolarTermHanja = (typeof SOLAR_TERMS)[number]["hanja"];
+export type SolarTermKey = (typeof SOLAR_TERM_KEYS)[number];
+
+export interface SolarTermLabel extends Label<SolarTermKey> {
+  longitude: number;
+}
+
+const SOLAR_TERM_DATA: Record<SolarTermKey, { korean: string; hanja: string; longitude: number }> =
+  {
+    minorCold: { korean: "소한", hanja: "小寒", longitude: 285 },
+    majorCold: { korean: "대한", hanja: "大寒", longitude: 300 },
+    springBegins: { korean: "입춘", hanja: "立春", longitude: 315 },
+    rainWater: { korean: "우수", hanja: "雨水", longitude: 330 },
+    awakeningInsects: { korean: "경칩", hanja: "驚蟄", longitude: 345 },
+    vernalEquinox: { korean: "춘분", hanja: "春分", longitude: 0 },
+    pureBrightness: { korean: "청명", hanja: "淸明", longitude: 15 },
+    grainRain: { korean: "곡우", hanja: "穀雨", longitude: 30 },
+    summerBegins: { korean: "입하", hanja: "立夏", longitude: 45 },
+    grainBuds: { korean: "소만", hanja: "小滿", longitude: 60 },
+    grainInEar: { korean: "망종", hanja: "芒種", longitude: 75 },
+    summerSolstice: { korean: "하지", hanja: "夏至", longitude: 90 },
+    minorHeat: { korean: "소서", hanja: "小暑", longitude: 105 },
+    majorHeat: { korean: "대서", hanja: "大暑", longitude: 120 },
+    autumnBegins: { korean: "입추", hanja: "立秋", longitude: 135 },
+    heatStops: { korean: "처서", hanja: "處暑", longitude: 150 },
+    whiteDew: { korean: "백로", hanja: "白露", longitude: 165 },
+    autumnalEquinox: { korean: "추분", hanja: "秋分", longitude: 180 },
+    coldDew: { korean: "한로", hanja: "寒露", longitude: 195 },
+    frostDescends: { korean: "상강", hanja: "霜降", longitude: 210 },
+    winterBegins: { korean: "입동", hanja: "立冬", longitude: 225 },
+    minorSnow: { korean: "소설", hanja: "小雪", longitude: 240 },
+    majorSnow: { korean: "대설", hanja: "大雪", longitude: 255 },
+    winterSolstice: { korean: "동지", hanja: "冬至", longitude: 270 },
+  };
+
+export function getSolarTermLabel(key: SolarTermKey): SolarTermLabel {
+  const data = SOLAR_TERM_DATA[key];
+  return { key, ...data };
+}
+
+export const SOLAR_TERMS = SOLAR_TERM_KEYS.map((key) => getSolarTermLabel(key));
+
+export type SolarTermName = (typeof SOLAR_TERM_DATA)[SolarTermKey]["korean"];
+export type SolarTermHanja = (typeof SOLAR_TERM_DATA)[SolarTermKey]["hanja"];
 
 export interface SolarTerm {
-  name: SolarTermName;
-  hanja: SolarTermHanja;
+  key: SolarTermKey;
+  korean: string;
+  hanja: string;
   longitude: number;
 }
 

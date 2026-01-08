@@ -36,12 +36,12 @@ describe("strength", () => {
 
     it("returns 신강 for strong day master", () => {
       const result = analyzeStrength("甲子", "甲寅", "甲寅", "甲寅");
-      expect(["신강", "태강", "극왕", "중화신강"]).toContain(result.level);
+      expect(["신강", "태강", "극왕", "중화신강"]).toContain(result.level.korean);
     });
 
     it("returns 신약 for weak day master", () => {
       const result = analyzeStrength("庚申", "庚申", "甲申", "庚申");
-      expect(["신약", "태약", "극약", "중화신약"]).toContain(result.level);
+      expect(["신약", "태약", "극약", "중화신약"]).toContain(result.level.korean);
     });
 
     it("includes description with day master info", () => {

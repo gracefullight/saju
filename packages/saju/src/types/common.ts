@@ -24,3 +24,12 @@ export interface Pillar {
   branch: Branch;
   pillar: string;
 }
+
+/**
+ * 공통 레이블 타입 - 영어 키, 한글, 한자를 함께 제공
+ */
+export interface Label<T extends string = string> {
+  key: T;
+  korean: string;
+  hanja: string;
+}

@@ -1,5 +1,40 @@
+import type { Label } from "@/types";
 import { type Element, getStemElement, getStemPolarity, getTenGod, type TenGod } from "./ten-gods";
 
+export const STRENGTH_LEVEL_KEYS = [
+  "extremelyWeak",
+  "veryWeak",
+  "weak",
+  "neutralWeak",
+  "neutral",
+  "neutralStrong",
+  "strong",
+  "veryStrong",
+  "extremelyStrong",
+] as const;
+
+export type StrengthLevelKey = (typeof STRENGTH_LEVEL_KEYS)[number];
+
+export interface StrengthLevelLabel extends Label<StrengthLevelKey> {}
+
+const STRENGTH_LEVEL_DATA: Record<StrengthLevelKey, { korean: string; hanja: string }> = {
+  extremelyWeak: { korean: "극약", hanja: "極弱" },
+  veryWeak: { korean: "태약", hanja: "太弱" },
+  weak: { korean: "신약", hanja: "身弱" },
+  neutralWeak: { korean: "중화신약", hanja: "中和身弱" },
+  neutral: { korean: "중화", hanja: "中和" },
+  neutralStrong: { korean: "중화신강", hanja: "中和身強" },
+  strong: { korean: "신강", hanja: "身強" },
+  veryStrong: { korean: "태강", hanja: "太強" },
+  extremelyStrong: { korean: "극왕", hanja: "極旺" },
+};
+
+export function getStrengthLevelLabel(key: StrengthLevelKey): StrengthLevelLabel {
+  const data = STRENGTH_LEVEL_DATA[key];
+  return { key, ...data };
+}
+
+/** @deprecated Use StrengthLevelKey instead */
 export type StrengthLevel =
   | "극약"
   | "태약"
@@ -11,6 +46,7 @@ export type StrengthLevel =
   | "태강"
   | "극왕";
 
+/** @deprecated Use STRENGTH_LEVEL_KEYS instead */
 export const STRENGTH_LEVELS: StrengthLevel[] = [
   "극약",
   "태약",
@@ -197,7 +233,7 @@ export interface StrengthFactors {
 }
 
 export interface StrengthResult {
-  level: StrengthLevel;
+  level: StrengthLevelLabel;
   score: number;
   factors: StrengthFactors;
   description: string;
@@ -279,16 +315,16 @@ export function analyzeStrength(
 
   score = Math.round(score * 10) / 10;
 
-  let level: StrengthLevel;
-  if (score <= 10) level = "극약";
-  else if (score <= 20) level = "태약";
-  else if (score <= 30) level = "신약";
-  else if (score <= 38) level = "중화신약";
-  else if (score <= 45) level = "중화";
-  else if (score <= 55) level = "중화신강";
-  else if (score <= 70) level = "신강";
-  else if (score <= 85) level = "태강";
-  else level = "극왕";
+  let levelKey: StrengthLevelKey;
+  if (score <= 10) levelKey = "extremelyWeak";
+  else if (score <= 20) levelKey = "veryWeak";
+  else if (score <= 30) levelKey = "weak";
+  else if (score <= 38) levelKey = "neutralWeak";
+  else if (score <= 45) levelKey = "neutral";
+  else if (score <= 55) levelKey = "neutralStrong";
+  else if (score <= 70) levelKey = "strong";
+  else if (score <= 85) levelKey = "veryStrong";
+  else levelKey = "extremelyStrong";
 
   const factors: StrengthFactors = {
     deukryeong: Math.round(deukryeong * 100) / 100,
@@ -305,7 +341,7 @@ export function analyzeStrength(
   description += deukse > 0 ? `, 득세(${deukse})` : "";
 
   return {
-    level,
+    level: getStrengthLevelLabel(levelKey),
     score,
     factors,
     description,

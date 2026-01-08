@@ -44,8 +44,8 @@ describe("getSaju integration", () => {
       preset: STANDARD_PRESET,
     });
 
-    expect(result.solarTerms.current.name).toBe("소한");
-    expect(result.solarTerms.next.name).toBe("대한");
+    expect(result.solarTerms.current.korean).toBe("소한");
+    expect(result.solarTerms.next.korean).toBe("대한");
     expect(result.solarTerms.daysSinceCurrent).toBeGreaterThanOrEqual(0);
     expect(result.solarTerms.daysUntilNext).toBeGreaterThan(0);
     expect(result.solarTerms.currentDate).toBeDefined();
@@ -141,7 +141,7 @@ describe("getSaju integration", () => {
     });
 
     expect(result.tenGods.dayMaster).toBe("丁");
-    expect(result.tenGods.day.stem.tenGod).toBe("일간");
+    expect(result.tenGods.day.stem.tenGod.key).toBe("dayMaster");
   });
 
   it("calculates major luck start age based on actual solar terms (not fixed 10)", async () => {

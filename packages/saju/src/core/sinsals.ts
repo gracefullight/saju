@@ -1,4 +1,4 @@
-import type { PillarPosition } from "@/types";
+import type { Label, PillarPosition } from "@/types";
 
 export const SINSALS = [
   "peachBlossom",
@@ -19,7 +19,19 @@ export const SINSALS = [
   "heavenlyDoctor",
 ] as const;
 
-export type Sinsal = (typeof SINSALS)[number];
+export type SinsalKey = (typeof SINSALS)[number];
+
+/**
+ * @deprecated Use SinsalKey instead
+ */
+export type Sinsal = SinsalKey;
+
+export type SinsalType = "auspicious" | "inauspicious" | "neutral";
+
+export interface SinsalLabel extends Label<SinsalKey> {
+  meaning: string;
+  type: SinsalType;
+}
 
 const PEACH_BLOSSOM_MAP: Record<string, string> = {
   寅: "卯",
@@ -211,13 +223,13 @@ const HEAVENLY_DOCTOR_MAP: Record<string, string> = {
 };
 
 export interface SinsalMatch {
-  sinsal: Sinsal;
+  sinsal: SinsalLabel;
   position: PillarPosition;
 }
 
 export interface SinsalResult {
   matches: SinsalMatch[];
-  summary: Partial<Record<Sinsal, PillarPosition[]>>;
+  summary: Partial<Record<SinsalKey, PillarPosition[]>>;
 }
 
 function checkBranchBasedSinsal(
@@ -225,7 +237,7 @@ function checkBranchBasedSinsal(
   targetBranches: string[],
   positions: PillarPosition[],
   map: Record<string, string>,
-  sinsal: Sinsal,
+  sinsalKey: SinsalKey,
 ): SinsalMatch[] {
   const matches: SinsalMatch[] = [];
   const targetSinsal = map[baseBranch];
@@ -233,7 +245,7 @@ function checkBranchBasedSinsal(
   if (targetSinsal) {
     targetBranches.forEach((branch, idx) => {
       if (branch === targetSinsal) {
-        matches.push({ sinsal, position: positions[idx] });
+        matches.push({ sinsal: getSinsalLabel(sinsalKey), position: positions[idx] });
       }
     });
   }
@@ -246,7 +258,7 @@ function checkStemBasedSinsal(
   targetBranches: string[],
   positions: PillarPosition[],
   map: Record<string, string | string[]>,
-  sinsal: Sinsal,
+  sinsalKey: SinsalKey,
 ): SinsalMatch[] {
   const matches: SinsalMatch[] = [];
   const targetSinsal = map[baseStem];
@@ -255,7 +267,7 @@ function checkStemBasedSinsal(
     const targets = Array.isArray(targetSinsal) ? targetSinsal : [targetSinsal];
     targetBranches.forEach((branch, idx) => {
       if (targets.includes(branch)) {
-        matches.push({ sinsal, position: positions[idx] });
+        matches.push({ sinsal: getSinsalLabel(sinsalKey), position: positions[idx] });
       }
     });
   }
@@ -388,27 +400,28 @@ export function analyzeSinsals(
 
   const uniqueMatches = matches.filter(
     (match, index, self) =>
-      index === self.findIndex((m) => m.sinsal === match.sinsal && m.position === match.position),
+      index ===
+      self.findIndex((m) => m.sinsal.key === match.sinsal.key && m.position === match.position),
   );
 
-  const summary: Partial<Record<Sinsal, ("year" | "month" | "day" | "hour")[]>> = {};
+  const summary: Partial<Record<SinsalKey, PillarPosition[]>> = {};
   for (const match of uniqueMatches) {
-    if (!summary[match.sinsal]) {
-      summary[match.sinsal] = [];
+    if (!summary[match.sinsal.key]) {
+      summary[match.sinsal.key] = [];
     }
-    summary[match.sinsal]?.push(match.position);
+    summary[match.sinsal.key]?.push(match.position);
   }
 
   return { matches: uniqueMatches, summary };
 }
 
 export const SINSAL_INFO: Record<
-  Sinsal,
+  SinsalKey,
   {
     korean: string;
     hanja: string;
     meaning: string;
-    type: "auspicious" | "inauspicious" | "neutral";
+    type: SinsalType;
   }
 > = {
   peachBlossom: {
@@ -493,3 +506,14 @@ export const SINSAL_INFO: Record<
     type: "auspicious",
   },
 };
+
+export function getSinsalLabel(key: SinsalKey): SinsalLabel {
+  const info = SINSAL_INFO[key];
+  return {
+    key,
+    korean: info.korean,
+    hanja: info.hanja,
+    meaning: info.meaning,
+    type: info.type,
+  };
+}

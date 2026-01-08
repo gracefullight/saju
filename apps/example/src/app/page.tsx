@@ -6,7 +6,6 @@ import { createLuxonAdapter } from "@gracefullight/saju/adapters/luxon";
 import {
   getSaju,
   countElements,
-  STAGE_INFO,
   type SajuResult,
   type Gender,
   type StemCombination,
@@ -260,10 +259,10 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
   const elementCounts = countElements(result.tenGods);
 
   const stemCombinations = result.relations.combinations.filter(
-    (c): c is StemCombination => c.type === "천간합",
+    (c): c is StemCombination => c.type.key === "stemCombination",
   );
   const branchSixCombinations = result.relations.combinations.filter(
-    (c): c is BranchSixCombination => c.type === "육합",
+    (c): c is BranchSixCombination => c.type.key === "sixCombination",
   );
 
   return (
@@ -294,18 +293,35 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
           <CardDescription>일간(日干): {result.tenGods.dayMaster}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-4 gap-4 text-center text-sm">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {(["year", "month", "day", "hour"] as const).map((pos) => (
-              <div key={pos} className="space-y-2">
-                <div className="bg-muted p-2 rounded">
-                  <p className="text-muted-foreground">천간</p>
-                  <p className="font-medium">{result.tenGods[pos].stem.tenGod}</p>
-                </div>
-                <div className="bg-muted p-2 rounded">
-                  <p className="text-muted-foreground">지지</p>
-                  <p className="font-medium">
-                    {result.tenGods[pos].branch.hiddenStems.map((h) => h.tenGod).join(", ")}
-                  </p>
+              <div key={pos} className="bg-muted p-4 rounded-lg">
+                <p className="text-sm text-muted-foreground mb-3 text-center">
+                  {pos === "year"
+                    ? "년주"
+                    : pos === "month"
+                      ? "월주"
+                      : pos === "day"
+                        ? "일주"
+                        : "시주"}
+                </p>
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <p className="text-xs text-muted-foreground">천간</p>
+                    <p className="text-xl font-bold">{result.tenGods[pos].stem.tenGod.hanja}</p>
+                    <p className="text-sm text-primary">{result.tenGods[pos].stem.tenGod.korean}</p>
+                  </div>
+                  <div className="text-center border-t pt-2">
+                    <p className="text-xs text-muted-foreground">지지</p>
+                    <div className="space-y-1">
+                      {result.tenGods[pos].branch.hiddenStems.map((h) => (
+                        <div key={h.stem}>
+                          <span className="font-bold">{h.tenGod.hanja}</span>
+                          <span className="text-sm text-primary ml-1">({h.tenGod.korean})</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -316,14 +332,20 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
       <Card>
         <CardHeader>
           <CardTitle>신강약 판정</CardTitle>
+          <CardDescription>일간의 힘과 에너지 상태</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-4">
-            <div className="bg-primary text-primary-foreground px-6 py-3 rounded-lg text-xl font-bold">
-              {result.strength.level}
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="bg-primary text-primary-foreground px-8 py-6 rounded-lg text-center">
+              <p className="text-3xl font-bold mb-1">{result.strength.level.hanja}</p>
+              <p className="text-lg">{result.strength.level.korean}</p>
             </div>
-            <div className="text-sm text-muted-foreground">
-              <p>점수: {result.strength.score.toFixed(1)}</p>
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">강도 점수:</span>
+                <span className="font-bold text-lg">{result.strength.score.toFixed(1)}</span>
+              </div>
+              <p className="text-sm text-muted-foreground">{result.strength.description}</p>
             </div>
           </div>
         </CardContent>
@@ -354,35 +376,52 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
           <CardDescription>운세 개선에 도움이 되는 오행</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4">
-            <div className="flex-1 bg-accent/20 p-4 rounded-lg text-center">
-              <p className="text-sm text-muted-foreground mb-1">용신</p>
-              <p className={`text-2xl font-bold ${ELEMENT_COLORS[result.yongShen.primary]}`}>
-                {ELEMENT_NAMES[result.yongShen.primary]}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 bg-accent/20 p-6 rounded-lg text-center">
+              <p className="text-sm text-muted-foreground mb-2">용신 (用神)</p>
+              <p className={`text-3xl font-bold ${ELEMENT_COLORS[result.yongShen.primary.key]}`}>
+                {result.yongShen.primary.hanja}
               </p>
+              <p className={`text-lg ${ELEMENT_COLORS[result.yongShen.primary.key]}`}>
+                {result.yongShen.primary.korean}
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">가장 필요한 오행</p>
             </div>
             {result.yongShen.secondary && (
-              <div className="flex-1 bg-muted p-4 rounded-lg text-center">
-                <p className="text-sm text-muted-foreground mb-1">희신</p>
-                <p className={`text-2xl font-bold ${ELEMENT_COLORS[result.yongShen.secondary]}`}>
-                  {ELEMENT_NAMES[result.yongShen.secondary]}
+              <div className="flex-1 bg-muted p-6 rounded-lg text-center">
+                <p className="text-sm text-muted-foreground mb-2">희신 (喜神)</p>
+                <p
+                  className={`text-3xl font-bold ${ELEMENT_COLORS[result.yongShen.secondary.key]}`}
+                >
+                  {result.yongShen.secondary.hanja}
                 </p>
+                <p className={`text-lg ${ELEMENT_COLORS[result.yongShen.secondary.key]}`}>
+                  {result.yongShen.secondary.korean}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">용신을 돕는 오행</p>
               </div>
             )}
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">분석 방법: {result.yongShen.method}</p>
+          <div className="mt-4 p-3 bg-secondary rounded-lg">
+            <p className="text-sm">
+              <span className="text-muted-foreground">분석 방법: </span>
+              <span className="font-medium">{result.yongShen.method.hanja}</span>
+              <span className="text-primary ml-1">({result.yongShen.method.korean})</span>
+            </p>
+          </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
           <CardTitle>십이운성</CardTitle>
+          <CardDescription>일간의 생명주기 에너지 흐름</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-4 gap-4 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {(["year", "month", "day", "hour"] as const).map((pos) => (
-              <div key={pos} className="bg-muted p-4 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">
+              <div key={pos} className="bg-muted p-4 rounded-lg text-center">
+                <p className="text-sm text-muted-foreground mb-2">
                   {pos === "year"
                     ? "년주"
                     : pos === "month"
@@ -391,7 +430,11 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
                         ? "일주"
                         : "시주"}
                 </p>
-                <p className="text-xl font-bold">{STAGE_INFO[result.twelveStages[pos]].hanja}</p>
+                <p className="text-2xl font-bold mb-1">{result.twelveStages[pos].hanja}</p>
+                <p className="text-sm text-primary font-medium mb-2">
+                  {result.twelveStages[pos].korean}
+                </p>
+                <p className="text-xs text-muted-foreground">{result.twelveStages[pos].meaning}</p>
               </div>
             ))}
           </div>
@@ -447,7 +490,7 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
             <div className="bg-secondary p-4 rounded-lg">
               <p className="text-sm text-muted-foreground">현재 절기</p>
               <p className="text-xl font-bold">
-                {result.solarTerms.current.name} ({result.solarTerms.current.hanja})
+                {result.solarTerms.current.korean} ({result.solarTerms.current.hanja})
               </p>
               <p className="text-sm text-muted-foreground">
                 {result.solarTerms.daysSinceCurrent}일 경과
@@ -456,7 +499,7 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
             <div className="bg-muted p-4 rounded-lg">
               <p className="text-sm text-muted-foreground">다음 절기</p>
               <p className="text-xl font-bold">
-                {result.solarTerms.next.name} ({result.solarTerms.next.hanja})
+                {result.solarTerms.next.korean} ({result.solarTerms.next.hanja})
               </p>
               <p className="text-sm text-muted-foreground">
                 {result.solarTerms.daysUntilNext}일 후
@@ -470,16 +513,25 @@ function SajuResultDisplay({ result }: { result: SajuResult }) {
         <Card>
           <CardHeader>
             <CardTitle>신살 (神殺)</CardTitle>
+            <CardDescription>사주에서 발견된 특별한 기운</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {result.sinsals.matches.map((sinsal, index) => (
-                <span
-                  key={`${sinsal.sinsal}-${index}`}
-                  className="bg-accent/20 text-accent-foreground px-3 py-1 rounded-full text-sm"
+                <div
+                  key={`${sinsal.sinsal.key}-${index}`}
+                  className={`p-3 rounded-lg text-center ${
+                    sinsal.sinsal.type === "auspicious"
+                      ? "bg-green-100 dark:bg-green-900/30"
+                      : sinsal.sinsal.type === "inauspicious"
+                        ? "bg-red-100 dark:bg-red-900/30"
+                        : "bg-muted"
+                  }`}
                 >
-                  {sinsal.sinsal}
-                </span>
+                  <p className="text-xl font-bold mb-1">{sinsal.sinsal.hanja}</p>
+                  <p className="text-sm text-primary font-medium">{sinsal.sinsal.korean}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{sinsal.sinsal.meaning}</p>
+                </div>
               ))}
             </div>
           </CardContent>

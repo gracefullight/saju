@@ -1,6 +1,85 @@
-import type { Element } from "./ten-gods";
-import { getBranchElement, getStemElement } from "./ten-gods";
+import type { Label } from "@/types";
+import type { Element, ElementLabel } from "./ten-gods";
+import { getBranchElement, getElementLabel, getStemElement } from "./ten-gods";
 
+export const RELATION_TYPE_KEYS = [
+  "stemCombination",
+  "sixCombination",
+  "tripleCombination",
+  "directionalCombination",
+  "clash",
+  "harm",
+  "punishment",
+  "destruction",
+] as const;
+
+export type RelationTypeKey = (typeof RELATION_TYPE_KEYS)[number];
+
+export interface RelationTypeLabel extends Label<RelationTypeKey> {}
+
+const RELATION_TYPE_DATA: Record<RelationTypeKey, { korean: string; hanja: string }> = {
+  stemCombination: { korean: "천간합", hanja: "天干合" },
+  sixCombination: { korean: "육합", hanja: "六合" },
+  tripleCombination: { korean: "삼합", hanja: "三合" },
+  directionalCombination: { korean: "방합", hanja: "方合" },
+  clash: { korean: "충", hanja: "沖" },
+  harm: { korean: "해", hanja: "害" },
+  punishment: { korean: "형", hanja: "刑" },
+  destruction: { korean: "파", hanja: "破" },
+};
+
+export function getRelationTypeLabel(key: RelationTypeKey): RelationTypeLabel {
+  const data = RELATION_TYPE_DATA[key];
+  return { key, ...data };
+}
+
+export const TRANSFORMATION_STATUS_KEYS = [
+  "combined",
+  "halfCombined",
+  "transformed",
+  "notTransformed",
+] as const;
+
+export type TransformationStatusKey = (typeof TRANSFORMATION_STATUS_KEYS)[number];
+
+export interface TransformationStatusLabel extends Label<TransformationStatusKey> {}
+
+const TRANSFORMATION_STATUS_DATA: Record<
+  TransformationStatusKey,
+  { korean: string; hanja: string }
+> = {
+  combined: { korean: "합", hanja: "合" },
+  halfCombined: { korean: "반합", hanja: "半合" },
+  transformed: { korean: "화", hanja: "化" },
+  notTransformed: { korean: "불화", hanja: "不化" },
+};
+
+export function getTransformationStatusLabel(
+  key: TransformationStatusKey,
+): TransformationStatusLabel {
+  const data = TRANSFORMATION_STATUS_DATA[key];
+  return { key, ...data };
+}
+
+export const PUNISHMENT_TYPE_KEYS = ["ungrateful", "power", "rude", "self"] as const;
+
+export type PunishmentTypeKey = (typeof PUNISHMENT_TYPE_KEYS)[number];
+
+export interface PunishmentTypeLabel extends Label<PunishmentTypeKey> {}
+
+const PUNISHMENT_TYPE_DATA: Record<PunishmentTypeKey, { korean: string; hanja: string }> = {
+  ungrateful: { korean: "무은지형", hanja: "無恩之刑" },
+  power: { korean: "시세지형", hanja: "恃勢之刑" },
+  rude: { korean: "무례지형", hanja: "無禮之刑" },
+  self: { korean: "자형", hanja: "自刑" },
+};
+
+export function getPunishmentTypeLabel(key: PunishmentTypeKey): PunishmentTypeLabel {
+  const data = PUNISHMENT_TYPE_DATA[key];
+  return { key, ...data };
+}
+
+/** @deprecated Use TransformationStatusKey instead */
 export type TransformationStatus = "합" | "반합" | "화" | "불화";
 
 export type StemCombinationResult = {
@@ -67,14 +146,14 @@ export const BRANCH_HARMS: [string, string][] = [
   ["酉", "戌"],
 ];
 
-export const BRANCH_PUNISHMENTS: { branches: string[]; type: string }[] = [
-  { branches: ["寅", "巳", "申"], type: "무은지형" },
-  { branches: ["丑", "戌", "未"], type: "시세지형" },
-  { branches: ["子", "卯"], type: "무례지형" },
-  { branches: ["辰", "辰"], type: "자형" },
-  { branches: ["午", "午"], type: "자형" },
-  { branches: ["酉", "酉"], type: "자형" },
-  { branches: ["亥", "亥"], type: "자형" },
+export const BRANCH_PUNISHMENTS: { branches: string[]; type: PunishmentTypeKey }[] = [
+  { branches: ["寅", "巳", "申"], type: "ungrateful" },
+  { branches: ["丑", "戌", "未"], type: "power" },
+  { branches: ["子", "卯"], type: "rude" },
+  { branches: ["辰", "辰"], type: "self" },
+  { branches: ["午", "午"], type: "self" },
+  { branches: ["酉", "酉"], type: "self" },
+  { branches: ["亥", "亥"], type: "self" },
 ];
 
 export const BRANCH_DESTRUCTIONS: [string, string][] = [
@@ -87,64 +166,64 @@ export const BRANCH_DESTRUCTIONS: [string, string][] = [
 ];
 
 export interface StemCombination {
-  type: "천간합";
+  type: RelationTypeLabel;
   pair: [string, string];
   positions: [string, string];
-  resultElement: Element;
-  transformStatus: TransformationStatus;
+  resultElement: ElementLabel;
+  transformStatus: TransformationStatusLabel;
   transformReason: string;
 }
 
 export interface BranchSixCombination {
-  type: "육합";
+  type: RelationTypeLabel;
   pair: [string, string];
   positions: [string, string];
-  resultElement: Element;
-  transformStatus: TransformationStatus;
+  resultElement: ElementLabel;
+  transformStatus: TransformationStatusLabel;
   transformReason: string;
 }
 
 export interface BranchTripleCombination {
-  type: "삼합";
+  type: RelationTypeLabel;
   branches: string[];
   positions: string[];
-  resultElement: Element;
+  resultElement: ElementLabel;
   isComplete: boolean;
-  transformStatus: TransformationStatus;
+  transformStatus: TransformationStatusLabel;
   transformReason: string;
 }
 
 export interface BranchDirectionalCombination {
-  type: "방합";
+  type: RelationTypeLabel;
   branches: string[];
   positions: string[];
-  resultElement: Element;
+  resultElement: ElementLabel;
   isComplete: boolean;
-  transformStatus: TransformationStatus;
+  transformStatus: TransformationStatusLabel;
   transformReason: string;
 }
 
 export interface BranchClash {
-  type: "충";
+  type: RelationTypeLabel;
   pair: [string, string];
   positions: [string, string];
 }
 
 export interface BranchHarm {
-  type: "해";
+  type: RelationTypeLabel;
   pair: [string, string];
   positions: [string, string];
 }
 
 export interface BranchPunishment {
-  type: "형";
+  type: RelationTypeLabel;
   branches: string[];
   positions: string[];
-  punishmentType: string;
+  punishmentType: PunishmentTypeLabel;
 }
 
 export interface BranchDestruction {
-  type: "파";
+  type: RelationTypeLabel;
   pair: [string, string];
   positions: [string, string];
 }
@@ -195,7 +274,7 @@ function checkTransformationCondition(
   monthBranch: string,
   allBranches: string[],
   isComplete: boolean,
-): { status: TransformationStatus; reason: string } {
+): { status: TransformationStatusLabel; reason: string } {
   const supportedElements = MONTH_BRANCH_ELEMENT_SUPPORT[monthBranch] || [];
   const hasMonthSupport = supportedElements.includes(resultElement);
 
@@ -204,25 +283,37 @@ function checkTransformationCondition(
   const hasStrengthSupport = resultElementCount >= 2;
 
   if (!isComplete) {
-    return { status: "반합", reason: "불완전 합 - 일부 지지 부재" };
+    return {
+      status: getTransformationStatusLabel("halfCombined"),
+      reason: "불완전 합 - 일부 지지 부재",
+    };
   }
 
   if (hasMonthSupport) {
-    return { status: "화", reason: `월령(${monthBranch})이 ${resultElement}을(를) 지지` };
+    return {
+      status: getTransformationStatusLabel("transformed"),
+      reason: `월령(${monthBranch})이 ${resultElement}을(를) 지지`,
+    };
   }
 
   if (hasStrengthSupport) {
-    return { status: "화", reason: `${resultElement} 기세 충분(${resultElementCount}개)` };
+    return {
+      status: getTransformationStatusLabel("transformed"),
+      reason: `${resultElement} 기세 충분(${resultElementCount}개)`,
+    };
   }
 
-  return { status: "불화", reason: "월령 및 기세 미충족으로 화 불성립" };
+  return {
+    status: getTransformationStatusLabel("notTransformed"),
+    reason: "월령 및 기세 미충족으로 화 불성립",
+  };
 }
 
 function checkStemTransformationCondition(
   resultElement: Element,
   monthBranch: string,
   allStems: string[],
-): { status: TransformationStatus; reason: string } {
+): { status: TransformationStatusLabel; reason: string } {
   const supportedElements = MONTH_BRANCH_ELEMENT_SUPPORT[monthBranch] || [];
   const hasMonthSupport = supportedElements.includes(resultElement);
 
@@ -231,14 +322,23 @@ function checkStemTransformationCondition(
   const hasStrengthSupport = resultElementCount >= 2;
 
   if (hasMonthSupport) {
-    return { status: "화", reason: `월령(${monthBranch})이 ${resultElement}을(를) 지지` };
+    return {
+      status: getTransformationStatusLabel("transformed"),
+      reason: `월령(${monthBranch})이 ${resultElement}을(를) 지지`,
+    };
   }
 
   if (hasStrengthSupport) {
-    return { status: "화", reason: `${resultElement} 기세 충분(${resultElementCount}개)` };
+    return {
+      status: getTransformationStatusLabel("transformed"),
+      reason: `${resultElement} 기세 충분(${resultElementCount}개)`,
+    };
   }
 
-  return { status: "불화", reason: "월령 및 기세 미충족으로 화 불성립" };
+  return {
+    status: getTransformationStatusLabel("notTransformed"),
+    reason: "월령 및 기세 미충족으로 화 불성립",
+  };
 }
 
 export function analyzeRelations(
@@ -287,10 +387,10 @@ export function analyzeRelations(
             allStemChars,
           );
           combinations.push({
-            type: "천간합",
+            type: getRelationTypeLabel("stemCombination"),
             pair: [s1.char, s2.char],
             positions: [s1.position, s2.position],
-            resultElement: combo.resultElement,
+            resultElement: getElementLabel(combo.resultElement),
             transformStatus: transform.status,
             transformReason: transform.reason,
           });
@@ -316,10 +416,10 @@ export function analyzeRelations(
             true,
           );
           combinations.push({
-            type: "육합",
+            type: getRelationTypeLabel("sixCombination"),
             pair: [b1.char, b2.char],
             positions: [b1.position, b2.position],
-            resultElement: combo.resultElement,
+            resultElement: getElementLabel(combo.resultElement),
             transformStatus: transform.status,
             transformReason: transform.reason,
           });
@@ -332,7 +432,7 @@ export function analyzeRelations(
           (b1.char === clash[1] && b2.char === clash[0])
         ) {
           clashes.push({
-            type: "충",
+            type: getRelationTypeLabel("clash"),
             pair: [b1.char, b2.char],
             positions: [b1.position, b2.position],
           });
@@ -345,7 +445,7 @@ export function analyzeRelations(
           (b1.char === harm[1] && b2.char === harm[0])
         ) {
           harms.push({
-            type: "해",
+            type: getRelationTypeLabel("harm"),
             pair: [b1.char, b2.char],
             positions: [b1.position, b2.position],
           });
@@ -358,7 +458,7 @@ export function analyzeRelations(
           (b1.char === dest[1] && b2.char === dest[0])
         ) {
           destructions.push({
-            type: "파",
+            type: getRelationTypeLabel("destruction"),
             pair: [b1.char, b2.char],
             positions: [b1.position, b2.position],
           });
@@ -381,10 +481,10 @@ export function analyzeRelations(
         isComplete,
       );
       combinations.push({
-        type: "삼합",
+        type: getRelationTypeLabel("tripleCombination"),
         branches: matched,
         positions,
-        resultElement: combo.resultElement,
+        resultElement: getElementLabel(combo.resultElement),
         isComplete,
         transformStatus: transform.status,
         transformReason: transform.reason,
@@ -405,10 +505,10 @@ export function analyzeRelations(
         isComplete,
       );
       combinations.push({
-        type: "방합",
+        type: getRelationTypeLabel("directionalCombination"),
         branches: matched,
         positions,
-        resultElement: combo.resultElement,
+        resultElement: getElementLabel(combo.resultElement),
         isComplete,
         transformStatus: transform.status,
         transformReason: transform.reason,
@@ -419,37 +519,37 @@ export function analyzeRelations(
   for (const punishment of BRANCH_PUNISHMENTS) {
     const matched = punishment.branches.filter((b) => branchChars.includes(b));
     const isTriple = punishment.branches.length === 3;
-    const isSelfPunishment = punishment.type === "자형";
+    const isSelfPunishment = punishment.type === "self";
 
     if (isSelfPunishment) {
       const count = branchChars.filter((b) => b === punishment.branches[0]).length;
       if (count >= 2) {
         punishments.push({
-          type: "형",
+          type: getRelationTypeLabel("punishment"),
           branches: Array(count).fill(punishment.branches[0]),
           positions: branches
             .filter((b) => b.char === punishment.branches[0])
             .map((b) => b.position),
-          punishmentType: punishment.type,
+          punishmentType: getPunishmentTypeLabel(punishment.type),
         });
       }
     } else if (isTriple && matched.length >= 2) {
       // biome-ignore lint/style/noNonNullAssertion: matched is filtered from branchChars, find is guaranteed
       const positions = matched.map((m) => branches.find((b) => b.char === m)!.position);
       punishments.push({
-        type: "형",
+        type: getRelationTypeLabel("punishment"),
         branches: matched,
         positions,
-        punishmentType: punishment.type,
+        punishmentType: getPunishmentTypeLabel(punishment.type),
       });
     } else if (!isTriple && matched.length === 2) {
       // biome-ignore lint/style/noNonNullAssertion: matched is filtered from branchChars, find is guaranteed
       const positions = matched.map((m) => branches.find((b) => b.char === m)!.position);
       punishments.push({
-        type: "형",
+        type: getRelationTypeLabel("punishment"),
         branches: matched,
         positions,
-        punishmentType: punishment.type,
+        punishmentType: getPunishmentTypeLabel(punishment.type),
       });
     }
   }

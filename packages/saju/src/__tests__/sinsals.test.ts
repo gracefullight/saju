@@ -6,21 +6,21 @@ describe("sinsals", () => {
     it("should detect peach blossom (도화살)", () => {
       const result = analyzeSinsals("甲寅", "丙寅", "戊卯", "庚午");
 
-      const peachBlossoms = result.matches.filter((m) => m.sinsal === "peachBlossom");
+      const peachBlossoms = result.matches.filter((m) => m.sinsal.key === "peachBlossom");
       expect(peachBlossoms.length).toBeGreaterThan(0);
     });
 
     it("should detect sky horse (역마살)", () => {
       const result = analyzeSinsals("甲寅", "丙寅", "戊申", "庚午");
 
-      const skyHorses = result.matches.filter((m) => m.sinsal === "skyHorse");
+      const skyHorses = result.matches.filter((m) => m.sinsal.key === "skyHorse");
       expect(skyHorses.length).toBeGreaterThan(0);
     });
 
     it("should detect flowery canopy (화개살)", () => {
       const result = analyzeSinsals("甲寅", "丙戌", "戊子", "庚午");
 
-      const floweryCanopies = result.matches.filter((m) => m.sinsal === "floweryCanopy");
+      const floweryCanopies = result.matches.filter((m) => m.sinsal.key === "floweryCanopy");
       expect(floweryCanopies.length).toBeGreaterThan(0);
     });
 
@@ -39,7 +39,7 @@ describe("sinsals", () => {
 
       const seen = new Set<string>();
       for (const match of result.matches) {
-        const key = `${match.sinsal}-${match.position}`;
+        const key = `${match.sinsal.key}-${match.position}`;
         expect(seen.has(key)).toBe(false);
         seen.add(key);
       }
@@ -48,7 +48,7 @@ describe("sinsals", () => {
     it("should detect sky noble (천을귀인)", () => {
       const result = analyzeSinsals("甲丑", "丙寅", "甲子", "庚午");
 
-      const skyNobles = result.matches.filter((m) => m.sinsal === "skyNoble");
+      const skyNobles = result.matches.filter((m) => m.sinsal.key === "skyNoble");
       expect(skyNobles.length).toBeGreaterThan(0);
     });
   });

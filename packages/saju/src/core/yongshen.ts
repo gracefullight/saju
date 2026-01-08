@@ -1,16 +1,43 @@
-import { analyzeStrength, type StrengthLevel } from "./strength";
-import { ELEMENTS, type Element, getBranchElement, getStemElement } from "./ten-gods";
+import { analyzeStrength, type StrengthLevelKey, type StrengthLevelLabel } from "./strength";
+import {
+  ELEMENTS,
+  type Element,
+  type ElementLabel,
+  getBranchElement,
+  getElementLabel,
+  getStemElement,
+} from "./ten-gods";
 
-export type YongShenMethod = "격국" | "억부" | "조후" | "통관" | "병약";
+export type YongShenMethodKey = "formation" | "balance" | "climate" | "bridge" | "disease";
+
+export interface YongShenMethodLabel extends Label<YongShenMethodKey> {}
+
+const YONGSHEN_METHOD_DATA: Record<YongShenMethodKey, { korean: string; hanja: string }> = {
+  formation: { korean: "격국", hanja: "格局" },
+  balance: { korean: "억부", hanja: "抑扶" },
+  climate: { korean: "조후", hanja: "調候" },
+  bridge: { korean: "통관", hanja: "通關" },
+  disease: { korean: "병약", hanja: "病藥" },
+};
+
+export function getYongShenMethodLabel(key: YongShenMethodKey): YongShenMethodLabel {
+  const data = YONGSHEN_METHOD_DATA[key];
+  return { key, ...data };
+}
 
 export interface YongShenResult {
-  primary: Element;
-  secondary: Element | null;
-  method: YongShenMethod;
+  primary: ElementLabel;
+  secondary: ElementLabel | null;
+  method: YongShenMethodLabel;
   reasoning: string;
   allElements: Record<Element, { isYongShen: boolean; isKiShen: boolean }>;
-  johuAdjustment: Element | null;
+  johuAdjustment: ElementLabel | null;
 }
+
+/** @deprecated Use YongShenMethodKey instead */
+export type YongShenMethod = "격국" | "억부" | "조후" | "통관" | "병약";
+
+import type { Label } from "@/types";
 
 const SEASON_MONTH_BRANCHES: Record<string, string[]> = {
   spring: ["寅", "卯", "辰"],
@@ -91,13 +118,22 @@ const CONTROLLED_BY: Record<Element, Element> = {
   wood: "metal",
 };
 
+const STRONG_LEVEL_KEYS: StrengthLevelKey[] = [
+  "strong",
+  "veryStrong",
+  "extremelyStrong",
+  "neutralStrong",
+];
+
+function isStrongLevel(level: StrengthLevelLabel): boolean {
+  return STRONG_LEVEL_KEYS.includes(level.key);
+}
+
 function getYokbuYongShen(
   dayMasterElement: Element,
-  strengthLevel: StrengthLevel,
+  level: StrengthLevelLabel,
 ): { primary: Element; secondary: Element | null } {
-  const isStrong = ["신강", "태강", "극왕", "중화신강"].includes(strengthLevel);
-
-  if (isStrong) {
+  if (isStrongLevel(level)) {
     const primary = CONTROLS[dayMasterElement];
     const secondary = GENERATES[dayMasterElement];
     return { primary, secondary };
@@ -109,12 +145,10 @@ function getYokbuYongShen(
 
 function hasSpecialFormation(
   dayMasterElement: Element,
-  strengthLevel: StrengthLevel,
+  level: StrengthLevelLabel,
   allElements: Element[],
 ): { isSpecial: boolean; type: string | null; followElement: Element | null } {
-  const _isExtreme = ["극약", "극왕"].includes(strengthLevel);
-
-  if (strengthLevel === "극약") {
+  if (level.key === "extremelyWeak") {
     const elementCounts: Record<Element, number> = {
       wood: 0,
       fire: 0,
@@ -175,33 +209,33 @@ export function analyzeYongShen(
 
   const specialFormation = hasSpecialFormation(dayMasterElement, strength.level, allBranchElements);
 
-  let primary: Element;
-  let secondary: Element | null = null;
-  let method: YongShenMethod;
+  let primaryKey: Element;
+  let secondaryKey: Element | null = null;
+  let methodKey: YongShenMethodKey;
   let reasoning: string;
-  let johuAdjustment: Element | null = null;
+  let johuAdjustmentKey: Element | null = null;
 
   if (specialFormation.isSpecial && specialFormation.followElement) {
-    primary = specialFormation.followElement;
-    secondary = GENERATES[specialFormation.followElement];
-    method = "격국";
-    reasoning = `${specialFormation.type} 성립. ${specialFormation.followElement} 세력을 따름`;
+    primaryKey = specialFormation.followElement;
+    secondaryKey = GENERATES[specialFormation.followElement];
+    methodKey = "formation";
+    reasoning = `종격 성립. ${getElementLabel(specialFormation.followElement).korean} 세력을 따름`;
   } else {
     const yokbu = getYokbuYongShen(dayMasterElement, strength.level);
-    primary = yokbu.primary;
-    secondary = yokbu.secondary;
-    method = "억부";
+    primaryKey = yokbu.primary;
+    secondaryKey = yokbu.secondary;
+    methodKey = "balance";
 
-    const isStrong = ["신강", "태강", "극왕", "중화신강"].includes(strength.level);
-    if (isStrong) {
-      reasoning = `${strength.level} 상태로 설기(洩氣) 필요. ${primary}로 기운을 발산`;
+    const strong = isStrongLevel(strength.level);
+    if (strong) {
+      reasoning = `${strength.level.korean} 상태로 설기(洩氣) 필요. ${getElementLabel(primaryKey).korean}로 기운을 발산`;
     } else {
-      reasoning = `${strength.level} 상태로 부조(扶助) 필요. ${primary}로 일간을 생조`;
+      reasoning = `${strength.level.korean} 상태로 부조(扶助) 필요. ${getElementLabel(primaryKey).korean}로 일간을 생조`;
     }
 
-    johuAdjustment = getJohuAdjustment(dayMasterElement, season, primary);
-    if (johuAdjustment) {
-      reasoning += `. 조후 보정: ${season} 계절에 ${johuAdjustment} 참고`;
+    johuAdjustmentKey = getJohuAdjustment(dayMasterElement, season, primaryKey);
+    if (johuAdjustmentKey) {
+      reasoning += `. 조후 보정: ${season} 계절에 ${getElementLabel(johuAdjustmentKey).korean} 참고`;
     }
   }
 
@@ -213,12 +247,12 @@ export function analyzeYongShen(
     water: { isYongShen: false, isKiShen: false },
   };
 
-  allElements[primary].isYongShen = true;
-  if (secondary) allElements[secondary].isYongShen = true;
+  allElements[primaryKey].isYongShen = true;
+  if (secondaryKey) allElements[secondaryKey].isYongShen = true;
 
-  const isStrong = ["신강", "태강", "극왕", "중화신강"].includes(strength.level);
-  if (method !== "격국") {
-    if (isStrong) {
+  const strong = isStrongLevel(strength.level);
+  if (methodKey !== "formation") {
+    if (strong) {
       allElements[dayMasterElement].isKiShen = true;
       allElements[GENERATED_BY[dayMasterElement]].isKiShen = true;
     } else {
@@ -234,12 +268,12 @@ export function analyzeYongShen(
   }
 
   return {
-    primary,
-    secondary,
-    method,
+    primary: getElementLabel(primaryKey),
+    secondary: secondaryKey ? getElementLabel(secondaryKey) : null,
+    method: getYongShenMethodLabel(methodKey),
     reasoning,
     allElements,
-    johuAdjustment,
+    johuAdjustment: johuAdjustmentKey ? getElementLabel(johuAdjustmentKey) : null,
   };
 }
 
@@ -256,13 +290,13 @@ export function getElementRecommendations(yongShen: YongShenResult): {
     water: { colors: ["흑색", "남색"], direction: "북", numbers: [1, 6] },
   };
 
-  const primary = elementData[yongShen.primary];
+  const primary = elementData[yongShen.primary.key];
   const colors = [...primary.colors];
   const directions = [primary.direction];
   const numbers = [...primary.numbers];
 
   if (yongShen.secondary) {
-    const secondary = elementData[yongShen.secondary];
+    const secondary = elementData[yongShen.secondary.key];
     colors.push(...secondary.colors);
     directions.push(secondary.direction);
     numbers.push(...secondary.numbers);

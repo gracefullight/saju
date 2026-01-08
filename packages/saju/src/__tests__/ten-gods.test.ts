@@ -113,10 +113,10 @@ describe("ten-gods", () => {
       const result = analyzeTenGods("甲子", "丙寅", "甲辰", "乙亥");
 
       expect(result.dayMaster).toBe("甲");
-      expect(result.year.stem.tenGod).toBe("비견");
-      expect(result.month.stem.tenGod).toBe("식신");
-      expect(result.day.stem.tenGod).toBe("일간");
-      expect(result.hour.stem.tenGod).toBe("겁재");
+      expect(result.year.stem.tenGod.key).toBe("companion");
+      expect(result.month.stem.tenGod.key).toBe("eatingGod");
+      expect(result.day.stem.tenGod.key).toBe("dayMaster");
+      expect(result.hour.stem.tenGod.key).toBe("robWealth");
     });
 
     it("includes hidden stems analysis", () => {
@@ -133,8 +133,8 @@ describe("ten-gods", () => {
       const analysis = analyzeTenGods("甲子", "丙寅", "甲辰", "乙亥");
       const counts = countTenGods(analysis);
 
-      expect(counts.비견).toBeGreaterThanOrEqual(1);
-      expect(counts.식신).toBeGreaterThanOrEqual(1);
+      expect(counts.companion).toBeGreaterThanOrEqual(1);
+      expect(counts.eatingGod).toBeGreaterThanOrEqual(1);
     });
   });
 

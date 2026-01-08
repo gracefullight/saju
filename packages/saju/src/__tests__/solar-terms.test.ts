@@ -19,12 +19,22 @@ describe("solar-terms", async () => {
     });
 
     it("should start with 소한 at 285°", () => {
-      expect(SOLAR_TERMS[0]).toEqual({ name: "소한", hanja: "小寒", longitude: 285 });
+      expect(SOLAR_TERMS[0]).toEqual({
+        key: "minorCold",
+        korean: "소한",
+        hanja: "小寒",
+        longitude: 285,
+      });
     });
 
     it("should have 입춘 at 315°", () => {
-      const ipchun = SOLAR_TERMS.find((t) => t.name === "입춘");
-      expect(ipchun).toEqual({ name: "입춘", hanja: "立春", longitude: 315 });
+      const ipchun = SOLAR_TERMS.find((t) => t.korean === "입춘");
+      expect(ipchun).toEqual({
+        key: "springBegins",
+        korean: "입춘",
+        hanja: "立春",
+        longitude: 315,
+      });
     });
   });
 
@@ -33,8 +43,8 @@ describe("solar-terms", async () => {
       const dt = DateTime.fromObject({ year: 2024, month: 1, day: 15 }, { zone: "Asia/Seoul" });
       const result = analyzeSolarTerms(adapter, dt);
 
-      expect(result.current.name).toBe("소한");
-      expect(result.next.name).toBe("대한");
+      expect(result.current.korean).toBe("소한");
+      expect(result.next.korean).toBe("대한");
       expect(result.daysSinceCurrent).toBeGreaterThanOrEqual(0);
       expect(result.daysUntilNext).toBeGreaterThan(0);
     });
@@ -43,31 +53,31 @@ describe("solar-terms", async () => {
       const dt = DateTime.fromObject({ year: 2024, month: 2, day: 3 }, { zone: "Asia/Seoul" });
       const result = analyzeSolarTerms(adapter, dt);
 
-      expect(result.current.name).toBe("대한");
-      expect(result.next.name).toBe("입춘");
+      expect(result.current.korean).toBe("대한");
+      expect(result.next.korean).toBe("입춘");
     });
 
     it("should return current and next solar terms for summer solstice period", () => {
       const dt = DateTime.fromObject({ year: 2024, month: 6, day: 25 }, { zone: "Asia/Seoul" });
       const result = analyzeSolarTerms(adapter, dt);
 
-      expect(result.current.name).toBe("하지");
-      expect(result.next.name).toBe("소서");
+      expect(result.current.korean).toBe("하지");
+      expect(result.next.korean).toBe("소서");
     });
 
     it("should return current and next solar terms for winter solstice period", () => {
       const dt = DateTime.fromObject({ year: 2024, month: 12, day: 25 }, { zone: "Asia/Seoul" });
       const result = analyzeSolarTerms(adapter, dt);
 
-      expect(result.current.name).toBe("동지");
-      expect(result.next.name).toBe("소한");
+      expect(result.current.korean).toBe("동지");
+      expect(result.next.korean).toBe("소한");
     });
 
     it("should calculate days since current term correctly", () => {
       const dt = DateTime.fromObject({ year: 2024, month: 3, day: 25 }, { zone: "Asia/Seoul" });
       const result = analyzeSolarTerms(adapter, dt);
 
-      expect(result.current.name).toBe("춘분");
+      expect(result.current.korean).toBe("춘분");
       expect(result.daysSinceCurrent).toBeGreaterThanOrEqual(0);
       expect(result.daysSinceCurrent).toBeLessThan(16);
     });
@@ -76,7 +86,7 @@ describe("solar-terms", async () => {
       const dt = DateTime.fromObject({ year: 2024, month: 4, day: 1 }, { zone: "Asia/Seoul" });
       const result = analyzeSolarTerms(adapter, dt);
 
-      expect(result.next.name).toBe("청명");
+      expect(result.next.korean).toBe("청명");
       expect(result.daysUntilNext).toBeGreaterThan(0);
       expect(result.daysUntilNext).toBeLessThan(16);
     });
@@ -107,7 +117,7 @@ describe("solar-terms", async () => {
 
     it("should have all terms in order", () => {
       const terms = getSolarTermsForYear(adapter, 2024, "Asia/Seoul");
-      const names = terms.map((t) => t.term.name);
+      const names = terms.map((t) => t.term.korean);
 
       expect(names[0]).toBe("소한");
       expect(names[2]).toBe("입춘");
@@ -131,7 +141,7 @@ describe("solar-terms", async () => {
 
     it("should have 입춘 around February 4", () => {
       const terms = getSolarTermsForYear(adapter, 2024, "Asia/Seoul");
-      const ipchun = terms.find((t) => t.term.name === "입춘");
+      const ipchun = terms.find((t) => t.term.korean === "입춘");
 
       expect(ipchun?.date.month).toBe(2);
       expect(ipchun?.date.day).toBeGreaterThanOrEqual(3);
@@ -140,7 +150,7 @@ describe("solar-terms", async () => {
 
     it("should have 하지 around June 21", () => {
       const terms = getSolarTermsForYear(adapter, 2024, "Asia/Seoul");
-      const haji = terms.find((t) => t.term.name === "하지");
+      const haji = terms.find((t) => t.term.korean === "하지");
 
       expect(haji?.date.month).toBe(6);
       expect(haji?.date.day).toBeGreaterThanOrEqual(20);

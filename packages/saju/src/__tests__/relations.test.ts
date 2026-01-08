@@ -64,7 +64,7 @@ describe("relations", () => {
     it("finds stem combinations in four pillars", () => {
       const result = analyzeRelations("甲子", "己丑", "丙寅", "辛亥");
 
-      const stemCombos = result.combinations.filter((c) => c.type === "천간합");
+      const stemCombos = result.combinations.filter((c) => c.type.key === "stemCombination");
       expect(stemCombos.length).toBeGreaterThan(0);
     });
 
@@ -77,15 +77,15 @@ describe("relations", () => {
     it("finds 삼합 (triple combination)", () => {
       const result = analyzeRelations("甲寅", "丙午", "戊戌", "庚子");
 
-      const tripleCombos = result.combinations.filter((c) => c.type === "삼합");
+      const tripleCombos = result.combinations.filter((c) => c.type.key === "tripleCombination");
       expect(tripleCombos.length).toBeGreaterThan(0);
-      expect(tripleCombos[0].resultElement).toBe("fire");
+      expect(tripleCombos[0].resultElement.key).toBe("fire");
     });
 
     it("finds 육합 (six combination)", () => {
       const result = analyzeRelations("甲子", "乙丑", "丙寅", "丁卯");
 
-      const sixCombos = result.combinations.filter((c) => c.type === "육합");
+      const sixCombos = result.combinations.filter((c) => c.type.key === "sixCombination");
       expect(sixCombos.length).toBeGreaterThan(0);
     });
 
@@ -93,13 +93,13 @@ describe("relations", () => {
       const result = analyzeRelations("甲寅", "丙巳", "戊申", "庚子");
 
       expect(result.punishments.length).toBeGreaterThan(0);
-      expect(result.punishments[0].punishmentType).toBe("무은지형");
+      expect(result.punishments[0].punishmentType.key).toBe("ungrateful");
     });
 
     it("includes transformStatus and transformReason for combinations", () => {
       const result = analyzeRelations("甲子", "己丑", "丙寅", "辛亥");
 
-      const stemCombos = result.combinations.filter((c) => c.type === "천간합");
+      const stemCombos = result.combinations.filter((c) => c.type.key === "stemCombination");
       expect(stemCombos.length).toBeGreaterThan(0);
       expect(stemCombos[0]).toHaveProperty("transformStatus");
       expect(stemCombos[0]).toHaveProperty("transformReason");

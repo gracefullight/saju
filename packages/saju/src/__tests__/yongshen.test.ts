@@ -15,7 +15,7 @@ describe("yongshen", () => {
     it("identifies yongshen elements correctly", () => {
       const result = analyzeYongShen("甲子", "丙寅", "甲辰", "乙亥");
 
-      expect(result.allElements[result.primary].isYongShen).toBe(true);
+      expect(result.allElements[result.primary.key].isYongShen).toBe(true);
     });
 
     it("identifies kishen elements correctly", () => {
@@ -27,12 +27,12 @@ describe("yongshen", () => {
 
     it("uses 억부 method for 중화 strength (조후 is adjustment, not primary)", () => {
       const result = analyzeYongShen("甲子", "丙寅", "庚申", "丁亥");
-      expect(["억부", "격국"]).toContain(result.method);
+      expect(["balance", "formation"]).toContain(result.method.key);
     });
 
     it("uses 억부 method for extreme strength", () => {
       const result = analyzeYongShen("甲寅", "甲寅", "甲寅", "甲寅");
-      expect(result.method).toBe("억부");
+      expect(result.method.key).toBe("balance");
     });
 
     it("includes johuAdjustment field in result", () => {

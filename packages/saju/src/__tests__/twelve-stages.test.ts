@@ -69,17 +69,17 @@ describe("twelve-stages", () => {
       expect(result.month).toBeDefined();
       expect(result.day).toBeDefined();
       expect(result.hour).toBeDefined();
-      expect(TWELVE_STAGES).toContain(result.year);
-      expect(TWELVE_STAGES).toContain(result.month);
-      expect(TWELVE_STAGES).toContain(result.day);
-      expect(TWELVE_STAGES).toContain(result.hour);
+      expect(TWELVE_STAGES).toContain(result.year.key);
+      expect(TWELVE_STAGES).toContain(result.month.key);
+      expect(TWELVE_STAGES).toContain(result.day.key);
+      expect(TWELVE_STAGES).toContain(result.hour.key);
     });
 
     it("should correctly analyze 戊 day master", () => {
       const result = analyzeTwelveStages("甲子", "丙寅", "戊辰", "庚午");
 
-      expect(result.month).toBe("longLife");
-      expect(result.hour).toBe("imperial");
+      expect(result.month.key).toBe("longLife");
+      expect(result.hour.key).toBe("imperial");
     });
   });
 
