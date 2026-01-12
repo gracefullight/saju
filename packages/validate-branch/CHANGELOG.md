@@ -1,5 +1,11 @@
 # @gracefullight/validate-branch
 
+## 1.0.1
+
+### Patch Changes
+
+- f92a4ad: chore: rename repository from workspace to ts-workspace
+
 ## 1.0.0
 
 ### Major Changes
