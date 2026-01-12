@@ -1,52 +1,52 @@
-# 코드 스타일 및 컨벤션
+# Code Style and Conventions
 
-## Biome 설정 (biome.json)
+## Biome Configuration (biome.json)
 
-### 포맷터
-- 들여쓰기: 스페이스 2칸
-- 줄 너비: 100자
-- 따옴표: 더블 쿼트 (`"`)
-- 트레일링 콤마: 모든 곳에 사용 (`all`)
+### Formatter
+- Indent: 2 spaces
+- Line width: 100 characters
+- Quote style: double quotes (`"`)
+- Trailing commas: all
 
-### 린터 규칙
-- 권장 규칙 활성화
+### Linter Rules
+- Recommended rules enabled
 - `noExcessiveCognitiveComplexity`: warn
-- `useImportType`: error (타입 import 시 `import type` 사용 필수)
-- `useExportType`: error (타입 export 시 `export type` 사용 필수)
+- `useImportType`: error (must use `import type` for type imports)
+- `useExportType`: error (must use `export type` for type exports)
 
 ### Assist
-- `organizeImports`: on (import 자동 정렬)
+- `organizeImports`: on (auto-sort imports)
 
-## TypeScript 컨벤션
-- ESM 모듈 사용 (`"type": "module"`)
-- 타입 정의 제공 (`.d.ts`)
-- 타입 import/export 시 `type` 키워드 사용
+## TypeScript Conventions
+- ESM modules (`"type": "module"`)
+- Provide type definitions (`.d.ts`)
+- Use `type` keyword for type imports/exports
 
-## 패키지 구조
+## Package Structure
 ```
 packages/{package-name}/
 ├── src/
-│   ├── index.ts        # 공개 API
-│   ├── core/           # 핵심 로직
-│   ├── types/          # 타입 정의
-│   └── __tests__/      # 테스트
-├── dist/               # 빌드 출력
+│   ├── index.ts        # Public API
+│   ├── core/           # Core logic
+│   ├── types/          # Type definitions
+│   └── __tests__/      # Tests
+├── dist/               # Build output
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
 
-## 네이밍 컨벤션
-- 파일명: kebab-case (`four-pillars.ts`)
-- 클래스/타입: PascalCase (`DateAdapter`)
-- 함수/변수: camelCase (`getFourPillars`)
-- 상수: SCREAMING_SNAKE_CASE (`STANDARD_PRESET`)
+## Naming Conventions
+- File names: kebab-case (`four-pillars.ts`)
+- Classes/Types: PascalCase (`DateAdapter`)
+- Functions/Variables: camelCase (`getFourPillars`)
+- Constants: SCREAMING_SNAKE_CASE (`STANDARD_PRESET`)
 
-## 테스트 컨벤션
-- Vitest 사용
-- 테스트 파일: `__tests__/` 디렉토리 또는 `.test.ts` 접미사
-- describe/it 패턴 사용
+## Testing Conventions
+- Use Vitest
+- Test files: `__tests__/` directory or `.test.ts` suffix
+- Use describe/it pattern
 
-## 문서화
-- README.md: 한국어 (README.en.md: 영어)
-- JSDoc 주석 권장
+## Documentation
+- README.md: Korean (README.en.md: English)
+- JSDoc comments recommended

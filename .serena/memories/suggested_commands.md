@@ -1,77 +1,77 @@
-# 개발 명령어
+# Development Commands
 
-## 환경 설정
+## Environment Setup
 ```bash
-# mise로 Node.js 24, pnpm 10 설치
+# Install Node.js 24, pnpm 10 via mise
 mise install
 
-# 의존성 설치
+# Install dependencies
 pnpm install
 ```
 
-## 루트 레벨 명령어
+## Root Level Commands
 ```bash
-# 전체 빌드
+# Build all packages
 pnpm build
 
-# 전체 린트 검사
+# Lint check
 pnpm lint
 
-# 린트 자동 수정
+# Lint auto-fix
 pnpm lint:fix
 
-# 포맷팅
+# Format
 pnpm format
 
-# Changeset 생성
+# Create changeset
 pnpm changeset
 
-# 버전 업데이트
+# Update versions
 pnpm version
 
-# 패키지 배포
+# Publish packages
 pnpm release
 ```
 
-## 패키지별 명령어
+## Package-specific Commands
 
 ### packages/saju
 ```bash
 cd packages/saju
 
-pnpm build       # tsc + tsc-alias로 빌드
-pnpm dev         # tsx로 개발 실행
-pnpm test        # vitest 테스트
-pnpm test:ui     # vitest UI 모드
-pnpm test:coverage  # 커버리지 리포트
-pnpm lint        # biome 린트
-pnpm lint:fix    # biome 린트 자동 수정
-pnpm format      # biome 포맷
+pnpm build          # Build with tsc + tsc-alias
+pnpm dev            # Run with tsx
+pnpm test           # Run vitest
+pnpm test:ui        # Vitest UI mode
+pnpm test:coverage  # Coverage report
+pnpm lint           # Biome lint
+pnpm lint:fix       # Biome lint auto-fix
+pnpm format         # Biome format
 ```
 
 ### packages/validate-branch
 ```bash
 cd packages/validate-branch
 
-pnpm build       # tsup으로 빌드
-pnpm dev         # tsx로 CLI 개발 실행
-pnpm test        # vitest 테스트
-pnpm lint        # biome 린트
-pnpm lint:fix    # biome 린트 자동 수정
-pnpm format      # biome 포맷
+pnpm build       # Build with tsup
+pnpm dev         # Run CLI with tsx
+pnpm test        # Run vitest
+pnpm lint        # Biome lint
+pnpm lint:fix    # Biome lint auto-fix
+pnpm format      # Biome format
 ```
 
 ### apps/saju-example
 ```bash
 cd apps/saju-example
 
-pnpm dev         # Next.js 개발 서버 (Turbopack)
-pnpm build       # Next.js 빌드
-pnpm start       # 프로덕션 서버
-pnpm lint        # Next.js 린트
+pnpm dev         # Next.js dev server (Turbopack)
+pnpm build       # Next.js build
+pnpm start       # Production server
+pnpm lint        # Next.js lint
 ```
 
-## Git 명령어
+## Git Commands
 ```bash
 git status
 git diff
