@@ -133,7 +133,9 @@ const _weakeningTenGods = [
 bool _isHelpfulTenGod(TenGod tenGod) => _helpfulTenGods.contains(tenGod);
 bool _isWeakeningTenGod(TenGod tenGod) => _weakeningTenGods.contains(tenGod);
 
-/// Strength factors
+/// Factors contributing to day master strength calculation.
+///
+/// Contains detailed breakdown of the various strength components.
 class StrengthFactors {
   const StrengthFactors({
     required this.deukryeong,
@@ -163,7 +165,10 @@ class StrengthFactors {
   final int weakenCount;
 }
 
-/// Strength analysis result
+/// Result of day master (일간) strength analysis.
+///
+/// Contains the strength level, numerical score, contributing factors,
+/// and a human-readable description.
 class StrengthResult {
   const StrengthResult({
     required this.level,
@@ -178,7 +183,10 @@ class StrengthResult {
   final String description;
 }
 
-/// Analyze day master strength
+/// Analyzes the day master (일간) strength based on the four pillars.
+///
+/// Evaluates factors including monthly strength (득령), root strength (통근),
+/// position strength (득지), and supporting stems (득세).
 StrengthResult analyzeStrength(FourPillars pillars) {
   final dayMaster = pillars.dayMaster;
   final dayMasterElement = dayMaster.element;

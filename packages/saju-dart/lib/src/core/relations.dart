@@ -210,7 +210,10 @@ class BranchDestruction {
   final List<PillarPosition> positions;
 }
 
-/// All relations analysis result
+/// Complete result of relations analysis between pillars.
+///
+/// Contains all detected combinations, clashes, harms, punishments,
+/// and destructions found in the four pillars.
 class RelationsResult {
   const RelationsResult({
     required this.stemCombinations,
@@ -256,7 +259,9 @@ class RelationsResult {
   return (status: TransformationStatus.notTransformed, reason: '화 조건 불충족');
 }
 
-/// Analyze all relations in four pillars
+/// Analyzes all relations (combinations, clashes, harms, punishments, destructions) in four pillars.
+///
+/// Returns a [RelationsResult] containing all detected stem and branch relations.
 RelationsResult analyzeRelations(FourPillars pillars) {
   final monthBranch = pillars.month.branch;
 

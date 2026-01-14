@@ -7,7 +7,10 @@ import 'types/types.dart';
 export 'core/core.dart';
 export 'types/types.dart';
 
-/// Lunar date information
+/// Lunar date information derived from a solar (Gregorian) date.
+///
+/// Contains the lunar calendar year, month, day, and the GanZhi (干支)
+/// representations for year, month, and day.
 class LunarDate {
   const LunarDate({
     required this.year,
@@ -19,12 +22,25 @@ class LunarDate {
     required this.dayGanZhi,
   });
 
+  /// The lunar year.
   final int year;
+
+  /// The lunar month (1-12).
   final int month;
+
+  /// The lunar day of the month.
   final int day;
+
+  /// Whether this date falls in a leap month.
   final bool isLeapMonth;
+
+  /// The year's GanZhi (干支) representation (e.g., "甲子").
   final String yearGanZhi;
+
+  /// The month's GanZhi (干支) representation.
   final String monthGanZhi;
+
+  /// The day's GanZhi (干支) representation.
   final String dayGanZhi;
 }
 
@@ -44,7 +60,10 @@ LunarDate getLunarDate(int year, int month, int day) {
   );
 }
 
-/// Complete Saju analysis result
+/// Complete Saju (Four Pillars of Destiny) analysis result.
+///
+/// This class aggregates all analysis components including the four pillars,
+/// ten gods, strength assessment, relations, yongshen, solar terms, and luck cycles.
 class SajuResult {
   const SajuResult({
     required this.pillars,
@@ -60,20 +79,43 @@ class SajuResult {
     required this.meta,
   });
 
+  /// The four pillars (year, month, day, hour).
   final FourPillars pillars;
+
+  /// The lunar date corresponding to the birth date.
   final LunarDate lunar;
+
+  /// Ten gods (십신) analysis for each pillar.
   final FourPillarsTenGods tenGods;
+
+  /// Day master strength (신강신약) assessment.
   final StrengthResult strength;
+
+  /// Relations analysis (combinations, clashes, harms, punishments).
   final RelationsResult relations;
+
+  /// Yongshen (용신) - the favorable element for balancing the chart.
   final YongShenResult yongShen;
+
+  /// Solar terms (절기) information for the birth date.
   final SolarTermInfo solarTerms;
+
+  /// Major luck (대운) cycles.
   final MajorLuckResult majorLuck;
+
+  /// Yearly luck (세운) for specified years.
   final List<YearlyLuckResult> yearlyLuck;
+
+  /// Twelve life stages (십이운성) analysis.
   final TwelveStagesResult twelveStages;
+
+  /// Metadata about the calculation.
   final SajuMeta meta;
 }
 
-/// Saju calculation metadata
+/// Metadata about the Saju calculation process.
+///
+/// Contains technical details used during pillar calculation.
 class SajuMeta {
   const SajuMeta({
     required this.solarYearUsed,
@@ -82,13 +124,31 @@ class SajuMeta {
     required this.adjustedDtForHour,
   });
 
+  /// The solar year used for year pillar calculation (may differ from calendar year near Lichun).
   final int solarYearUsed;
+
+  /// The sun's apparent longitude in degrees at the birth time.
   final double sunLonDeg;
+
+  /// The effective date used for day pillar calculation (adjusted for day boundary rules).
   final ({int year, int month, int day}) effectiveDayDate;
+
+  /// The adjusted datetime used for hour pillar calculation (may include mean solar time correction).
   final tz.TZDateTime adjustedDtForHour;
 }
 
-/// Calculate complete Saju analysis
+/// Calculates a complete Saju (Four Pillars of Destiny) analysis.
+///
+/// Returns a [SajuResult] containing all analysis components.
+///
+/// Parameters:
+/// - [dtLocal]: The birth datetime in the local timezone.
+/// - [gender]: The person's gender (affects major luck direction).
+/// - [longitudeDeg]: Geographic longitude for mean solar time correction (optional).
+/// - [tzOffsetHours]: Timezone offset in hours (default: 9.0 for KST).
+/// - [preset]: Pillar calculation preset (default: [standardPreset]).
+/// - [currentYear]: Year to use for yearly luck calculation (default: current year).
+/// - [yearlyLuckRange]: Custom range for yearly luck calculation.
 SajuResult getSaju(
   tz.TZDateTime dtLocal, {
   required Gender gender,

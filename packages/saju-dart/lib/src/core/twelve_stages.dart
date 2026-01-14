@@ -18,7 +18,10 @@ const _yinStemBirthBranch = {
   Stem.gui: Branch.mao,
 };
 
-/// Get twelve stage for a stem-branch combination
+/// Gets the twelve life stage (십이운성) for a stem-branch combination.
+///
+/// The twelve stages represent the life cycle progression from birth through
+/// death and rebirth, based on the day master's relationship with branches.
 TwelveStage getTwelveStage(Stem stem, Branch branch) {
   final isYang = stem.polarity == Polarity.yang;
   final birthBranch = isYang
@@ -42,7 +45,7 @@ TwelveStage getTwelveStage(Stem stem, Branch branch) {
   return TwelveStage.values[stageIndex];
 }
 
-/// Twelve stages analysis result
+/// Result of twelve life stages (십이운성) analysis for all four pillars.
 class TwelveStagesResult {
   const TwelveStagesResult({
     required this.year,
@@ -57,7 +60,7 @@ class TwelveStagesResult {
   final TwelveStage hour;
 }
 
-/// Analyze twelve stages for all four pillars
+/// Analyzes twelve life stages (십이운성) for all four pillars based on the day master.
 TwelveStagesResult analyzeTwelveStages(FourPillars pillars) {
   final dayMaster = pillars.dayMaster;
 

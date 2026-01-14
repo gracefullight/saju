@@ -1,6 +1,9 @@
 import 'enums.dart';
 
-/// Hidden stem with its weight
+/// A hidden stem (지장간, 支藏干) contained within an Earthly Branch.
+///
+/// Each branch contains one to three hidden stems with different weights,
+/// representing the internal energy composition of the branch.
 class HiddenStem {
   const HiddenStem({
     required this.stem,
@@ -8,12 +11,21 @@ class HiddenStem {
     required this.type,
   });
 
+  /// The Heavenly Stem hidden within the branch.
   final Stem stem;
+
+  /// The relative weight/strength of this hidden stem (0.0-1.0).
   final double weight;
+
+  /// The type of hidden stem (primary, secondary, or tertiary).
   final HiddenStemType type;
 }
 
-/// Hidden stem type (본기/중기/여기)
+/// The classification of hidden stems within an Earthly Branch.
+///
+/// - [primary] (본기, 本氣): The main/dominant hidden stem.
+/// - [secondary] (중기, 中氣): The middle hidden stem.
+/// - [tertiary] (여기, 餘氣): The residual hidden stem.
 enum HiddenStemType {
   primary('primary', '본기', '本氣'),
   secondary('secondary', '중기', '中氣'),
@@ -26,10 +38,14 @@ enum HiddenStemType {
   final String hanja;
 }
 
-/// Hidden stems data for each branch
+/// Provides access to hidden stems (지장간) data for each Earthly Branch.
+///
+/// This class contains the complete mapping of all twelve branches to their
+/// respective hidden stems, following traditional Four Pillars conventions.
 class HiddenStems {
   HiddenStems._();
 
+  /// The complete hidden stems data for all twelve Earthly Branches.
   static const Map<Branch, List<HiddenStem>> data = {
     Branch.zi: [
       HiddenStem(stem: Stem.gui, weight: 1.0, type: HiddenStemType.primary),

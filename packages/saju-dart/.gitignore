@@ -1,0 +1,16 @@
+# Dart/Flutter
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# Generated documentation
+doc/api/
+
+# Coverage
+coverage/
+
+# IDE
+.idea/
+*.iml
+.vscode/

@@ -5,16 +5,22 @@ import '../utils/julian_day.dart';
 import '../utils/mean_solar_time.dart';
 import '../utils/solar_longitude.dart';
 
-/// Day boundary configuration
+/// Configuration for when the day boundary changes in pillar calculation.
+///
+/// Different schools of Four Pillars practice use different conventions
+/// for when a new day begins, which affects day and hour pillar calculation.
 enum DayBoundary {
-  /// Day changes at midnight (00:00)
+  /// Day changes at midnight (00:00). Standard modern convention.
   midnight,
 
-  /// Day changes at Zi hour start (23:00)
+  /// Day changes at Zi hour start (23:00). Traditional convention.
   zi23,
 }
 
-/// Configuration preset for pillar calculation
+/// Configuration preset for pillar calculation.
+///
+/// Defines the rules for calculating pillars, including day boundary
+/// convention and mean solar time adjustments.
 class PillarPreset {
   const PillarPreset({
     required this.dayBoundary,
@@ -22,8 +28,13 @@ class PillarPreset {
     required this.useMeanSolarTimeForBoundary,
   });
 
+  /// When the day changes (midnight or 23:00).
   final DayBoundary dayBoundary;
+
+  /// Whether to apply mean solar time correction for hour pillar calculation.
   final bool useMeanSolarTimeForHour;
+
+  /// Whether to apply mean solar time correction for day boundary determination.
   final bool useMeanSolarTimeForBoundary;
 }
 
@@ -173,7 +184,10 @@ int _hourBranchIndexFromHour(int h) {
   return (pillar: pillar, adjustedDt: dtUsed, effectiveDate: effDate);
 }
 
-/// Result of four pillars calculation
+/// Result of four pillars calculation with metadata.
+///
+/// Contains the calculated pillars along with intermediate values
+/// used during calculation for debugging and verification.
 class FourPillarsResult {
   const FourPillarsResult({
     required this.pillars,
@@ -183,14 +197,31 @@ class FourPillarsResult {
     required this.adjustedDtForHour,
   });
 
+  /// The calculated four pillars.
   final FourPillars pillars;
+
+  /// The solar year used (based on Lichun boundary).
   final int solarYear;
+
+  /// The sun's apparent longitude in degrees.
   final double sunLonDeg;
+
+  /// The effective date used for day pillar calculation.
   final ({int year, int month, int day}) effectiveDayDate;
+
+  /// The adjusted datetime used for hour pillar calculation.
   final tz.TZDateTime adjustedDtForHour;
 }
 
-/// Calculate all four pillars
+/// Calculates all four pillars (year, month, day, hour) from a datetime.
+///
+/// Returns a [FourPillarsResult] containing the pillars and calculation metadata.
+///
+/// Parameters:
+/// - [dtLocal]: The birth datetime in the local timezone.
+/// - [longitudeDeg]: Geographic longitude for mean solar time correction (optional).
+/// - [tzOffsetHours]: Timezone offset in hours (default: 9.0 for KST).
+/// - [preset]: Pillar calculation preset (default: [standardPreset]).
 FourPillarsResult getFourPillars(
   tz.TZDateTime dtLocal, {
   double? longitudeDeg,

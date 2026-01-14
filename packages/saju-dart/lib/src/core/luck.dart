@@ -1,6 +1,8 @@
 import '../types/types.dart';
 
-/// Luck pillar information
+/// Information about a single major luck (대운) pillar.
+///
+/// Each major luck pillar governs a 10-year period of life.
 class LuckPillar {
   const LuckPillar({
     required this.index,
@@ -31,7 +33,9 @@ class StartAgeDetail {
   final int days;
 }
 
-/// Major luck result
+/// Complete result of major luck (대운) calculation.
+///
+/// Contains the direction (forward/backward), starting age, and all luck pillars.
 class MajorLuckResult {
   const MajorLuckResult({
     required this.gender,
@@ -52,7 +56,10 @@ class MajorLuckResult {
   final List<LuckPillar> pillars;
 }
 
-/// Calculate major luck (대운)
+/// Calculates major luck (대운) pillars based on birth information.
+///
+/// Major luck direction is determined by year stem polarity and gender.
+/// Each pillar governs a 10-year period starting from the calculated start age.
 MajorLuckResult calculateMajorLuck({
   required int birthMillis,
   required Gender gender,
@@ -128,7 +135,7 @@ LuckPillar? getCurrentMajorLuck(MajorLuckResult majorLuck, int age) {
   return null;
 }
 
-/// Yearly luck result
+/// Yearly luck (세운) information for a specific year.
 class YearlyLuckResult {
   const YearlyLuckResult({
     required this.year,
@@ -144,7 +151,9 @@ class YearlyLuckResult {
   Branch get branch => pillar.branch;
 }
 
-/// Calculate yearly luck (세운)
+/// Calculates yearly luck (세운) for a range of years.
+///
+/// Returns the pillar for each year based on the sexagenary cycle.
 List<YearlyLuckResult> calculateYearlyLuck(
   int birthYear,
   int fromYear,

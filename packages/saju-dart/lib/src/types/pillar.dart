@@ -1,6 +1,10 @@
 import 'enums.dart';
 
-/// Represents a single pillar (기둥) with stem and branch
+/// Represents a single pillar (柱, 기둥) consisting of a Heavenly Stem and Earthly Branch.
+///
+/// A pillar is the fundamental unit in Four Pillars of Destiny (사주),
+/// combining one of ten stems with one of twelve branches to form
+/// part of the 60-year sexagenary cycle.
 class Pillar {
   const Pillar({
     required this.stem,
@@ -64,7 +68,11 @@ class Pillar {
   int get hashCode => Object.hash(stem, branch);
 }
 
-/// Four Pillars (사주팔자)
+/// The Four Pillars of Destiny (사주팔자, 四柱八字).
+///
+/// Represents the year, month, day, and hour pillars calculated from
+/// a person's birth date and time. Each pillar contains a stem and branch,
+/// totaling eight characters (八字).
 class FourPillars {
   const FourPillars({
     required this.year,
@@ -73,9 +81,16 @@ class FourPillars {
     required this.hour,
   });
 
+  /// The year pillar (년주, 年柱).
   final Pillar year;
+
+  /// The month pillar (월주, 月柱).
   final Pillar month;
+
+  /// The day pillar (일주, 日柱).
   final Pillar day;
+
+  /// The hour pillar (시주, 時柱).
   final Pillar hour;
 
   /// Get the day master (일간)

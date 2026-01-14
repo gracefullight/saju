@@ -133,7 +133,11 @@ class AlternativeBalance {
   final Element? secondary;
 }
 
-/// Yongshen analysis result
+/// Result of Yongshen (용신) analysis.
+///
+/// Yongshen is the favorable element that helps balance the chart.
+/// This result includes the primary and secondary favorable elements,
+/// the method used to determine them, and the reasoning.
 class YongShenResult {
   const YongShenResult({
     required this.primary,
@@ -154,7 +158,10 @@ class YongShenResult {
   final AlternativeBalance? alternativeBalance;
 }
 
-/// Analyze yongshen
+/// Analyzes and determines the Yongshen (용신) for the four pillars.
+///
+/// Uses balance (억부) method as default, with formation (격국) for special cases.
+/// Also considers seasonal climate (조후) adjustments.
 YongShenResult analyzeYongShen(FourPillars pillars) {
   final dayMaster = pillars.dayMaster;
   final dayMasterElement = dayMaster.element;

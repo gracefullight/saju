@@ -1,6 +1,9 @@
 import '../types/types.dart';
 
-/// Determine ten god relationship between day master and target stem
+/// Determines the ten god (십신) relationship between the day master and a target stem.
+///
+/// The ten gods represent different types of relationships based on
+/// element generation/control cycles and yin/yang polarity matching.
 TenGod getTenGodKey(Stem dayMaster, Stem targetStem) {
   final dmElement = dayMaster.element;
   final dmPolarity = dayMaster.polarity;
@@ -139,7 +142,10 @@ PillarTenGods _analyzePillar(Stem dayMaster, Pillar pillar) {
   );
 }
 
-/// Analyze ten gods for all four pillars
+/// Analyzes ten gods for all four pillars based on the day master.
+///
+/// Returns a [FourPillarsTenGods] containing the ten god analysis for
+/// each pillar's stem and branch (including hidden stems).
 FourPillarsTenGods analyzeTenGods(FourPillars pillars) {
   final dayMaster = pillars.dayMaster;
 

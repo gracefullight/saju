@@ -3,7 +3,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../types/types.dart';
 import '../utils/solar_longitude.dart';
 
-/// Solar term date info
+/// Date and time information for a solar term occurrence.
 class SolarTermDateInfo {
   const SolarTermDateInfo({
     required this.year,
@@ -20,7 +20,10 @@ class SolarTermDateInfo {
   final int minute;
 }
 
-/// Solar term analysis result
+/// Complete solar term (절기) analysis result.
+///
+/// Contains the current and next solar terms, as well as the previous
+/// and next Jie (節) terms which are used for major luck calculation.
 class SolarTermInfo {
   const SolarTermInfo({
     required this.current,
@@ -164,7 +167,9 @@ SolarTermDateInfo _toDateInfo(tz.TZDateTime dt) {
   );
 }
 
-/// Analyze solar terms for a given datetime
+/// Analyzes solar terms (절기) for a given datetime.
+///
+/// Returns information about the current, next, previous Jie, and next Jie solar terms.
 SolarTermInfo analyzeSolarTerms(tz.TZDateTime dtLocal) {
   final dtUtc = dtLocal.toUtc();
   final currentLongitude = sunApparentLongitude(dtUtc);
