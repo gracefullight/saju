@@ -22,6 +22,10 @@
     "packages/saju-dart": {
       "release-type": "dart",
       "component": "saju-dart"
+    },
+    "packages/ng-daum-address": {
+      "release-type": "node",
+      "component": "@gracefullight/ng-daum-address"
     }
   }
 }
