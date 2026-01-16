@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": ["vitest/globals", "node"],
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "declarationDir": null,
+    "rootDir": null
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "full"
+  },
+  "include": ["src/**/*.spec.ts", "src/test-setup.ts"]
+}

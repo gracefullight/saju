@@ -1,0 +1,68 @@
+{
+  "name": "ng-daum-address",
+  "version": "1.0.0",
+  "description": "Angular 21+ Daum Postcode address search component with signal-based API",
+  "keywords": [
+    "angular",
+    "daum",
+    "postcode",
+    "address",
+    "korean-address",
+    "kakao"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Eunkwang Shin",
+    "email": "gracefullight.dev@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gracefullight/pkgs.git",
+    "directory": "packages/ng-daum-address"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/gracefullight"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/ng-daum-address.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/ng-daum-address.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "ngc && vite build",
+    "dev": "vite build --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=21.0.0",
+    "@angular/core": ">=21.0.0"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.2.2",
+    "@analogjs/vitest-angular": "^2.2.2",
+    "@angular/common": "^21.1.0",
+    "@angular/compiler": "^21.1.0",
+    "@angular/compiler-cli": "^21.1.0",
+    "@angular/core": "^21.1.0",
+    "@angular/platform-browser": "^21.1.0",
+    "@angular/platform-browser-dynamic": "^21.1.0",
+    "@vitest/coverage-v8": "^4.0.16",
+    "jsdom": "^26.1.0",
+    "rxjs": "^7.8.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.16",
+    "zone.js": "^0.16.0"
+  }
+}

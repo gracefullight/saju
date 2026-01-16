@@ -1,0 +1,93 @@
+<div class="container">
+  <h1>{{ title() }}</h1>
+
+  <section class="demo-section">
+    <h2>1. Popup Mode (Default)</h2>
+    <p>Opens address search in a popup window.</p>
+    <ng-daum-address
+      (result)="onPopupResult($event)"
+      [options]="{ class: 'btn-primary' }"
+    ></ng-daum-address>
+    @if (popupResult()) {
+      <div class="result-box">
+        <h3>Selected Address:</h3>
+        <p><strong>Zip Code:</strong> {{ popupResult()!.zip }}</p>
+        <p><strong>Korean Address:</strong> {{ popupResult()!.addr }}</p>
+        <p><strong>English Address:</strong> {{ popupResult()!.addrEng }}</p>
+      </div>
+    }
+  </section>
+
+  <section class="demo-section">
+    <h2>2. Layer Mode</h2>
+    <p>Embeds address search in a centered layer with custom dimensions.</p>
+    <ng-daum-address
+      (result)="onLayerResult($event)"
+      [options]="{
+        type: 'layer',
+        target: 'layerTarget',
+        width: 400,
+        height: 500,
+        border: 3,
+        class: ['btn-secondary', 'btn-large']
+      }"
+    ></ng-daum-address>
+    <div id="layerTarget" class="layer-target">
+      <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" alt="Close" class="close-btn">
+    </div>
+    @if (layerResult()) {
+      <div class="result-box">
+        <h3>Selected Address:</h3>
+        <p><strong>Zip Code:</strong> {{ layerResult()!.zip }}</p>
+        <p><strong>Korean Address:</strong> {{ layerResult()!.addr }}</p>
+        <p><strong>English Address:</strong> {{ layerResult()!.addrEng }}</p>
+      </div>
+    }
+  </section>
+
+  <section class="demo-section">
+    <h2>3. Inline Mode</h2>
+    <p>Embeds address search inline with automatic resize handling.</p>
+    <ng-daum-address
+      (result)="onInlineResult($event)"
+      [options]="{
+        type: 'inline',
+        target: 'inlineTarget',
+        class: 'btn-success'
+      }"
+    ></ng-daum-address>
+    <div id="inlineTarget" class="inline-target">
+      <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" alt="Fold" class="fold-btn">
+    </div>
+    @if (inlineResult()) {
+      <div class="result-box">
+        <h3>Selected Address:</h3>
+        <p><strong>Zip Code:</strong> {{ inlineResult()!.zip }}</p>
+        <p><strong>Korean Address:</strong> {{ inlineResult()!.addr }}</p>
+        <p><strong>English Address:</strong> {{ inlineResult()!.addrEng }}</p>
+      </div>
+    }
+  </section>
+
+  <section class="demo-section">
+    <h2>4. Debug Mode</h2>
+    <p>Enables console logging for debugging. Check browser console.</p>
+    <ng-daum-address
+      (result)="onDebugResult($event)"
+      [options]="{
+        debug: true,
+        class: 'btn-debug'
+      }"
+    ></ng-daum-address>
+    @if (debugResult()) {
+      <div class="result-box">
+        <h3>Selected Address:</h3>
+        <p><strong>Zip Code:</strong> {{ debugResult()!.zip }}</p>
+        <p><strong>Korean Address:</strong> {{ debugResult()!.addr }}</p>
+        <p><strong>English Address:</strong> {{ debugResult()!.addrEng }}</p>
+      </div>
+    }
+  </section>
+</div>
+
+<router-outlet />
