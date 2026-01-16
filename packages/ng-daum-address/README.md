@@ -75,7 +75,7 @@ import type { DaumAddressResult } from '@gracefullight/ng-daum-address';
 
 export class YourComponent {
   onAddressSelected(result: DaumAddressResult): void {
-    console.log('우편번호:', result.zip);
+    console.log('우편번호:', result.zipCode);
     console.log('주소:', result.addr);
     console.log('영문주소:', result.addrEng);
   }
@@ -97,9 +97,11 @@ export class YourComponent {
 
 ## 결과 데이터 (DaumAddressResult)
 
+자세한 데이터 구조는 [Daum 우편번호 서비스 가이드](https://postcode.map.daum.net/guide#usage)를 참고하세요.
+
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `zip` | `string` | 우편번호 (5자리) |
+| `zipCode` | `string` | 우편번호 (5자리) |
 | `addr` | `string` | 전체 주소 (한글) |
 | `addrEng` | `string` | 전체 주소 (영문) |
 | `roadAddress` | `string` | 도로명 주소 |

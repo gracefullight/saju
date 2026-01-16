@@ -75,7 +75,7 @@ import type { DaumAddressResult } from '@gracefullight/ng-daum-address';
 
 export class YourComponent {
   onAddressSelected(result: DaumAddressResult): void {
-    console.log('Zip Code:', result.zip);
+    console.log('Zip Code:', result.zipCode);
     console.log('Address:', result.addr);
     console.log('Address (English):', result.addrEng);
   }
@@ -97,9 +97,11 @@ export class YourComponent {
 
 ## Result Data (DaumAddressResult)
 
+For detailed data structure, please refer to the [Daum Postcode Service Guide](https://postcode.map.daum.net/guide#usage).
+
 | Field | Type | Description |
 |------|------|------|
-| `zip` | `string` | Zip Code (5 digits) |
+| `zipCode` | `string` | Zip Code (5 digits) |
 | `addr` | `string` | Full Address (Korean) |
 | `addrEng` | `string` | Full Address (English) |
 | `roadAddress` | `string` | Road Name Address |

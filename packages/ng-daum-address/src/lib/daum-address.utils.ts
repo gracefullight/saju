@@ -36,7 +36,7 @@ export function transformPostcodeData(data: DaumPostcodeData): DaumAddressResult
   }
 
   return {
-    zip: data.zonecode,
+    zipCode: data.zonecode,
     addr: fullAddr,
     addrEng: fullAddrEng,
     addressType: data.addressType,

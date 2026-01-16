@@ -41,7 +41,7 @@ describe("transformPostcodeData", () => {
 
       const result = transformPostcodeData(mockData);
 
-      expect(result.zip).toBe("12345");
+      expect(result.zipCode).toBe("12345");
       expect(result.addr).toBe("서울특별시 강남구 테헤란로 123");
       expect(result.addrEng).toBe("123, Teheran-ro, Gangnam-gu, Seoul");
       expect(result.userSelectedType).toBe("R");
@@ -233,7 +233,7 @@ describe("transformPostcodeData", () => {
 
       const result = transformPostcodeData(mockData);
 
-      expect(result.zip).toBe("06241");
+      expect(result.zipCode).toBe("06241");
       expect(result.addressType).toBe("R");
       expect(result.roadAddress).toBe("서울특별시 강남구 테헤란로 152");
       expect(result.roadAddressEnglish).toBe("152, Teheran-ro, Gangnam-gu, Seoul, Korea");

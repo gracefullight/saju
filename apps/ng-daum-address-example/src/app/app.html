@@ -11,7 +11,7 @@
     @if (popupResult()) {
       <div class="result-box">
         <h3>Selected Address:</h3>
-        <p><strong>Zip Code:</strong> {{ popupResult()!.zip }}</p>
+        <p><strong>Zip Code:</strong> {{ popupResult()!.zipCode }}</p>
         <p><strong>Korean Address:</strong> {{ popupResult()!.addr }}</p>
         <p><strong>English Address:</strong> {{ popupResult()!.addrEng }}</p>
       </div>
@@ -38,7 +38,7 @@
     @if (layerResult()) {
       <div class="result-box">
         <h3>Selected Address:</h3>
-        <p><strong>Zip Code:</strong> {{ layerResult()!.zip }}</p>
+        <p><strong>Zip Code:</strong> {{ layerResult()!.zipCode }}</p>
         <p><strong>Korean Address:</strong> {{ layerResult()!.addr }}</p>
         <p><strong>English Address:</strong> {{ layerResult()!.addrEng }}</p>
       </div>
@@ -62,7 +62,7 @@
     @if (inlineResult()) {
       <div class="result-box">
         <h3>Selected Address:</h3>
-        <p><strong>Zip Code:</strong> {{ inlineResult()!.zip }}</p>
+        <p><strong>Zip Code:</strong> {{ inlineResult()!.zipCode }}</p>
         <p><strong>Korean Address:</strong> {{ inlineResult()!.addr }}</p>
         <p><strong>English Address:</strong> {{ inlineResult()!.addrEng }}</p>
       </div>
@@ -82,7 +82,7 @@
     @if (debugResult()) {
       <div class="result-box">
         <h3>Selected Address:</h3>
-        <p><strong>Zip Code:</strong> {{ debugResult()!.zip }}</p>
+        <p><strong>Zip Code:</strong> {{ debugResult()!.zipCode }}</p>
         <p><strong>Korean Address:</strong> {{ debugResult()!.addr }}</p>
         <p><strong>English Address:</strong> {{ debugResult()!.addrEng }}</p>
       </div>

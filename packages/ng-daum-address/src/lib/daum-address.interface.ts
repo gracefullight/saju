@@ -53,7 +53,7 @@ export interface DaumAddressResult {
   /**
    * Postal code (5 digits)
    */
-  zip: string;
+  zipCode: string;
 
   /**
    * Full Korean address
