@@ -2,5 +2,6 @@
   "packages/saju": "1.1.0",
   "packages/validate-branch": "1.1.0",
   "packages/create-fullstack-starter": "0.2.1",
-  "packages/saju-dart": "0.1.1"
+  "packages/saju-dart": "0.1.1",
+  "packages/ng-daum-address": "1.0.0"
 }
