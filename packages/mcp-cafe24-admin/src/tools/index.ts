@@ -3,6 +3,7 @@ import { registerTools as registerAppTools } from "./app.js";
 import { registerTools as registerAutomessageTools } from "./automessage.js";
 import { registerTools as registerBenefitTools } from "./benefit.js";
 import { registerTools as registerBoardTools } from "./board.js";
+import { registerTools as registerBundleProductTools } from "./bundleproduct.js";
 import { registerTools as registerCartTools } from "./cart.js";
 import { registerTools as registerCouponTools } from "./coupon.js";
 import { registerTools as registerCurrencyTools } from "./currency.js";
@@ -84,4 +85,5 @@ export function registerAllTools(server: McpServer): void {
   registerStoreTools(server);
   registerSubscriptionTools(server);
   registerTaxManagerTools(server);
+  registerBundleProductTools(server);
 }
