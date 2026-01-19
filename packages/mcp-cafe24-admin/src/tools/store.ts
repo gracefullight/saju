@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import type { AdminUser, Shop, Store, StoreAccount } from "../types.js";
 
 const UsersSearchParamsSchema = z
   .object({
@@ -65,13 +66,18 @@ const StoreAccountsParamsSchema = z
 
 async function cafe24_list_users(params: z.infer<typeof UsersSearchParamsSchema>) {
   try {
-    const data = await makeApiRequest("/admin/users", "GET", undefined, {
-      limit: params.limit,
-      offset: params.offset,
-      search_type: params.search_type,
-      keyword: params.keyword,
-      admin_type: params.admin_type,
-    });
+    const data = await makeApiRequest<{ users: AdminUser[]; total: number }>(
+      "/admin/users",
+      "GET",
+      undefined,
+      {
+        limit: params.limit,
+        offset: params.offset,
+        search_type: params.search_type,
+        keyword: params.keyword,
+        admin_type: params.admin_type,
+      },
+    );
 
     const users = data.users || [];
     const total = data.total || 0;
@@ -84,7 +90,7 @@ async function cafe24_list_users(params: z.infer<typeof UsersSearchParamsSchema>
             `Found ${total} admin users (showing ${users.length})\n\n` +
             users
               .map(
-                (u: any) =>
+                (u) =>
                   `## ${u.user_name} (${u.user_id})\n` +
                   `- **Type**: ${u.admin_type === "P" ? "Principal" : "Sub-admin"}\n` +
                   `- **Email**: ${u.email}\n` +
@@ -112,9 +118,14 @@ async function cafe24_list_users(params: z.infer<typeof UsersSearchParamsSchema>
 
 async function cafe24_get_user_detail(params: z.infer<typeof UserDetailParamsSchema>) {
   try {
-    const data = await makeApiRequest(`/admin/users/${params.user_id}`, "GET", undefined, {
-      shop_no: params.shop_no,
-    });
+    const data = await makeApiRequest<{ user: AdminUser }>(
+      `/admin/users/${params.user_id}`,
+      "GET",
+      undefined,
+      {
+        shop_no: params.shop_no,
+      },
+    );
     const user = data.user || {};
 
     return {
@@ -143,11 +154,16 @@ async function cafe24_get_user_detail(params: z.infer<typeof UserDetailParamsSch
 
 async function cafe24_list_shops(params: z.infer<typeof ShopsSearchParamsSchema>) {
   try {
-    const data = await makeApiRequest("/admin/shops", "GET", undefined, {
-      limit: params.limit,
-      offset: params.offset,
-      ...(params.shop_no ? { shop_no: params.shop_no } : {}),
-    });
+    const data = await makeApiRequest<{ shops: Shop[]; total: number }>(
+      "/admin/shops",
+      "GET",
+      undefined,
+      {
+        limit: params.limit,
+        offset: params.offset,
+        ...(params.shop_no ? { shop_no: params.shop_no } : {}),
+      },
+    );
 
     const shops = data.shops || [];
     const total = data.total || 0;
@@ -160,7 +176,7 @@ async function cafe24_list_shops(params: z.infer<typeof ShopsSearchParamsSchema>
             `Found ${total} shops (showing ${shops.length})\n\n` +
             shops
               .map(
-                (s: any) =>
+                (s) =>
                   `## ${s.shop_name} (Shop #${s.shop_no})\n- **Currency**: ${s.currency_code}\n- **Locale**: ${s.locale_code}\n`,
               )
               .join(""),
@@ -170,7 +186,7 @@ async function cafe24_list_shops(params: z.infer<typeof ShopsSearchParamsSchema>
         total,
         count: shops.length,
         offset: params.offset,
-        shops: shops.map((s: any) => ({
+        shops: shops.map((s) => ({
           id: s.shop_no.toString(),
           name: s.shop_name,
           currency: s.currency_code,
@@ -189,7 +205,7 @@ async function cafe24_list_shops(params: z.infer<typeof ShopsSearchParamsSchema>
 
 async function cafe24_get_store(params: z.infer<typeof StoreDetailParamsSchema>) {
   try {
-    const data = await makeApiRequest("/admin/store", "GET", undefined, params);
+    const data = await makeApiRequest<{ store: Store }>("/admin/store", "GET", undefined, params);
     const store = data.store || {};
 
     return {
@@ -222,7 +238,7 @@ async function cafe24_get_store(params: z.infer<typeof StoreDetailParamsSchema>)
 
 async function cafe24_update_store(params: z.infer<typeof StoreUpdateParamsSchema>) {
   try {
-    const data = await makeApiRequest("/admin/store", "PUT", params);
+    const data = await makeApiRequest<{ store: Store }>("/admin/store", "PUT", params);
     const store = data.store || {};
 
     return {
@@ -250,12 +266,17 @@ async function cafe24_update_store(params: z.infer<typeof StoreUpdateParamsSchem
 
 async function cafe24_get_store_accounts(params: z.infer<typeof StoreAccountsParamsSchema>) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
-    const data = await makeApiRequest("/admin/store/accounts", "GET", undefined, queryParams);
+    const data = await makeApiRequest<{ accounts: StoreAccount[] }>(
+      "/admin/store/accounts",
+      "GET",
+      undefined,
+      queryParams,
+    );
     const accounts = data.accounts || [];
 
     return {
@@ -266,7 +287,7 @@ async function cafe24_get_store_accounts(params: z.infer<typeof StoreAccountsPar
             `## Store Bank Accounts (Shop #${params.shop_no || 1})\n\n` +
             accounts
               .map(
-                (account: any) =>
+                (account) =>
                   `### ${account.bank_name} (${account.bank_code})\n` +
                   `- **Account Number**: ${account.bank_account_no}\n` +
                   `- **Holder**: ${account.bank_account_holder}\n` +

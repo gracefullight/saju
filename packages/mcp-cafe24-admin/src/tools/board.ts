@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import type { Board } from "../types.js";
 
 const BoardsSearchParamsSchema = z
   .object({
@@ -58,11 +59,16 @@ const BoardSettingUpdateParamsSchema = z
 
 async function cafe24_list_boards(params: z.infer<typeof BoardsSearchParamsSchema>) {
   try {
-    const data = await makeApiRequest("/admin/boards", "GET", undefined, {
-      limit: params.limit,
-      offset: params.offset,
-      ...(params.board_no ? { board_no: params.board_no } : {}),
-    });
+    const data = await makeApiRequest<{ boards: Board[]; total: number }>(
+      "/admin/boards",
+      "GET",
+      undefined,
+      {
+        limit: params.limit,
+        offset: params.offset,
+        ...(params.board_no ? { board_no: params.board_no } : {}),
+      },
+    );
 
     const boards = data.boards || [];
     const total = data.total || 0;
@@ -75,7 +81,7 @@ async function cafe24_list_boards(params: z.infer<typeof BoardsSearchParamsSchem
             `Found ${total} boards (showing ${boards.length})\n\n` +
             boards
               .map(
-                (b: any) =>
+                (b) =>
                   `## ${b.board_name} (Board #${b.board_no})\n` +
                   `- **Type**: ${b.board_type}\n` +
                   `- **Status**: ${b.display ? "Displayed" : "Hidden"} | ${b.use ? "In Use" : "Not In Use"}\n`,
@@ -87,7 +93,7 @@ async function cafe24_list_boards(params: z.infer<typeof BoardsSearchParamsSchem
         total,
         count: boards.length,
         offset: params.offset,
-        boards: boards.map((b: any) => ({
+        boards: boards.map((b) => ({
           id: b.board_no.toString(),
           name: b.board_name,
           type: b.board_type,
@@ -111,7 +117,7 @@ async function cafe24_list_boards(params: z.infer<typeof BoardsSearchParamsSchem
 
 async function cafe24_get_board(params: z.infer<typeof BoardDetailParamsSchema>) {
   try {
-    const data = await makeApiRequest(`/admin/boards/${params.board_no}`, "GET");
+    const data = await makeApiRequest<{ board: Board }>(`/admin/boards/${params.board_no}`, "GET");
     const board = data.board || {};
 
     return {
@@ -143,7 +149,7 @@ async function cafe24_get_board(params: z.infer<typeof BoardDetailParamsSchema>)
 
 async function cafe24_get_board_setting(params: z.infer<typeof BoardSettingParamsSchema>) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, string | number> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -200,7 +206,7 @@ async function cafe24_update_board_setting(params: z.infer<typeof BoardSettingUp
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };

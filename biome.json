@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/node_modules", "!**/dist", "!**/apps/ng-daum-address-example/**/*.html"]
+    "includes": ["**", "!**/node_modules", "!**/dist", "!**/apps/ng-daum-address-example/**/*.html", "!**/packages/mcp-cafe24-admin/src/assets/**/*.html"]
   },
   "formatter": {
     "enabled": true,

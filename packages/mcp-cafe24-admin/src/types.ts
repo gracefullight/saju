@@ -3,6 +3,7 @@
 export interface Cafe24ApiResponse<T> {
   code?: string;
   message?: string;
+  // biome-ignore lint/suspicious/noExplicitAny: API response structure is dynamic
   more_info?: Record<string, any>;
   resource?: T;
 }
@@ -10,6 +11,7 @@ export interface Cafe24ApiResponse<T> {
 export interface Cafe24Error {
   code: string;
   message: string;
+  // biome-ignore lint/suspicious/noExplicitAny: API response structure is dynamic
   more_info?: Record<string, any>;
 }
 
@@ -34,6 +36,43 @@ export interface Store {
   shop_no: number;
   currency_code: string;
   currency_symbol: string;
+  company_name?: string;
+  company_registration_no?: string;
+  president_name?: string;
+  base_domain?: string;
+  primary_domain?: string;
+  email?: string;
+  phone?: string;
+  customer_service_phone?: string;
+  address1?: string;
+  address2?: string;
+  sales_product_categories?: string[] | string;
+}
+
+export interface AdminUser {
+  user_id: string;
+  user_name: string;
+  email: string;
+  phone: string;
+  admin_type: string;
+  last_login_date?: string;
+  ip_restriction_type?: string;
+  nick_name?: string;
+  available?: string;
+  memo?: string;
+  multishop_access_authority?: string;
+  ip_access_restriction?: {
+    usage: string;
+  };
+  shop_no?: number;
+}
+
+export interface StoreAccount {
+  bank_name: string;
+  bank_code: string;
+  bank_account_no: string;
+  bank_account_holder: string;
+  use_account: string;
 }
 
 export interface Shop {
