@@ -38,6 +38,7 @@ import { registerTools as registerProductPropertiesTools } from "./product-prope
 import { registerTools as registerProductSettingTools } from "./product-setting.js";
 import { registerTools as registerProductSeoTools } from "./product-seo.js";
 import { registerTools as registerProductTagsTools } from "./product-tags.js";
+import { registerTools as registerProductVariantsTools } from "./product-variants.js";
 import { registerTools as registerPromotionTools } from "./promotion.js";
 import { registerTools as registerRedirectTools } from "./redirect.js";
 import { registerTools as registerRestockTools } from "./restock.js";
@@ -96,6 +97,7 @@ export function registerAllTools(server: McpServer): void {
   registerProductOptionsTools(server);
   registerProductSeoTools(server);
   registerProductTagsTools(server);
+  registerProductVariantsTools(server);
   registerPromotionTools(server);
   registerRedirectTools(server);
   registerRestockTools(server);
