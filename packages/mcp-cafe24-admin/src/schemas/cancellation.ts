@@ -93,3 +93,51 @@ export const CancellationUpdateParamsSchema = z
     requests: z.array(CancellationUpdateRequestSchema).describe("List of update requests"),
   })
   .strict();
+
+export const CancellationRequestItemSchema = z.object({
+  order_item_code: z.string().describe("Order item code"),
+  quantity: z.number().int().describe("Quantity to cancel"),
+});
+
+export const CancellationRequestCreateSchema = z.object({
+  order_id: z.string().describe("Order ID"),
+  reason_type: z
+    .enum(["A", "B", "G", "I"])
+    .describe("Type of reason for cancellation (A, B, G, I)"),
+  reason: z.string().max(2000).describe("Reason for cancellation"),
+  refund_bank_code: z.string().optional().describe("Bank code for refund"),
+  refund_bank_name: z.string().max(250).optional().describe("Bank name for refund"),
+  refund_bank_account_no: z.string().optional().describe("Bank account number for refund"),
+  refund_bank_account_holder: z.string().max(15).optional().describe("Account holder name"),
+  items: z.array(CancellationRequestItemSchema).describe("List of items to cancel"),
+});
+
+export const CancellationRequestCreateParamsSchema = z
+  .object({
+    shop_no: z.number().int().min(1).default(1).describe("Shop Number (default: 1)"),
+    requests: z.array(CancellationRequestCreateSchema).describe("List of cancellation requests"),
+  })
+  .strict();
+
+export const CancellationRequestRejectSchema = z.object({
+  order_id: z.string().describe("Order ID"),
+  undone: z.enum(["T"]).describe("Rejected to accept (T)"),
+  reason_type: z
+    .enum(["A", "B", "J", "C", "L", "D", "E", "F", "K", "G", "H", "I"])
+    .optional()
+    .describe("Type of reason"),
+  reason: z.string().max(2000).optional().describe("Reason"),
+  display_reject_reason: z
+    .enum(["T", "F"])
+    .default("F")
+    .describe("Display reason in storefront (T/F)"),
+  reject_reason: z.string().max(2000).optional().describe("Reason for rejection"),
+  order_item_code: z.array(z.string()).describe("List of order item codes"),
+});
+
+export const CancellationRequestRejectParamsSchema = z
+  .object({
+    shop_no: z.number().int().min(1).default(1).describe("Shop Number (default: 1)"),
+    requests: z.array(CancellationRequestRejectSchema).describe("List of rejection requests"),
+  })
+  .strict();
