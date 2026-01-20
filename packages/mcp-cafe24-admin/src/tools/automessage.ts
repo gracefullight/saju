@@ -1,52 +1,16 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type AutomessageArgumentsParams,
+  AutomessageArgumentsParamsSchema,
+  type AutomessageSettingParams,
+  AutomessageSettingParamsSchema,
+  type AutomessageSettingUpdateParams,
+  AutomessageSettingUpdateParamsSchema,
+} from "@/schemas/automessage.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { AutomessageArgument, AutomessageSetting } from "../types.js";
 
-/**
- * Schema for getting automessage arguments
- */
-const AutomessageArgumentsParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-/**
- * Schema for getting automessage settings
- */
-const AutomessageSettingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-/**
- * Schema for updating automessage settings
- */
-const AutomessageSettingUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    send_method: z
-      .enum(["S", "K"])
-      .describe("Auto message send method: S=SMS, K=KakaoAlimtalk (fallback to SMS on failure)"),
-    send_method_push: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Send push first to push recipients: T=Yes, F=No"),
-  })
-  .strict();
-
-/**
- * Retrieve automessage arguments/placeholders
- *
- * GET /api/v2/admin/automessages/arguments
- *
- * Returns available placeholders for automessages like [NAME], [PRODUCT], etc.
- */
-async function cafe24_get_automessage_arguments(
-  params: z.infer<typeof AutomessageArgumentsParamsSchema>,
-) {
+async function cafe24_get_automessage_arguments(params: AutomessageArgumentsParams) {
   try {
     const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
@@ -94,22 +58,11 @@ async function cafe24_get_automessage_arguments(
       },
     };
   } catch (error) {
-    return {
-      content: [{ type: "text" as const, text: handleApiError(error) }],
-    };
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
 }
 
-/**
- * Retrieve automessage settings
- *
- * GET /api/v2/admin/automessages/setting
- *
- * Returns current automessage configuration including SMS, KakaoAlimtalk, and Push settings
- */
-async function cafe24_get_automessage_setting(
-  params: z.infer<typeof AutomessageSettingParamsSchema>,
-) {
+async function cafe24_get_automessage_setting(params: AutomessageSettingParams) {
   try {
     const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
@@ -154,22 +107,11 @@ async function cafe24_get_automessage_setting(
       },
     };
   } catch (error) {
-    return {
-      content: [{ type: "text" as const, text: handleApiError(error) }],
-    };
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
 }
 
-/**
- * Update automessage settings
- *
- * PUT /api/v2/admin/automessages/setting
- *
- * Updates the automessage send method and push priority settings
- */
-async function cafe24_update_automessage_setting(
-  params: z.infer<typeof AutomessageSettingUpdateParamsSchema>,
-) {
+async function cafe24_update_automessage_setting(params: AutomessageSettingUpdateParams) {
   try {
     const requestBody: Record<string, unknown> = {
       shop_no: params.shop_no ?? 1,
@@ -179,7 +121,7 @@ async function cafe24_update_automessage_setting(
     };
 
     if (params.send_method_push !== undefined) {
-      requestBody.request.send_method_push = params.send_method_push;
+      (requestBody.request as any).send_method_push = params.send_method_push;
     }
 
     const data = await makeApiRequest<{ automessages: AutomessageSetting } | AutomessageSetting>(
@@ -187,7 +129,6 @@ async function cafe24_update_automessage_setting(
       "PUT",
       requestBody,
     );
-
     const settings = (data as any).automessages || data;
 
     const sendMethodText = settings.send_method === "S" ? "SMS" : "KakaoAlimtalk (SMS fallback)";
@@ -211,22 +152,17 @@ async function cafe24_update_automessage_setting(
       },
     };
   } catch (error) {
-    return {
-      content: [{ type: "text" as const, text: handleApiError(error) }],
-    };
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
 }
 
-/**
- * Register all automessage-related tools with the MCP server
- */
 export function registerTools(server: McpServer): void {
   server.registerTool(
     "cafe24_get_automessage_arguments",
     {
       title: "Get Cafe24 Automessage Arguments",
       description:
-        "Retrieve available placeholders/arguments for automessages like [NAME], [PRODUCT], etc. Returns the name, description, sample value, max length, and applicable send cases for each placeholder.",
+        "Retrieve available placeholders/arguments for automessages like [NAME], [PRODUCT], etc. Returns name, description, sample value, max length, and applicable send cases for each placeholder.",
       inputSchema: AutomessageArgumentsParamsSchema,
       annotations: {
         readOnlyHint: true,
@@ -243,7 +179,7 @@ export function registerTools(server: McpServer): void {
     {
       title: "Get Cafe24 Automessage Settings",
       description:
-        "Retrieve current automessage configuration including SMS, KakaoAlimtalk, and Push notification settings. Shows whether each channel is enabled and the current send method.",
+        "Retrieve current automessage configuration including SMS, KakaoAlimtalk, and Push notification settings. Shows whether each channel is enabled and current send method.",
       inputSchema: AutomessageSettingParamsSchema,
       annotations: {
         readOnlyHint: true,
@@ -266,7 +202,7 @@ export function registerTools(server: McpServer): void {
         readOnlyHint: false,
         destructiveHint: false,
         idempotentHint: true,
-        openWorldHint: true,
+        openWorldHint: false,
       },
     },
     cafe24_update_automessage_setting,

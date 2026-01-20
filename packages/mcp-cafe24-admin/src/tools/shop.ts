@@ -1,15 +1,11 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type ShopDetailParams,
+  ShopDetailParamsSchema,
+  ShopListParamsSchema,
+} from "@/schemas/shop.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { Shop } from "../types.js";
-
-const ShopListParamsSchema = z.object({}).strict();
-
-const ShopDetailParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).describe("Multi-shop number"),
-  })
-  .strict();
 
 async function cafe24_list_shops() {
   try {
@@ -45,7 +41,7 @@ async function cafe24_list_shops() {
   }
 }
 
-async function cafe24_get_shop(params: z.infer<typeof ShopDetailParamsSchema>) {
+async function cafe24_get_shop(params: ShopDetailParams) {
   try {
     const data = await makeApiRequest<{ shop: Shop }>(`/admin/shops/${params.shop_no}`, "GET");
     const shop = data.shop || {};

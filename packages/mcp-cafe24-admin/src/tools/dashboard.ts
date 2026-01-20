@@ -1,14 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import { type DashboardParams, DashboardParamsSchema } from "@/schemas/dashboard.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const DashboardParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-async function cafe24_get_dashboard(params: z.infer<typeof DashboardParamsSchema>) {
+async function cafe24_get_dashboard(params: DashboardParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {

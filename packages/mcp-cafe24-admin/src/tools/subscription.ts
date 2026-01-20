@@ -1,105 +1,17 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type SubscriptionShipmentCreate,
+  SubscriptionShipmentCreateSchema,
+  type SubscriptionShipmentDelete,
+  SubscriptionShipmentDeleteSchema,
+  type SubscriptionShipmentParams,
+  SubscriptionShipmentParamsSchema,
+  type SubscriptionShipmentUpdate,
+  SubscriptionShipmentUpdateSchema,
+} from "@/schemas/subscription.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const SubscriptionDiscountValueSchema = z.object({
-  delivery_cycle: z.number().int().describe("Delivery cycle count"),
-  discount_amount: z.number().describe("Discount amount or percentage"),
-});
-
-const SubscriptionShipmentParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    subscription_no: z.number().int().optional().describe("Subscription setting number"),
-  })
-  .strict();
-
-const SubscriptionShipmentCreateSchema = z
-  .object({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    subscription_shipments_name: z.string().max(255).describe("Subscription shipment setting name"),
-    product_binding_type: z
-      .enum(["A", "P", "C"])
-      .describe("Product binding: A=All, P=Product, C=Category"),
-    one_time_purchase: z
-      .enum(["T", "F"])
-      .default("T")
-      .optional()
-      .describe("Allow one-time purchase: T=Yes, F=No"),
-    product_list: z.array(z.number().int()).optional().describe("List of product IDs"),
-    category_list: z.array(z.number().int()).optional().describe("List of category IDs"),
-    use_discount: z.enum(["T", "F"]).describe("Use discount: T=Yes, F=No"),
-    discount_value_unit: z
-      .enum(["P", "W"])
-      .optional()
-      .describe("Discount unit: P=Percent, W=Amount"),
-    discount_values: z
-      .array(SubscriptionDiscountValueSchema)
-      .optional()
-      .describe("Discount values per cycle"),
-    related_purchase_quantity: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Related to purchase quantity: T=Yes, F=No"),
-    subscription_shipments_cycle_type: z
-      .enum(["T", "F"])
-      .describe("Use delivery cycle: T=Yes, F=No"),
-    subscription_shipments_cycle: z.array(z.string()).describe("Delivery cycles (e.g., 1W, 1M)"),
-    subscription_shipments_count_type: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Use shipment count limit: T=Yes, F=No"),
-    subscription_shipments_count: z
-      .array(z.number().int())
-      .optional()
-      .describe("Shipment count options (e.g., 2, 3, 4)"),
-    use_order_price_condition: z
-      .enum(["T", "F"])
-      .describe("Use order price condition: T=Yes, F=No"),
-    order_price_greater_than: z
-      .union([z.string(), z.number()])
-      .optional()
-      .describe("Minimum order price for benefit"),
-    include_regional_shipping_rate: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Include regional shipping rate: T=Yes, F=No"),
-    shipments_start_date: z
-      .number()
-      .int()
-      .min(1)
-      .max(30)
-      .default(3)
-      .optional()
-      .describe("Days until shipment start (1-30)"),
-    change_option: z
-      .enum(["T", "F"])
-      .default("F")
-      .optional()
-      .describe("Allow option change: T=Yes, F=No"),
-  })
-  .strict();
-
-const SubscriptionShipmentUpdateSchema = SubscriptionShipmentCreateSchema.omit({
-  shop_no: true,
-})
-  .partial()
-  .extend({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    subscription_no: z.number().int().describe("Subscription setting number to update"),
-  })
-  .strict();
-
-const SubscriptionShipmentDeleteSchema = z
-  .object({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    subscription_no: z.number().int().describe("Subscription setting number to delete"),
-  })
-  .strict();
-
-async function cafe24_list_subscription_shipment_settings(
-  params: z.infer<typeof SubscriptionShipmentParamsSchema>,
-) {
+async function cafe24_list_subscription_shipment_settings(params: SubscriptionShipmentParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) queryParams.shop_no = params.shop_no;
@@ -141,9 +53,7 @@ async function cafe24_list_subscription_shipment_settings(
   }
 }
 
-async function cafe24_create_subscription_shipment_setting(
-  params: z.infer<typeof SubscriptionShipmentCreateSchema>,
-) {
+async function cafe24_create_subscription_shipment_setting(params: SubscriptionShipmentCreate) {
   try {
     const { shop_no, ...requestData } = params;
     const requestBody = {
@@ -168,9 +78,7 @@ async function cafe24_create_subscription_shipment_setting(
   }
 }
 
-async function cafe24_update_subscription_shipment_setting(
-  params: z.infer<typeof SubscriptionShipmentUpdateSchema>,
-) {
+async function cafe24_update_subscription_shipment_setting(params: SubscriptionShipmentUpdate) {
   try {
     const { shop_no, subscription_no, ...requestData } = params;
     const requestBody = {
@@ -199,9 +107,7 @@ async function cafe24_update_subscription_shipment_setting(
   }
 }
 
-async function cafe24_delete_subscription_shipment_setting(
-  params: z.infer<typeof SubscriptionShipmentDeleteSchema>,
-) {
+async function cafe24_delete_subscription_shipment_setting(params: SubscriptionShipmentDelete) {
   try {
     await makeApiRequest(
       `/admin/subscription/shipments/setting/${params.subscription_no}`,

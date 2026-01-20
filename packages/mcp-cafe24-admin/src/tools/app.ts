@@ -1,11 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import { AppDetailParamsSchema } from "@/schemas/app.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
-
-/**
- * Schema for getting app information (no parameters needed)
- */
-const AppDetailParamsSchema = z.object({}).strict();
 
 /**
  * Retrieve app information from Cafe24

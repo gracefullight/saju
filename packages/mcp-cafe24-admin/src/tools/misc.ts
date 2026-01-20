@@ -1,22 +1,18 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type MileageSearchParams,
+  MileageSearchParamsSchema,
+  type SalesSearchParams,
+  SalesSearchParamsSchema,
+  type SuppliersSearchParams,
+  SuppliersSearchParamsSchema,
+  type ThemesSearchParams,
+  ThemesSearchParamsSchema,
+} from "@/schemas/misc.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { DailySales, Point, Supplier, Theme } from "../types.js";
 
-const ThemesSearchParamsSchema = z
-  .object({
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(100)
-      .default(20)
-      .describe("Maximum results to return (1-100)"),
-    offset: z.number().int().min(0).default(0).describe("Number of results to skip"),
-  })
-  .strict();
-
-async function cafe24_list_themes(params: z.infer<typeof ThemesSearchParamsSchema>) {
+async function cafe24_list_themes(params: ThemesSearchParams) {
   try {
     const data = await makeApiRequest<{ themes: Theme[]; total: number }>(
       "/admin/themes",
@@ -59,20 +55,7 @@ async function cafe24_list_themes(params: z.infer<typeof ThemesSearchParamsSchem
   }
 }
 
-const SuppliersSearchParamsSchema = z
-  .object({
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(100)
-      .default(20)
-      .describe("Maximum results to return (1-100)"),
-    offset: z.number().int().min(0).default(0).describe("Number of results to skip"),
-  })
-  .strict();
-
-async function cafe24_list_suppliers(params: z.infer<typeof SuppliersSearchParamsSchema>) {
+async function cafe24_list_suppliers(params: SuppliersSearchParams) {
   try {
     const data = await makeApiRequest<{ suppliers: Supplier[]; total: number }>(
       "/admin/suppliers",
@@ -115,22 +98,7 @@ async function cafe24_list_suppliers(params: z.infer<typeof SuppliersSearchParam
   }
 }
 
-const SalesSearchParamsSchema = z
-  .object({
-    start_date: z.string().describe("Start date (YYYY-MM-DD)"),
-    end_date: z.string().describe("End date (YYYY-MM-DD)"),
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(100)
-      .default(20)
-      .describe("Maximum results to return (1-100)"),
-    offset: z.number().int().min(0).default(0).describe("Number of results to skip"),
-  })
-  .strict();
-
-async function cafe24_get_daily_sales(params: z.infer<typeof SalesSearchParamsSchema>) {
+async function cafe24_get_daily_sales(params: SalesSearchParams) {
   try {
     const data = await makeApiRequest<{ daily_sales: DailySales[]; total: number }>(
       "/admin/financials/dailysales",
@@ -178,22 +146,7 @@ async function cafe24_get_daily_sales(params: z.infer<typeof SalesSearchParamsSc
   }
 }
 
-const MileageSearchParamsSchema = z
-  .object({
-    start_date: z.string().optional().describe("Start date (YYYY-MM-DD)"),
-    end_date: z.string().optional().describe("End date (YYYY-MM-DD)"),
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(100)
-      .default(20)
-      .describe("Maximum results to return (1-100)"),
-    offset: z.number().int().min(0).default(0).describe("Number of results to skip"),
-  })
-  .strict();
-
-async function cafe24_get_points(params: z.infer<typeof MileageSearchParamsSchema>) {
+async function cafe24_get_points(params: MileageSearchParams) {
   try {
     const data = await makeApiRequest<{ points: Point[]; total: number }>(
       "/admin/points",

@@ -1,42 +1,13 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type SocialAppleParams,
+  SocialAppleParamsSchema,
+  type SocialAppleUpdateParams,
+  SocialAppleUpdateParamsSchema,
+} from "@/schemas/socialapple.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-// Common parameters
-const SocialAppleParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const SocialAppleUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    use_apple_login: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Use Apple Login: T=Enabled, F=Disabled"),
-    client_id: z.string().max(300).optional().describe("Client ID (Apple Service ID Identifier)"),
-    team_id: z.string().max(300).optional().describe("Team ID (Apple App ID Prefix)"),
-    key_id: z.string().max(300).optional().describe("Key ID (Apple Key ID)"),
-    auth_key_file_name: z
-      .string()
-      .max(30)
-      .optional()
-      .describe("Auth Key file name (e.g., .p8 file)"),
-    auth_key_file_contents: z
-      .string()
-      .max(300)
-      .optional()
-      .describe("Auth Key file contents (content of .p8 file without newlines)"),
-    use_certification: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Use Apple Login Certification: T=Enabled, F=Disabled"),
-  })
-  .strict();
-
-async function cafe24_get_social_apple_setting(params: z.infer<typeof SocialAppleParamsSchema>) {
+async function cafe24_get_social_apple_setting(params: SocialAppleParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {
@@ -75,9 +46,7 @@ async function cafe24_get_social_apple_setting(params: z.infer<typeof SocialAppl
   }
 }
 
-async function cafe24_update_social_apple_setting(
-  params: z.infer<typeof SocialAppleUpdateParamsSchema>,
-) {
+async function cafe24_update_social_apple_setting(params: SocialAppleUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 

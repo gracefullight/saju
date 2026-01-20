@@ -1,16 +1,11 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type ShippingManagerParams,
+  ShippingManagerParamsSchema,
+} from "@/schemas/shippingmanager.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const ShippingManagerParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-async function cafe24_get_shippingmanager_status(
-  params: z.infer<typeof ShippingManagerParamsSchema>,
-) {
+async function cafe24_get_shippingmanager_status(params: ShippingManagerParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {

@@ -1,14 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import { type SmsParams, SmsParamsSchema } from "@/schemas/sms.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const SmsParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-async function cafe24_get_sms_setting(params: z.infer<typeof SmsParamsSchema>) {
+async function cafe24_get_sms_setting(params: SmsParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {

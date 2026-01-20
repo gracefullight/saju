@@ -1,63 +1,20 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type BoardDetailParams,
+  BoardDetailParamsSchema,
+  type BoardSettingParams,
+  BoardSettingParamsSchema,
+  type BoardSettingUpdateParams,
+  BoardSettingUpdateParamsSchema,
+  type BoardsSearchParams,
+  BoardsSearchParamsSchema,
+  type SpamAutoPrevention,
+  SpamAutoPreventionSchema,
+} from "@/schemas/board.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { Board } from "../types.js";
 
-const BoardsSearchParamsSchema = z
-  .object({
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(100)
-      .default(20)
-      .describe("Maximum results to return (1-100)"),
-    offset: z.number().int().min(0).default(0).describe("Number of results to skip"),
-    board_no: z.number().optional().describe("Filter by board number"),
-  })
-  .strict();
-
-const BoardDetailParamsSchema = z
-  .object({
-    board_no: z.number().describe("Board number"),
-  })
-  .strict();
-
-const BoardSettingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const SpamAutoPreventionSchema = z
-  .object({
-    type: z.enum(["S", "R"]).describe("Spam prevention type: S=Security code, R=Google reCAPTCHA"),
-    site_key: z.string().optional().describe("Google reCAPTCHA site key (required for type R)"),
-    secret_key: z.string().optional().describe("Google reCAPTCHA secret key (required for type R)"),
-  })
-  .strict();
-
-const BoardSettingUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    admin_name: z
-      .enum(["name", "nickname", "shopname", "storename"])
-      .optional()
-      .describe("Board admin name: name, nickname, shopname, storename"),
-    password_rules: z.enum(["T", "F"]).optional().describe("Password rules: T=Enable, F=Disable"),
-    linked_board: z
-      .union([z.literal("F"), z.number()])
-      .optional()
-      .describe("Linked board: F=Disabled, or board number"),
-    review_button_mode: z
-      .enum(["all", "shipbegin_date", "shipend_date"])
-      .optional()
-      .describe("Review button display: all, shipbegin_date, shipend_date"),
-    spam_auto_prevention: SpamAutoPreventionSchema.optional().describe("Spam prevention settings"),
-  })
-  .strict();
-
-async function cafe24_list_boards(params: z.infer<typeof BoardsSearchParamsSchema>) {
+async function cafe24_list_boards(params: BoardsSearchParams) {
   try {
     const data = await makeApiRequest<{ boards: Board[]; total: number }>(
       "/admin/boards",
@@ -115,7 +72,7 @@ async function cafe24_list_boards(params: z.infer<typeof BoardsSearchParamsSchem
   }
 }
 
-async function cafe24_get_board(params: z.infer<typeof BoardDetailParamsSchema>) {
+async function cafe24_get_board(params: BoardDetailParams) {
   try {
     const data = await makeApiRequest<{ board: Board }>(`/admin/boards/${params.board_no}`, "GET");
     const board = data.board || {};
@@ -147,7 +104,7 @@ async function cafe24_get_board(params: z.infer<typeof BoardDetailParamsSchema>)
   }
 }
 
-async function cafe24_get_board_setting(params: z.infer<typeof BoardSettingParamsSchema>) {
+async function cafe24_get_board_setting(params: BoardSettingParams) {
   try {
     const queryParams: Record<string, string | number> = {};
     if (params.shop_no) {
@@ -202,7 +159,7 @@ async function cafe24_get_board_setting(params: z.infer<typeof BoardSettingParam
   }
 }
 
-async function cafe24_update_board_setting(params: z.infer<typeof BoardSettingUpdateParamsSchema>) {
+async function cafe24_update_board_setting(params: BoardSettingUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 

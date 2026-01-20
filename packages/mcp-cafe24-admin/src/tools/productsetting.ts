@@ -1,35 +1,13 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type ProductSettingParams,
+  ProductSettingParamsSchema,
+  type ProductSettingUpdateParams,
+  ProductSettingUpdateParamsSchema,
+} from "@/schemas/productsetting.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const ProductSettingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const ProductSettingUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    use_adult_certification: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Use adult certification: T=Yes, F=No"),
-    use_review_board: z.enum(["T", "F"]).optional().describe("Use review board: T=Yes, F=No"),
-    use_qna_board: z.enum(["T", "F"]).optional().describe("Use Q&A board: T=Yes, F=No"),
-    review_board_no: z.number().int().optional().describe("Review board number"),
-    qna_board_no: z.number().int().optional().describe("Q&A board number"),
-    product_stock_display: z
-      .enum(["A", "S", "H"])
-      .optional()
-      .describe("Product stock display: A=All, S=Sold out only, H=Hidden"),
-    use_basket_discount: z.enum(["T", "F"]).optional().describe("Use basket discount: T=Yes, F=No"),
-  })
-  .strict();
-
-async function cafe24_get_product_common_setting(
-  params: z.infer<typeof ProductSettingParamsSchema>,
-) {
+async function cafe24_get_product_common_setting(params: ProductSettingParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {
@@ -65,9 +43,7 @@ async function cafe24_get_product_common_setting(
   }
 }
 
-async function cafe24_update_product_common_setting(
-  params: z.infer<typeof ProductSettingUpdateParamsSchema>,
-) {
+async function cafe24_update_product_common_setting(params: ProductSettingUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 

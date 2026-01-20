@@ -1,36 +1,13 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type ImageSettingParams,
+  ImageSettingParamsSchema,
+  type ImageSettingUpdateParams,
+  ImageSettingUpdateParamsSchema,
+} from "@/schemas/image.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const ImageSettingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const ProductImageSizeSchema = z
-  .object({
-    detail_image_width: z.number().int().min(1).optional().describe("Detail image width"),
-    detail_image_height: z.number().int().min(1).optional().describe("Detail image height"),
-    list_image_width: z.number().int().min(1).optional().describe("List image width"),
-    list_image_height: z.number().int().min(1).optional().describe("List image height"),
-    tiny_image_width: z.number().int().min(1).optional().describe("Tiny/small list image width"),
-    tiny_image_height: z.number().int().min(1).optional().describe("Tiny/small list image height"),
-    zoom_image_width: z.number().int().min(1).optional().describe("Zoom image width"),
-    zoom_image_height: z.number().int().min(1).optional().describe("Zoom image height"),
-    small_image_width: z.number().int().min(1).optional().describe("Small/thumbnail image width"),
-    small_image_height: z.number().int().min(1).optional().describe("Small/thumbnail image height"),
-  })
-  .strict();
-
-const ImageSettingUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    product_image_size: ProductImageSizeSchema.describe("Product image size settings"),
-  })
-  .strict();
-
-async function cafe24_get_image_setting(params: z.infer<typeof ImageSettingParamsSchema>) {
+async function cafe24_get_image_setting(params: ImageSettingParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {
@@ -67,7 +44,7 @@ async function cafe24_get_image_setting(params: z.infer<typeof ImageSettingParam
   }
 }
 
-async function cafe24_update_image_setting(params: z.infer<typeof ImageSettingUpdateParamsSchema>) {
+async function cafe24_update_image_setting(params: ImageSettingUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 

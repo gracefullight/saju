@@ -1,42 +1,18 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type RedirectCreateParams,
+  RedirectCreateParamsSchema,
+  type RedirectDeleteParams,
+  RedirectDeleteParamsSchema,
+  type RedirectsSearchParams,
+  RedirectsSearchParamsSchema,
+  type RedirectUpdateParams,
+  RedirectUpdateParamsSchema,
+} from "@/schemas/redirect.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { Redirect } from "../types.js";
 
-const RedirectsSearchParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    id: z.number().int().optional().describe("Redirect ID"),
-    path: z.string().optional().describe("Redirect path"),
-    target: z.string().optional().describe("Target location"),
-  })
-  .strict();
-
-const RedirectCreateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    path: z.string().describe("Redirect path (e.g., /cafe24)"),
-    target: z.string().describe("Target URL (e.g., https://www.cafe24.com)"),
-  })
-  .strict();
-
-const RedirectUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    id: z.number().int().min(1).describe("Redirect ID"),
-    path: z.string().optional().describe("New redirect path"),
-    target: z.string().optional().describe("New target URL"),
-  })
-  .strict();
-
-const RedirectDeleteParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    id: z.number().int().min(1).describe("Redirect ID"),
-  })
-  .strict();
-
-async function cafe24_list_redirects(params: z.infer<typeof RedirectsSearchParamsSchema>) {
+async function cafe24_list_redirects(params: RedirectsSearchParams) {
   try {
     const queryParams: Record<string, unknown> = {};
     if (params.shop_no) queryParams.shop_no = params.shop_no;
@@ -84,7 +60,7 @@ async function cafe24_list_redirects(params: z.infer<typeof RedirectsSearchParam
   }
 }
 
-async function cafe24_create_redirect(params: z.infer<typeof RedirectCreateParamsSchema>) {
+async function cafe24_create_redirect(params: RedirectCreateParams) {
   try {
     const { shop_no, path, target } = params;
     const requestBody = {
@@ -121,7 +97,7 @@ async function cafe24_create_redirect(params: z.infer<typeof RedirectCreateParam
   }
 }
 
-async function cafe24_update_redirect(params: z.infer<typeof RedirectUpdateParamsSchema>) {
+async function cafe24_update_redirect(params: RedirectUpdateParams) {
   try {
     const { shop_no, id, path, target } = params;
     const requestBody = {
@@ -158,7 +134,7 @@ async function cafe24_update_redirect(params: z.infer<typeof RedirectUpdateParam
   }
 }
 
-async function cafe24_delete_redirect(params: z.infer<typeof RedirectDeleteParamsSchema>) {
+async function cafe24_delete_redirect(params: RedirectDeleteParams) {
   try {
     await makeApiRequest(`/admin/redirects/${params.id}`, "DELETE", undefined, {
       shop_no: params.shop_no,

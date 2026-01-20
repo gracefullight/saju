@@ -1,5 +1,14 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type CategoryProperty,
+  CategoryPropertySchema,
+  type CreateCategoryProperty,
+  CreateCategoryPropertySchema,
+  type ListCategoryProperties,
+  ListCategoryPropertiesSchema,
+  type UpdateCategoryProperties,
+  UpdateCategoryPropertiesSchema,
+} from "@/schemas/categoryproperty.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 const CategoryPropertySchema = z.object({
@@ -83,9 +92,7 @@ const UpdateCategoryPropertiesSchema = z
   })
   .strict();
 
-async function cafe24_list_category_properties(
-  params: z.infer<typeof ListCategoryPropertiesSchema>,
-) {
+async function cafe24_list_category_properties(params: ListCategoryProperties) {
   try {
     const { shop_no, ...queryParams } = params;
     const requestHeaders = shop_no ? { "X-Cafe24-Shop-No": shop_no.toString() } : undefined;

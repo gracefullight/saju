@@ -1,16 +1,11 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type SocialNaverShoppingParams,
+  SocialNaverShoppingParamsSchema,
+} from "@/schemas/socialnavershopping.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const SocialNaverShoppingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-async function cafe24_get_social_naver_shopping_setting(
-  params: z.infer<typeof SocialNaverShoppingParamsSchema>,
-) {
+async function cafe24_get_social_naver_shopping_setting(params: SocialNaverShoppingParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {

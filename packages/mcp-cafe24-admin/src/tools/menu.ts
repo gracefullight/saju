@@ -1,24 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import { type AdminMenusSearchParams, AdminMenusSearchParamsSchema } from "@/schemas/menu.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { Menu } from "../types.js";
 
-const AdminMenusSearchParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
-    mode: z
-      .enum(["new_pro", "mobile_admin"])
-      .default("new_pro")
-      .describe("Menu mode (new_pro: PC admin, mobile_admin: Mobile admin)"),
-    menu_no: z.string().optional().describe("Menu number(s), comma-separated for multiple"),
-    contains_app_url: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Filter by app URL inclusion (T: Included, F: Not included)"),
-  })
-  .strict();
-
-async function cafe24_list_admin_menus(params: z.infer<typeof AdminMenusSearchParamsSchema>) {
+async function cafe24_list_admin_menus(params: AdminMenusSearchParams) {
   try {
     const queryParams: Record<string, unknown> = {
       shop_no: params.shop_no,

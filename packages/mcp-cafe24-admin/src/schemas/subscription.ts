@@ -1,0 +1,102 @@
+import { z } from "zod";
+
+export const SubscriptionDiscountValueSchema = z.object({
+  delivery_cycle: z.number().int().describe("Delivery cycle count"),
+  discount_amount: z.number().describe("Discount amount or percentage"),
+});
+
+export const SubscriptionShipmentParamsSchema = z
+  .object({
+    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default:1)"),
+    subscription_no: z.number().int().optional().describe("Subscription setting number"),
+  })
+  .strict();
+
+export const SubscriptionShipmentCreateSchema = z
+  .object({
+    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
+    subscription_shipments_name: z.string().max(255).describe("Subscription shipment setting name"),
+    product_binding_type: z
+      .enum(["A", "P", "C"])
+      .describe("Product binding: A=All, P=Product, C=Category"),
+    one_time_purchase: z
+      .enum(["T", "F"])
+      .default("T")
+      .optional()
+      .describe("Allow one-time purchase: T=Yes, F=No"),
+    product_list: z.array(z.number().int()).optional().describe("List of product IDs"),
+    category_list: z.array(z.number().int()).optional().describe("List of category IDs"),
+    use_discount: z.enum(["T", "F"]).describe("Use discount: T=Yes, F=No"),
+    discount_value_unit: z
+      .enum(["P", "W"])
+      .optional()
+      .describe("Discount unit: P=Percent, W=Amount"),
+    discount_values: z
+      .array(SubscriptionDiscountValueSchema)
+      .optional()
+      .describe("Discount values per cycle"),
+    related_purchase_quantity: z
+      .enum(["T", "F"])
+      .optional()
+      .describe("Related to purchase quantity: T=Yes, F=No"),
+    subscription_shipments_cycle_type: z
+      .enum(["T", "F"])
+      .describe("Use delivery cycle: T=Yes, F=No"),
+    subscription_shipments_cycle: z.array(z.string()).describe("Delivery cycles (e.g., 1W, 1M)"),
+    subscription_shipments_count_type: z
+      .enum(["T", "F"])
+      .optional()
+      .describe("Use shipment count limit: T=Yes, F=No"),
+    subscription_shipments_count: z
+      .array(z.number().int())
+      .optional()
+      .describe("Shipment count options (e.g., 2, 3, 4)"),
+    use_order_price_condition: z
+      .enum(["T", "F"])
+      .describe("Use order price condition: T=Yes, F=No"),
+    order_price_greater_than: z
+      .union([z.string(), z.number()])
+      .optional()
+      .describe("Minimum order price for benefit"),
+    include_regional_shipping_rate: z
+      .enum(["T", "F"])
+      .optional()
+      .describe("Include regional shipping rate: T=Yes, F=No"),
+    shipments_start_date: z
+      .number()
+      .int()
+      .min(1)
+      .max(30)
+      .default(3)
+      .optional()
+      .describe("Days until shipment start (1-30)"),
+    change_option: z
+      .enum(["T", "F"])
+      .default("F")
+      .optional()
+      .describe("Allow option change: T=Yes, F=No"),
+  })
+  .strict();
+
+export const SubscriptionShipmentUpdateSchema = SubscriptionShipmentCreateSchema.omit({
+  shop_no: true,
+})
+  .partial()
+  .extend({
+    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
+    subscription_no: z.number().int().describe("Subscription setting number to update"),
+  })
+  .strict();
+
+export const SubscriptionShipmentDeleteSchema = z
+  .object({
+    shop_no: z.number().int().min(1).default(1).describe("Multi-shop number (default: 1)"),
+    subscription_no: z.number().int().describe("Subscription setting number to delete"),
+  })
+  .strict();
+
+export type SubscriptionDiscountValue = z.infer<typeof SubscriptionDiscountValueSchema>;
+export type SubscriptionShipmentParams = z.infer<typeof SubscriptionShipmentParamsSchema>;
+export type SubscriptionShipmentCreate = z.infer<typeof SubscriptionShipmentCreateSchema>;
+export type SubscriptionShipmentUpdate = z.infer<typeof SubscriptionShipmentUpdateSchema>;
+export type SubscriptionShipmentDelete = z.infer<typeof SubscriptionShipmentDeleteSchema>;

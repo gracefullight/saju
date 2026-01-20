@@ -1,5 +1,12 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type ProductPropertiesParams,
+  ProductPropertiesParamsSchema,
+  type ProductPropertiesUpdateParams,
+  ProductPropertiesUpdateParamsSchema,
+  type TextStyle,
+  TextStyleSchema,
+} from "@/schemas/productproperties.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { DisplaySetting, TextStyle } from "../types.js";
 
@@ -40,9 +47,7 @@ const ProductPropertiesUpdateParamsSchema = z
   })
   .strict();
 
-async function cafe24_get_product_properties_setting(
-  params: z.infer<typeof ProductPropertiesParamsSchema>,
-) {
+async function cafe24_get_product_properties_setting(params: ProductPropertiesParams) {
   try {
     const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
@@ -89,9 +94,7 @@ async function cafe24_get_product_properties_setting(
   }
 }
 
-async function cafe24_update_product_properties_setting(
-  params: z.infer<typeof ProductPropertiesUpdateParamsSchema>,
-) {
+async function cafe24_update_product_properties_setting(params: ProductPropertiesUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 

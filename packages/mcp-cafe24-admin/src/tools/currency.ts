@@ -1,21 +1,13 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type CurrencyParams,
+  CurrencyParamsSchema,
+  type CurrencyUpdateParams,
+  CurrencyUpdateParamsSchema,
+} from "@/schemas/currency.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const CurrencyParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const CurrencyUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).describe("Multi-shop number (required)"),
-    exchange_rate: z.string().describe("Exchange rate (e.g., '1004.00')"),
-  })
-  .strict();
-
-async function cafe24_get_currency(params: z.infer<typeof CurrencyParamsSchema>) {
+async function cafe24_get_currency(params: CurrencyParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {
@@ -51,7 +43,7 @@ async function cafe24_get_currency(params: z.infer<typeof CurrencyParamsSchema>)
   }
 }
 
-async function cafe24_update_currency(params: z.infer<typeof CurrencyUpdateParamsSchema>) {
+async function cafe24_update_currency(params: CurrencyUpdateParams) {
   try {
     const requestBody: Record<string, any> = {
       shop_no: params.shop_no,

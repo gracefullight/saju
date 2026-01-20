@@ -1,21 +1,13 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type MobileSettingParams,
+  MobileSettingParamsSchema,
+  type MobileSettingUpdateParams,
+  MobileSettingUpdateParamsSchema,
+} from "@/schemas/mobile.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const MobileSettingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const MobileSettingUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    use_mobile_page: z.enum(["T", "F"]).describe("Enable mobile page: T=Yes, F=No"),
-  })
-  .strict();
-
-async function cafe24_get_mobile_setting(params: z.infer<typeof MobileSettingParamsSchema>) {
+async function cafe24_get_mobile_setting(params: MobileSettingParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {
@@ -46,9 +38,7 @@ async function cafe24_get_mobile_setting(params: z.infer<typeof MobileSettingPar
   }
 }
 
-async function cafe24_update_mobile_setting(
-  params: z.infer<typeof MobileSettingUpdateParamsSchema>,
-) {
+async function cafe24_update_mobile_setting(params: MobileSettingUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 

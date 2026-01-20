@@ -1,10 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import { type TaxManagerParams, TaxManagerParamsSchema } from "@/schemas/taxmanager.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const TaxManagerParamsSchema = z.object({}).strict();
-
-async function cafe24_get_tax_manager_setting(_params: z.infer<typeof TaxManagerParamsSchema>) {
+async function cafe24_get_tax_manager_setting(_params: TaxManagerParams) {
   try {
     const data = await makeApiRequest("/admin/taxmanager", "GET");
     const taxmanager = data.taxmanager || data;

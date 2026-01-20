@@ -1,41 +1,13 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+import {
+  type PaymentSettingParams,
+  PaymentSettingParamsSchema,
+  type PaymentSettingUpdateParams,
+  PaymentSettingUpdateParamsSchema,
+} from "@/schemas/payment.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
-const PaymentSettingParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-  })
-  .strict();
-
-const PaymentSettingUpdateParamsSchema = z
-  .object({
-    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default: 1)"),
-    use_escrow: z.enum(["T", "F"]).optional().describe("Enable Escrow: T=Yes, F=No"),
-    use_escrow_account_transfer: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Enable Escrow (Account Transfer): T=Yes, F=No"),
-    use_escrow_virtual_account: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Enable Escrow (Virtual Account): T=Yes, F=No"),
-    pg_shipping_registration: z
-      .enum(["A", "M"])
-      .optional()
-      .describe("PG Shipping Registration: A=Auto (8PM daily), M=Manual"),
-    use_direct_pay: z
-      .enum(["T", "F"])
-      .optional()
-      .describe("Enable Direct Pay/Quick Pay: T=Yes, F=No"),
-    payment_display_type: z
-      .enum(["T", "L"])
-      .optional()
-      .describe("Payment Method Display: T=Text, L=Logo Icon"),
-  })
-  .strict();
-
-async function cafe24_get_payment_setting(params: z.infer<typeof PaymentSettingParamsSchema>) {
+async function cafe24_get_payment_setting(params: PaymentSettingParams) {
   try {
     const queryParams: Record<string, any> = {};
     if (params.shop_no) {
@@ -76,9 +48,7 @@ async function cafe24_get_payment_setting(params: z.infer<typeof PaymentSettingP
   }
 }
 
-async function cafe24_update_payment_setting(
-  params: z.infer<typeof PaymentSettingUpdateParamsSchema>,
-) {
+async function cafe24_update_payment_setting(params: PaymentSettingUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 
