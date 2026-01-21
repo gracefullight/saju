@@ -1,11 +1,11 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { ListOrderBenefitsResponse, ListOrderCouponsResponse } from "@/types/index.js";
 import {
   OrderBenefitsSearchParamsSchema,
   OrderCouponsSearchParamsSchema,
 } from "@/schemas/order-benefit.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { ListOrderBenefitsResponse, ListOrderCouponsResponse } from "@/types/index.js";
 
 async function cafe24_list_order_benefits(params: z.infer<typeof OrderBenefitsSearchParamsSchema>) {
   try {

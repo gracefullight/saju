@@ -6,6 +6,7 @@ import {
   CustomerGroupsSearchParamsSchema,
   MoveCustomerToGroupParamsSchema,
 } from "@/schemas/customer-group.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   CommonParams,
   CustomerGroup,
@@ -15,7 +16,6 @@ import type {
   CustomerGroupsSearchParams,
   MoveCustomerToGroupParams,
 } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_customer_groups(params: CustomerGroupsSearchParams) {
   try {

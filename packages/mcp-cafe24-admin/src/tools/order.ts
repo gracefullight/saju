@@ -1,11 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type {
-  BulkOrderUpdateResponse,
-  Order,
-  OrderStatus,
-  SingleOrderUpdateResponse,
-} from "@/types/index.js";
 import {
   BulkOrderUpdateParamsSchema,
   OrderDetailParamsSchema,
@@ -17,6 +11,12 @@ import {
   OrderUpdateStatusParamsSchema,
 } from "@/schemas/order.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type {
+  BulkOrderUpdateResponse,
+  Order,
+  OrderStatus,
+  SingleOrderUpdateResponse,
+} from "@/types/index.js";
 
 async function cafe24_list_orders(params: z.infer<typeof OrdersSearchParamsSchema>) {
   try {

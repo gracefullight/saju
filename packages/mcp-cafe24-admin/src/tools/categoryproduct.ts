@@ -1,6 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { CategoryProduct } from "@/types/index.js";
 import {
   AddCategoryProductsSchema,
   CountCategoryProductsSchema,
@@ -9,6 +8,7 @@ import {
   UpdateCategoryProductSchema,
 } from "@/schemas/categoryproduct.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { CategoryProduct } from "@/types/index.js";
 
 async function cafe24_list_category_products(params: z.infer<typeof ListCategoryProductsSchema>) {
   try {

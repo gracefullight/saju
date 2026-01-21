@@ -5,8 +5,8 @@ import {
   type CartSettingUpdateParams,
   CartSettingUpdateParamsSchema,
 } from "@/schemas/cart.js";
-import type { CartSetting } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { CartSetting } from "@/types/index.js";
 
 async function cafe24_get_cart_setting(params: CartSettingParams) {
   try {

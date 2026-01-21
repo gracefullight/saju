@@ -1,6 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { CashReceipt } from "@/types/index.js";
 import {
   CashReceiptCancelParamsSchema,
   CashReceiptCreateParamsSchema,
@@ -8,6 +7,7 @@ import {
   CashReceiptUpdateParamsSchema,
 } from "@/schemas/cashreceipt.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { CashReceipt } from "@/types/index.js";
 
 async function cafe24_list_cash_receipts(params: z.infer<typeof CashReceiptSearchParamsSchema>) {
   try {

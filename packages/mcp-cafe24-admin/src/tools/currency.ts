@@ -5,8 +5,8 @@ import {
   type CurrencyUpdateParams,
   CurrencyUpdateParamsSchema,
 } from "@/schemas/currency.js";
-import type { CurrencySetting } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { CurrencySetting } from "@/types/index.js";
 
 async function cafe24_get_currency(params: CurrencyParams) {
   try {

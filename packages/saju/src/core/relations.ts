@@ -1,6 +1,6 @@
-import type { Label } from "@/types";
 import type { Element, ElementLabel } from "@/core/ten-gods";
 import { getBranchElement, getElementLabel, getStemElement } from "@/core/ten-gods";
+import type { Label } from "@/types";
 
 export const RELATION_TYPE_KEYS = [
   "stemCombination",

@@ -11,6 +11,7 @@ import {
   type CouponUpdateParams,
   CouponUpdateSchema,
 } from "@/schemas/coupon.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   CouponCreateRequest,
   CouponResponse,
@@ -18,7 +19,6 @@ import type {
   CouponsResponse,
   CouponUpdateRequest,
 } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_coupons(params: CouponsSearchParams) {
   try {

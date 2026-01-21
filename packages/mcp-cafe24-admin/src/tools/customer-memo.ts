@@ -7,6 +7,7 @@ import {
   RetrieveCustomerMemoParamsSchema,
   UpdateCustomerMemoParamsSchema,
 } from "@/schemas/customer-memo.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   CountCustomerMemosParams,
   CreateCustomerMemoParams,
@@ -18,7 +19,6 @@ import type {
   RetrieveCustomerMemoParams,
   UpdateCustomerMemoParams,
 } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_customer_memos(params: ListCustomerMemosParams) {
   try {

@@ -1,11 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type {
-  ListOrderPaymentTimelineResponse,
-  OrderPaymentTimelineDetailResponse,
-  UpdateOrderPaymentResponse,
-  UpdatePaymentsResponse,
-} from "@/types/index.js";
 import {
   OrderPaymentTimelineDetailParamsSchema,
   OrderPaymentTimelineSearchParamsSchema,
@@ -13,6 +7,12 @@ import {
   UpdatePaymentsParamsSchema,
 } from "@/schemas/order-payment.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type {
+  ListOrderPaymentTimelineResponse,
+  OrderPaymentTimelineDetailResponse,
+  UpdateOrderPaymentResponse,
+  UpdatePaymentsResponse,
+} from "@/types/index.js";
 
 async function cafe24_update_payments_status(params: z.infer<typeof UpdatePaymentsParamsSchema>) {
   try {

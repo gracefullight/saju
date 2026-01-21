@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type AdminMenusSearchParams, AdminMenusSearchParamsSchema } from "@/schemas/menu.js";
-import type { Menu } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { Menu } from "@/types/index.js";
 
 async function cafe24_list_admin_menus(params: AdminMenusSearchParams) {
   try {

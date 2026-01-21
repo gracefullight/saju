@@ -1,4 +1,3 @@
-import type { Label } from "@/types";
 import {
   type Element,
   getStemElement,
@@ -6,6 +5,7 @@ import {
   getTenGodKey,
   type TenGodKey,
 } from "@/core/ten-gods";
+import type { Label } from "@/types";
 
 export const STRENGTH_LEVEL_KEYS = [
   "extremelyWeak",

@@ -7,8 +7,8 @@ import {
   type PointsSettingUpdateParams,
   PointsSettingUpdateParamsSchema,
 } from "@/schemas/points.js";
-import type { Point } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { Point } from "@/types/index.js";
 
 async function cafe24_get_points_setting(params: PointsSettingParams) {
   try {

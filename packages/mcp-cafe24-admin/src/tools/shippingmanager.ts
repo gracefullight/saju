@@ -3,8 +3,8 @@ import {
   type ShippingManagerParams,
   ShippingManagerParamsSchema,
 } from "@/schemas/shippingmanager.js";
-import type { ShippingManagerStatus } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { ShippingManagerStatus } from "@/types/index.js";
 
 async function cafe24_get_shippingmanager_status(params: ShippingManagerParams) {
   try {

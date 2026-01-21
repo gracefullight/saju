@@ -3,8 +3,8 @@ import {
   type SocialNaverShoppingParams,
   SocialNaverShoppingParamsSchema,
 } from "@/schemas/socialnavershopping.js";
-import type { SocialNaverShoppingSetting } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { SocialNaverShoppingSetting } from "@/types/index.js";
 
 async function cafe24_get_social_naver_shopping_setting(params: SocialNaverShoppingParams) {
   try {

@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { FulfillmentResponse } from "@/types/index.js";
 import { FulfillmentCreateParamsSchema } from "@/schemas/fulfillment.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { FulfillmentResponse } from "@/types/index.js";
 
 async function cafe24_create_fulfillment(params: z.infer<typeof FulfillmentCreateParamsSchema>) {
   try {

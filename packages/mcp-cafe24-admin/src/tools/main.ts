@@ -1,5 +1,4 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DisplaySetting, TextStyle } from "@/types/index.js";
 import {
   type CreateMainProperty,
   CreateMainPropertySchema,
@@ -13,6 +12,7 @@ import {
   UpdateMainPropertiesSchema,
 } from "@/schemas/main.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { DisplaySetting, TextStyle } from "@/types/index.js";
 
 async function cafe24_list_main_properties(params: ListMainProperties) {
   try {

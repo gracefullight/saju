@@ -1,14 +1,14 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type {
-  CustomerPaymentInfoResponse,
-  DeleteCustomerPaymentInfoResponse,
-} from "@/types/index.js";
 import {
   CustomerPaymentInfoParamsSchema,
   DeletePaymentMethodParamsSchema,
 } from "@/schemas/customer-payment-info.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type {
+  CustomerPaymentInfoResponse,
+  DeleteCustomerPaymentInfoResponse,
+} from "@/types/index.js";
 
 async function cafe24_list_customer_payment_information(
   params: z.infer<typeof CustomerPaymentInfoParamsSchema>,

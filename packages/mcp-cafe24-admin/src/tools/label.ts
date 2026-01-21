@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { LabelsCreateResponse, LabelsListResponse } from "@/types/index.js";
 import { LabelsCreateParamsSchema, LabelsSearchParamsSchema } from "@/schemas/label.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { LabelsCreateResponse, LabelsListResponse } from "@/types/index.js";
 
 async function cafe24_list_labels(params: z.infer<typeof LabelsSearchParamsSchema>) {
   try {

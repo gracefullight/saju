@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DailySales } from "@/types/index.js";
 import { type SalesSearchParams, SalesSearchParamsSchema } from "@/schemas/sales.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { DailySales } from "@/types/index.js";
 
 async function cafe24_get_daily_sales(params: SalesSearchParams) {
   try {

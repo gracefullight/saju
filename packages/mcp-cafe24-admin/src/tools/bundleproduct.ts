@@ -6,8 +6,8 @@ import {
   type CreateBundleProduct,
   CreateBundleProductSchema,
 } from "@/schemas/bundleproduct.js";
-import type { BundleProduct } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { BundleProduct } from "@/types/index.js";
 
 async function cafe24_list_bundle_products(params: BundleProductSearchParams) {
   try {

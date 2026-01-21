@@ -5,8 +5,8 @@ import {
   type DormantAccountUpdateParams,
   DormantAccountUpdateParamsSchema,
 } from "@/schemas/dormant.js";
-import type { DormantAccount } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { DormantAccount } from "@/types/index.js";
 
 async function cafe24_get_dormant_account(params: DormantAccountParams) {
   try {

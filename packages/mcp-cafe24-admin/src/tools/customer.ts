@@ -1,13 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type {
-  Customer,
-  CustomerAutoUpdateParams,
-  CustomerAutoUpdateResponse,
-  CustomerPrivacyParams,
-  CustomerPrivacyResponse,
-  CustomerSetting,
-} from "@/types/index.js";
 import {
   CustomerAutoUpdateParamsSchema,
   CustomerDetailParamsSchema,
@@ -17,6 +9,14 @@ import {
   CustomersSearchParamsSchema,
 } from "@/schemas/customer.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type {
+  Customer,
+  CustomerAutoUpdateParams,
+  CustomerAutoUpdateResponse,
+  CustomerPrivacyParams,
+  CustomerPrivacyResponse,
+  CustomerSetting,
+} from "@/types/index.js";
 
 async function cafe24_list_customers(params: z.infer<typeof CustomersSearchParamsSchema>) {
   try {

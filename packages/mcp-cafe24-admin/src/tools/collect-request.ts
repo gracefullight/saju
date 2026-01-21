@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { CollectRequest } from "@/types/index.js";
 import { CollectRequestUpdateParamsSchema } from "@/schemas/collect-request.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { CollectRequest } from "@/types/index.js";
 
 async function cafe24_update_collect_request(
   params: z.infer<typeof CollectRequestUpdateParamsSchema>,

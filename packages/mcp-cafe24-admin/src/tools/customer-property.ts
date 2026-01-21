@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { CustomerPropertiesResponse } from "@/types/index.js";
 import { CustomerPropertiesParamsSchema } from "@/schemas/customer-property.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { CustomerPropertiesResponse } from "@/types/index.js";
 
 async function cafe24_list_customer_properties(
   params: z.infer<typeof CustomerPropertiesParamsSchema>,

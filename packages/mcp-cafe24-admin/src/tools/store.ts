@@ -1,6 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { AdminUser, Shop, Store, StoreAccount } from "@/types/index.js";
 import {
   ShopsSearchParamsSchema,
   StoreAccountsParamsSchema,
@@ -9,6 +8,7 @@ import {
   UsersSearchParamsSchema,
 } from "@/schemas/store.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { AdminUser, Shop, Store, StoreAccount } from "@/types/index.js";
 
 async function cafe24_list_users(params: z.infer<typeof UsersSearchParamsSchema>) {
   try {

@@ -1,12 +1,12 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import type { Exchange, ExchangeCreateResult, ExchangeUpdateResult } from "@/types/index.js";
 import {
   ExchangeCreateParamsSchema,
   ExchangeDetailParamsSchema,
   ExchangeUpdateParamsSchema,
 } from "@/schemas/exchange.js";
 import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { Exchange, ExchangeCreateResult, ExchangeUpdateResult } from "@/types/index.js";
 
 async function cafe24_get_exchange(params: z.infer<typeof ExchangeDetailParamsSchema>) {
   try {
