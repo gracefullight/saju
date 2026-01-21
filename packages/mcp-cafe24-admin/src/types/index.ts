@@ -29,3 +29,4 @@ export * from "./return-request.js";
 export * from "./shipment.js";
 export * from "./shipping-fee-cancellation.js";
 export * from "./store.js";
+export * from "./subscription.js";

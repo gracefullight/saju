@@ -166,16 +166,6 @@ export interface OrderStatus {
   reservation_custom_name?: string;
 }
 
-export interface SubscriptionShipment {
-  shop_no: number;
-  subscription_no: number;
-  subscription_shipments_name: string;
-  product_binding_type: string;
-  one_time_purchase: string;
-  use_discount: string;
-  subscription_shipments_cycle?: string[];
-}
-
 export interface ShippingInfo {
   key: string;
   use: string;

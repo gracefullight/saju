@@ -95,8 +95,58 @@ export const SubscriptionShipmentDeleteSchema = z
   })
   .strict();
 
+export const SubscriptionShipmentsSearchParamsSchema = z
+  .object({
+    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default:1)"),
+    date_type: z
+      .enum(["created_date", "expected_pay_date", "terminated_date"])
+      .default("created_date")
+      .optional()
+      .describe(
+        "Date type: created_date = signup date, expected_pay_date = billing date, terminated_date = cancellation date",
+      ),
+    start_date: z.string().describe("Search Start Date (YYYY-MM-DD)"),
+    end_date: z.string().describe("Search End Date (YYYY-MM-DD)"),
+    subscription_id: z
+      .string()
+      .optional()
+      .describe("Subscription code (e.g., S-20210716-00000001)"),
+    member_id: z.string().max(20).optional().describe("Member ID"),
+    buyer_name: z.string().max(100).optional().describe("Orderer name"),
+    buyer_phone: z.string().optional().describe("Buyer phone number"),
+    buyer_cellphone: z.string().optional().describe("Buyer mobile number"),
+    product_no: z
+      .string()
+      .optional()
+      .describe("Product number (multiple values separated by comma)"),
+    product_name: z.string().max(250).optional().describe("Product name"),
+    product_code: z.string().optional().describe("Product code"),
+    variant_code: z.string().optional().describe("Variant code"),
+    subscription_shipments_cycle: z
+      .string()
+      .optional()
+      .describe("Delivery frequency. 1W, 2W, 1M, etc. (multiple values separated by comma)"),
+    subscription_state: z
+      .enum(["U", "P", "C"])
+      .optional()
+      .describe("Subscription status: U=Subscribed, P=Paused, C=Unsubscribed"),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .default(20)
+      .optional()
+      .describe("Limit per page (1-100)"),
+    offset: z.number().int().max(5000).default(0).optional().describe("Start location of list"),
+  })
+  .strict();
+
 export type SubscriptionDiscountValue = z.infer<typeof SubscriptionDiscountValueSchema>;
 export type SubscriptionShipmentParams = z.infer<typeof SubscriptionShipmentParamsSchema>;
 export type SubscriptionShipmentCreate = z.infer<typeof SubscriptionShipmentCreateSchema>;
 export type SubscriptionShipmentUpdate = z.infer<typeof SubscriptionShipmentUpdateSchema>;
 export type SubscriptionShipmentDelete = z.infer<typeof SubscriptionShipmentDeleteSchema>;
+export type SubscriptionShipmentsSearchParams = z.infer<
+  typeof SubscriptionShipmentsSearchParamsSchema
+>;

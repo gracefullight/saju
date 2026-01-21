@@ -6,10 +6,12 @@ import {
   SubscriptionShipmentDeleteSchema,
   type SubscriptionShipmentParams,
   SubscriptionShipmentParamsSchema,
+  type SubscriptionShipmentsSearchParams,
+  SubscriptionShipmentsSearchParamsSchema,
   type SubscriptionShipmentUpdate,
   SubscriptionShipmentUpdateSchema,
 } from "@/schemas/subscription.js";
-import type { SubscriptionShipment } from "@/types/index.js";
+import type { SubscriptionShipment, SubscriptionShipmentSetting } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_list_subscription_shipment_settings(params: SubscriptionShipmentParams) {
@@ -27,7 +29,7 @@ async function cafe24_list_subscription_shipment_settings(params: SubscriptionSh
     const responseData = data as
       | { shipments?: Record<string, unknown>[] }
       | Record<string, unknown>;
-    const shipments = (responseData.shipments || []) as SubscriptionShipment[];
+    const shipments = (responseData.shipments || []) as SubscriptionShipmentSetting[];
 
     return {
       content: [
@@ -37,7 +39,7 @@ async function cafe24_list_subscription_shipment_settings(params: SubscriptionSh
             `Found ${shipments.length} subscription shipment settings\n\n` +
             shipments
               .map(
-                (s: SubscriptionShipment) =>
+                (s: SubscriptionShipmentSetting) =>
                   `## [${s.subscription_no}] ${s.subscription_shipments_name}\n` +
                   `- **Type**: ${s.product_binding_type}\n` +
                   `- **One-time Purchase**: ${s.one_time_purchase === "T" ? "Yes" : "No"}\n` +
@@ -67,7 +69,7 @@ async function cafe24_create_subscription_shipment_setting(params: SubscriptionS
 
     const data = await makeApiRequest("/admin/subscription/shipments/setting", "POST", requestBody);
     const responseData = data as { shipment?: Record<string, unknown> } | Record<string, unknown>;
-    const shipment = (responseData.shipment || {}) as SubscriptionShipment;
+    const shipment = (responseData.shipment || {}) as SubscriptionShipmentSetting;
 
     return {
       content: [
@@ -97,7 +99,7 @@ async function cafe24_update_subscription_shipment_setting(params: SubscriptionS
       requestBody,
     );
     const responseData = data as { shipment?: Record<string, unknown> } | Record<string, unknown>;
-    const shipment = (responseData.shipment || {}) as SubscriptionShipment;
+    const shipment = (responseData.shipment || {}) as SubscriptionShipmentSetting;
 
     return {
       content: [
@@ -129,6 +131,42 @@ async function cafe24_delete_subscription_shipment_setting(params: SubscriptionS
           text: `Deleted subscription shipment setting #${params.subscription_no}`,
         },
       ],
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
+async function cafe24_list_subscription_shipments(params: SubscriptionShipmentsSearchParams) {
+  try {
+    const data = await makeApiRequest("/admin/subscription/shipments", "GET", undefined, params);
+    const responseData = data as
+      | { shipments?: Record<string, unknown>[] }
+      | Record<string, unknown>;
+    const shipments = (responseData.shipments || []) as SubscriptionShipment[];
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text:
+            `Found ${shipments.length} subscription shipments\n\n` +
+            shipments
+              .map(
+                (s) =>
+                  `## ${s.subscription_id} (${s.buyer_name})\n` +
+                  `- **Status**: ${s.subscription_state === "U" ? "Subscribed" : s.subscription_state === "P" ? "Paused" : "Unsubscribed"}\n` +
+                  `- **Items**: ${s.items.map((i) => `${i.product_name} (${i.quantity})`).join(", ")}\n` +
+                  `- **Created**: ${s.created_date}\n` +
+                  `- **Receiver**: ${s.receiver_name} (${s.receiver_address1} ${s.receiver_address2 || ""})\n`,
+              )
+              .join("\n"),
+        },
+      ],
+      structuredContent: {
+        count: shipments.length,
+        shipments,
+      },
     };
   } catch (error) {
     return { content: [{ type: "text" as const, text: handleApiError(error) }] };
@@ -201,5 +239,22 @@ export function registerTools(server: McpServer): void {
       },
     },
     cafe24_delete_subscription_shipment_setting,
+  );
+
+  server.registerTool(
+    "cafe24_list_subscription_shipments",
+    {
+      title: "List Cafe24 Subscription Shipments",
+      description:
+        "Retrieve a list of subscription shipments. Allows filtering by signup date, billing date, or cancellation date within a specified range.",
+      inputSchema: SubscriptionShipmentsSearchParamsSchema,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    cafe24_list_subscription_shipments,
   );
 }
