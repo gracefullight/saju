@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerTools as registerAppTools } from "./app.js";
+import { registerArticleIconTools } from "./article-icon.js";
 import { registerTools as registerAutomessageTools } from "./automessage.js";
 import { registerTools as registerBenefitTools } from "./benefit.js";
 import { registerTools as registerBoardTools } from "./board.js";
@@ -15,6 +16,9 @@ import { registerTools as registerCurrencyTools } from "./currency.js";
 import { registerTools as registerCustomerTools } from "./customer.js";
 import { registerCustomerGroupTools } from "./customer-group.js";
 import { registerCustomerMemoTools } from "./customer-memo.js";
+import { registerTools as registerCustomerPaymentInfoTools } from "./customer-payment-info.js";
+import { registerTools as registerCustomerPlusAppTools } from "./customer-plus-app.js";
+import { registerTools as registerCustomerPropertyTools } from "./customer-property.js";
 import { registerTools as registerDashboardTools } from "./dashboard.js";
 import { registerTools as registerDormantTools } from "./dormant.js";
 import { registerTools as registerExchangeTools } from "./exchange.js";
@@ -83,6 +87,7 @@ import { registerTools as registerSubscriptionTools } from "./subscription.js";
 import { registerTools as registerSupplierTools } from "./supplier.js";
 import { registerTools as registerTaxManagerTools } from "./taxmanager.js";
 import { registerTools as registerThemeTools } from "./theme.js";
+import { registerUrgentInquiryTools } from "./urgent-inquiry.js";
 
 /**
  * Register all Cafe24 Admin tools with the MCP server
@@ -108,6 +113,9 @@ export function registerAllTools(server: McpServer): void {
   registerCustomerTools(server);
   registerCustomerGroupTools(server);
   registerCustomerMemoTools(server);
+  registerCustomerPaymentInfoTools(server);
+  registerCustomerPlusAppTools(server);
+  registerCustomerPropertyTools(server);
   registerDashboardTools(server);
   registerDormantTools(server);
   registerImageTools(server);
@@ -172,4 +180,6 @@ export function registerAllTools(server: McpServer): void {
   registerTaxManagerTools(server);
   registerThemeTools(server);
   registerBundleProductTools(server);
+  registerArticleIconTools(server);
+  registerUrgentInquiryTools(server);
 }

@@ -1,8 +1,3 @@
-export interface Theme {
-  theme_no: number;
-  theme_name: string;
-}
-
 export interface Supplier {
   supplier_no: number;
   supplier_name: string;
