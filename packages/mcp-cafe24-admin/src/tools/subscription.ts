@@ -4,6 +4,8 @@ import {
   SubscriptionShipmentCreateSchema,
   type SubscriptionShipmentDelete,
   SubscriptionShipmentDeleteSchema,
+  type SubscriptionShipmentItemsUpdate,
+  SubscriptionShipmentItemsUpdateSchema,
   type SubscriptionShipmentParams,
   SubscriptionShipmentParamsSchema,
   type SubscriptionShipmentsSearchParams,
@@ -173,6 +175,39 @@ async function cafe24_list_subscription_shipments(params: SubscriptionShipmentsS
   }
 }
 
+async function cafe24_update_subscription_shipment_items(params: SubscriptionShipmentItemsUpdate) {
+  try {
+    const { subscription_id, requests, shop_no } = params;
+    const requestBody = {
+      shop_no,
+      requests,
+    };
+
+    const data = await makeApiRequest(
+      `/admin/subscription/shipments/${subscription_id}/items`,
+      "PUT",
+      requestBody,
+    );
+    const responseData = data as { items?: Record<string, unknown>[] } | Record<string, unknown>;
+    const items = (responseData.items || []) as any[];
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Updated ${items.length} subscription shipment items for subscription ${subscription_id}`,
+        },
+      ],
+      structuredContent: {
+        subscription_id,
+        items,
+      },
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
 export function registerTools(server: McpServer): void {
   server.registerTool(
     "cafe24_list_subscription_shipment_settings",
@@ -256,5 +291,22 @@ export function registerTools(server: McpServer): void {
       },
     },
     cafe24_list_subscription_shipments,
+  );
+
+  server.registerTool(
+    "cafe24_update_subscription_shipment_items",
+    {
+      title: "Update Cafe24 Subscription Shipment Items",
+      description:
+        "Update items within a subscription shipment. You can change quantities, delivery dates, cycles, and variant codes.",
+      inputSchema: SubscriptionShipmentItemsUpdateSchema,
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: false,
+        openWorldHint: false,
+      },
+    },
+    cafe24_update_subscription_shipment_items,
   );
 }

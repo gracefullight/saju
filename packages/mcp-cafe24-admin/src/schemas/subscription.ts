@@ -142,6 +142,51 @@ export const SubscriptionShipmentsSearchParamsSchema = z
   })
   .strict();
 
+export const SubscriptionShipmentItemsUpdateSchema = z
+  .object({
+    shop_no: z.number().int().min(1).optional().describe("Multi-shop number (default:1)"),
+    subscription_id: z.string().describe("Subscription code"),
+    requests: z
+      .array(
+        z.object({
+          subscription_item_id: z.number().int().min(1).describe("Subscription item number"),
+          subscription_state: z
+            .enum(["U", "Q", "O"])
+            .optional()
+            .describe(
+              "Subscription Payments service status. U: Active, Q: Paused by admin, O: Canceled by admin",
+            ),
+          quantity: z.number().int().min(1).optional().describe("Order quantity"),
+          expected_delivery_date: z.string().date().optional().describe("Estimated shipping date"),
+          subscription_shipments_cycle: z
+            .enum(["1W", "2W", "3W", "4W", "1M", "2M", "3M", "4M", "5M", "6M", "1Y"])
+            .optional()
+            .describe("Delivery frequency"),
+          changed_variant_code: z
+            .string()
+            .regex(/^[A-Z0-9]{12}$/)
+            .optional()
+            .describe("Variant code of modified product options"),
+          max_delivery_limit: z
+            .union([
+              z.literal(0),
+              z.literal(2),
+              z.literal(3),
+              z.literal(4),
+              z.literal(6),
+              z.literal(8),
+              z.literal(10),
+              z.literal(12),
+            ])
+            .optional()
+            .describe("Number of subscription delivery"),
+        }),
+      )
+      .min(1)
+      .describe("List of update requests"),
+  })
+  .strict();
+
 export type SubscriptionDiscountValue = z.infer<typeof SubscriptionDiscountValueSchema>;
 export type SubscriptionShipmentParams = z.infer<typeof SubscriptionShipmentParamsSchema>;
 export type SubscriptionShipmentCreate = z.infer<typeof SubscriptionShipmentCreateSchema>;
@@ -150,3 +195,4 @@ export type SubscriptionShipmentDelete = z.infer<typeof SubscriptionShipmentDele
 export type SubscriptionShipmentsSearchParams = z.infer<
   typeof SubscriptionShipmentsSearchParamsSchema
 >;
+export type SubscriptionShipmentItemsUpdate = z.infer<typeof SubscriptionShipmentItemsUpdateSchema>;

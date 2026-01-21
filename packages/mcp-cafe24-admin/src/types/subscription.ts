@@ -77,3 +77,41 @@ export interface SubscriptionShipment {
 export interface ListSubscriptionShipmentsResponse {
   shipments: SubscriptionShipment[];
 }
+export interface UpdateSubscriptionShipmentItemRequest {
+  subscription_item_id: number;
+  subscription_state?: "U" | "Q" | "O";
+  quantity?: number;
+  expected_delivery_date?: string;
+  subscription_shipments_cycle?:
+    | "1W"
+    | "2W"
+    | "3W"
+    | "4W"
+    | "1M"
+    | "2M"
+    | "3M"
+    | "4M"
+    | "5M"
+    | "6M"
+    | "1Y";
+  changed_variant_code?: string;
+  max_delivery_limit?: 0 | 2 | 3 | 4 | 6 | 8 | 10 | 12;
+}
+
+export interface UpdateSubscriptionShipmentItemsRequest {
+  shop_no?: number;
+  subscription_id: string;
+  requests: UpdateSubscriptionShipmentItemRequest[];
+}
+
+export interface UpdateSubscriptionShipmentItemsResponse {
+  items: Array<{
+    subscription_item_id: number;
+    subscription_state?: string;
+    quantity?: number;
+    expected_delivery_date?: string;
+    subscription_shipments_cycle?: string;
+    changed_variant_code?: string;
+    max_delivery_limit?: number;
+  }>;
+}
