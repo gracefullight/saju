@@ -4,6 +4,7 @@ export * from "./cashreceipt.js";
 export * from "./collect-request.js";
 export * from "./common.js";
 export * from "./customer.js";
+export * from "./customer-group.js";
 export * from "./exchange.js";
 export * from "./exchange-request.js";
 export * from "./fulfillment.js";

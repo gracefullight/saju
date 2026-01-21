@@ -13,6 +13,7 @@ import { registerTools as registerCollectRequestTools } from "./collect-request.
 import { registerTools as registerCouponTools } from "./coupon.js";
 import { registerTools as registerCurrencyTools } from "./currency.js";
 import { registerTools as registerCustomerTools } from "./customer.js";
+import { registerCustomerGroupTools } from "./customer-group.js";
 import { registerTools as registerDashboardTools } from "./dashboard.js";
 import { registerTools as registerDormantTools } from "./dormant.js";
 import { registerTools as registerExchangeTools } from "./exchange.js";
@@ -104,6 +105,7 @@ export function registerAllTools(server: McpServer): void {
   registerCouponTools(server);
   registerCurrencyTools(server);
   registerCustomerTools(server);
+  registerCustomerGroupTools(server);
   registerDashboardTools(server);
   registerDormantTools(server);
   registerImageTools(server);
