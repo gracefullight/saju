@@ -10,6 +10,7 @@ export * from "./fulfillment.js";
 export * from "./label.js";
 export * from "./marketing.js";
 export * from "./order.js";
+export * from "./order-buyer.js";
 export * from "./order-control.js";
 export * from "./orderform-properties.js";
 export * from "./product.js";
