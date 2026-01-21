@@ -36,7 +36,7 @@ describe("API Client", () => {
           Authorization: "Bearer test_access_token",
         },
       });
-      expect(result).toEqual({ test: "data" });
+      expect(result).toEqual({ resource: { test: "data" } });
     });
 
     it("should make a POST request with data", async () => {
@@ -61,7 +61,7 @@ describe("API Client", () => {
           Authorization: "Bearer test_access_token",
         },
       });
-      expect(result).toEqual({ created: true });
+      expect(result).toEqual({ resource: { created: true } });
     });
 
     it("should include query parameters", async () => {
