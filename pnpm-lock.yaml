@@ -9,13 +9,16 @@ importers:
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.3.10
+        specifier: ^2.3.11
         version: 2.3.11
+      '@gracefullight/biome-plugin':
+        specifier: ^0.1.1
+        version: 0.1.1
       tsx:
-        specifier: ^4.19.2
+        specifier: ^4.21.0
         version: 4.21.0
       typescript:
-        specifier: ^5.7.3
+        specifier: ^5
         version: 5.9.3
 
   apps/mcp-cafe24-admin-example:
@@ -954,6 +957,9 @@ packages:
 
   '@formatjs/intl-localematcher@0.6.2':
     resolution: {integrity: sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==}
+
+  '@gracefullight/biome-plugin@0.1.1':
+    resolution: {integrity: sha512-BknE1tdhKDQ4Y/zgN8HBA65hpyqLI5a4vGpXTnGmj4crxwAnTMAI9tRTSWzKmrItYR6YyconOyz01cX/oxqeig==}
 
   '@hono/node-server@1.19.9':
     resolution: {integrity: sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==}
@@ -5542,6 +5548,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@gracefullight/biome-plugin@0.1.1': {}
+
   '@hono/node-server@1.19.9(hono@4.11.4)':
     dependencies:
       hono: 4.11.4
@@ -6719,7 +6727,6 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 7.3.1(@types/node@25.0.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.1)(tsx@4.21.0)
-    optional: true
 
   '@vitest/mocker@4.0.17(vite@7.3.1(@types/node@25.0.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0))':
     dependencies:
@@ -6784,7 +6791,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 4.0.17(@types/node@24.10.9)(@vitest/ui@4.0.17)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0)
+      vitest: 4.0.17(@types/node@25.0.9)(@vitest/ui@4.0.17)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.1)(tsx@4.21.0)
 
   '@vitest/utils@4.0.16':
     dependencies:
@@ -9223,7 +9230,6 @@ snapshots:
       lightningcss: 1.30.2
       sass: 1.97.1
       tsx: 4.21.0
-    optional: true
 
   vite@7.3.1(@types/node@25.0.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0):
     dependencies:
@@ -9397,7 +9403,6 @@ snapshots:
       - terser
       - tsx
       - yaml
-    optional: true
 
   vitest@4.0.17(@types/node@25.0.9)(@vitest/ui@4.0.17)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0):
     dependencies:
