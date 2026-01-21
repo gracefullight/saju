@@ -10,7 +10,7 @@ async function cafe24_get_restock_notification_setting(
   params: z.infer<typeof RestockNotificationParamsSchema>,
 ) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -24,7 +24,7 @@ async function cafe24_get_restock_notification_setting(
     const responseData = data as
       | { restocknotification?: Record<string, unknown> }
       | Record<string, unknown>;
-    const setting = (responseData.restocknotification || responseData) as Record<string, any>;
+    const setting = (responseData.restocknotification || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -71,7 +71,7 @@ async function cafe24_update_restock_notification_setting(
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
@@ -80,7 +80,7 @@ async function cafe24_update_restock_notification_setting(
     const responseData = data as
       | { restocknotification?: Record<string, unknown> }
       | Record<string, unknown>;
-    const setting = (responseData.restocknotification || responseData) as Record<string, any>;
+    const setting = (responseData.restocknotification || responseData) as Record<string, unknown>;
 
     return {
       content: [

@@ -11,6 +11,7 @@ import { registerTools as registerCashReceiptTools } from "./cashreceipt.js";
 import { registerTools as registerCategoryProductTools } from "./categoryproduct.js";
 import { registerTools as registerCategoryPropertyTools } from "./categoryproperty.js";
 import { registerTools as registerCollectRequestTools } from "./collect-request.js";
+import { registerTools as registerCommonEventTools } from "./common-event.js";
 import { registerTools as registerCouponTools } from "./coupon.js";
 import { registerTools as registerCurrencyTools } from "./currency.js";
 import { registerTools as registerCustomerTools } from "./customer.js";
@@ -99,6 +100,7 @@ export function registerAllTools(server: McpServer): void {
   registerBoardTools(server);
   registerCancellationTools(server);
   registerCollectRequestTools(server);
+  registerCommonEventTools(server);
   registerOrderControlTools(server);
   registerOrderDashboardTools(server);
   registerCashReceiptTools(server);

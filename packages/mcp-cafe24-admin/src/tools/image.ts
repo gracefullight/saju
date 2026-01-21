@@ -23,16 +23,7 @@ async function cafe24_get_image_setting(params: ImageSettingParams) {
       content: [
         {
           type: "text" as const,
-          text:
-            `## Image Settings (Shop #${image.shop_no || 1})\n\n` +
-            `### Product Image Sizes\n` +
-            `| Type | Width | Height |\n` +
-            `|------|-------|--------|\n` +
-            `| Detail | ${sizes.detail_image_width || "N/A"} | ${sizes.detail_image_height || "N/A"} |\n` +
-            `| List | ${sizes.list_image_width || "N/A"} | ${sizes.list_image_height || "N/A"} |\n` +
-            `| Tiny | ${sizes.tiny_image_width || "N/A"} | ${sizes.tiny_image_height || "N/A"} |\n` +
-            `| Zoom | ${sizes.zoom_image_width || "N/A"} | ${sizes.zoom_image_height || "N/A"} |\n` +
-            `| Small | ${sizes.small_image_width || "N/A"} | ${sizes.small_image_height || "N/A"} |\n`,
+          text: formatImageSizes(image, sizes),
         },
       ],
       structuredContent: {
@@ -43,6 +34,20 @@ async function cafe24_get_image_setting(params: ImageSettingParams) {
   } catch (error) {
     return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
+}
+
+function formatImageSizes(image: Record<string, unknown>, sizes: Record<string, unknown>): string {
+  return (
+    `## Image Settings (Shop #${image.shop_no || 1})\n\n` +
+    `### Product Image Sizes\n` +
+    `| Type | Width | Height |\n` +
+    `|------|-------|--------|\n` +
+    `| Detail | ${sizes.detail_image_width || "N/A"} | ${sizes.detail_image_height || "N/A"} |\n` +
+    `| List | ${sizes.list_image_width || "N/A"} | ${sizes.list_image_height || "N/A"} |\n` +
+    `| Tiny | ${sizes.tiny_image_width || "N/A"} | ${sizes.tiny_image_height || "N/A"} |\n` +
+    `| Zoom | ${sizes.zoom_image_width || "N/A"} | ${sizes.zoom_image_height || "N/A"} |\n` +
+    `| Small | ${sizes.small_image_width || "N/A"} | ${sizes.small_image_height || "N/A"} |\n`
+  );
 }
 
 async function cafe24_update_image_setting(params: ImageSettingUpdateParams) {

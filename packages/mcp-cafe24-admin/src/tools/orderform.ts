@@ -6,13 +6,22 @@ import {
 } from "../schemas/orderform.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
+interface OrderFormSettings {
+  shop_no?: number;
+  buy_limit_type?: string;
+  guest_purchase_button_display?: string;
+  order_form_input_type?: string;
+  quick_signup?: string;
+  [key: string]: unknown;
+}
+
 async function cafe24_get_orderform_setting(params: z.infer<typeof OrderFormSettingsParamsSchema>) {
   try {
     const data = await makeApiRequest("/admin/orderform/setting", "GET", undefined, {
       shop_no: params.shop_no,
     });
     const responseData = data as { orderform?: Record<string, unknown> } | Record<string, unknown>;
-    const settings = (responseData.orderform || {}) as Record<string, any>;
+    const settings = (responseData.orderform || {}) as OrderFormSettings;
 
     return {
       content: [
@@ -43,7 +52,7 @@ async function cafe24_update_orderform_setting(
       request: requestParams,
     });
     const responseData = data as { orderform?: Record<string, unknown> } | Record<string, unknown>;
-    const settings = (responseData.orderform || {}) as Record<string, any>;
+    const settings = (responseData.orderform || {}) as OrderFormSettings;
 
     return {
       content: [

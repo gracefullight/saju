@@ -7,16 +7,28 @@ import {
 } from "@/schemas/payment.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
+interface PaymentSettingResult {
+  shop_no?: number;
+  use_escrow?: string;
+  use_escrow_account_transfer?: string;
+  use_escrow_virtual_account?: string;
+  pg_shipping_registration?: string;
+  purchase_protection_amount?: string | number;
+  use_direct_pay?: string;
+  payment_display_type?: string;
+  [key: string]: unknown;
+}
+
 async function cafe24_get_payment_setting(params: PaymentSettingParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
     const data = await makeApiRequest("/admin/payment/setting", "GET", undefined, queryParams);
     const responseData = data as { setting?: Record<string, unknown> } | Record<string, unknown>;
-    const setting = (responseData.setting || responseData) as Record<string, any>;
+    const setting = (responseData.setting || responseData) as PaymentSettingResult;
 
     return {
       content: [
@@ -53,14 +65,14 @@ async function cafe24_update_payment_setting(params: PaymentSettingUpdateParams)
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
 
     const data = await makeApiRequest("/admin/payment/setting", "PUT", requestBody);
     const responseData = data as { setting?: Record<string, unknown> } | Record<string, unknown>;
-    const setting = (responseData.setting || responseData) as Record<string, any>;
+    const setting = (responseData.setting || responseData) as PaymentSettingResult;
 
     return {
       content: [

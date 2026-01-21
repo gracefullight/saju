@@ -16,7 +16,7 @@ async function cafe24_get_points_setting(params: PointsSettingParams) {
       shop_no: params.shop_no,
     });
     const responseData = data as { point?: Record<string, unknown> } | Record<string, unknown>;
-    const point = (responseData.point || responseData) as Record<string, any>;
+    const point = (responseData.point || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -50,7 +50,7 @@ async function cafe24_update_points_setting(params: PointsSettingUpdateParams) {
       request: settings,
     });
     const responseData = data as { point?: Record<string, unknown> } | Record<string, unknown>;
-    const point = (responseData.point || responseData) as Record<string, any>;
+    const point = (responseData.point || responseData) as Record<string, unknown>;
 
     return {
       content: [

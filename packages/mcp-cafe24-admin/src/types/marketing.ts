@@ -1,8 +1,3 @@
-export interface Benefit {
-  benefit_no: number;
-  benefit_name: string;
-}
-
 export interface Promotion {
   promotion_no: number;
   promotion_name: string;

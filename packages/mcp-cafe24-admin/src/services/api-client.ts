@@ -24,7 +24,12 @@ export async function makeApiRequest<T = unknown>(
   const mallId = process.env.CAFE24_MALL_ID;
   const clientId = process.env.CAFE24_CLIENT_ID;
   const clientSecret = process.env.CAFE24_CLIENT_SECRET;
-  const token = await getAccessToken(mallId!, clientId, clientSecret);
+
+  if (!mallId) {
+    throw new Error("CAFE24_MALL_ID environment variable is required");
+  }
+
+  const token = await getAccessToken(mallId, clientId, clientSecret);
 
   try {
     const response = await axios({
@@ -53,53 +58,57 @@ export async function makeApiRequest<T = unknown>(
     // Return data directly
     return response.data as T;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response) {
-        const status = axiosError.response.status;
-        const errorData = axiosError.response.data as {
-          error?: { message?: string };
-        };
-
-        switch (status) {
-          case 400:
-            throw new Error(
-              `Bad Request: ${errorData?.error?.message || "Invalid request parameters"}`,
-            );
-          case 401:
-            throw new Error(
-              "Unauthorized: Invalid or expired access token. Please check your credentials or refresh your token.",
-            );
-          case 403:
-            throw new Error("Forbidden: Access denied or insufficient permissions");
-          case 404:
-            throw new Error("Not Found: Resource not found");
-          case 409:
-            throw new Error("Conflict: Resource already exists");
-          case 422:
-            throw new Error(
-              `Unprocessable Entity: ${errorData?.error?.message || "Validation failed"}`,
-            );
-          case 429:
-            throw new Error(
-              "Too Many Requests: Rate limit exceeded. Please wait before making more requests.",
-            );
-          case 500:
-            throw new Error(
-              "Internal Server Error: Temporary error occurred. Please try again later.",
-            );
-          case 503:
-            throw new Error("Service Unavailable: Server is temporarily unavailable");
-          case 504:
-            throw new Error("Gateway Timeout: Request timed out. Please try again.");
-          default:
-            throw new Error(`API Request failed with status ${status}`);
-        }
-      } else if (error.code === "ECONNABORTED") {
-        throw new Error("Request timed out. Please try again.");
-      }
-    }
+    handleAxiosError(error);
     throw error;
+  }
+}
+
+function handleAxiosError(error: unknown): void {
+  if (axios.isAxiosError(error)) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response) {
+      const status = axiosError.response.status;
+      const errorData = axiosError.response.data as {
+        error?: { message?: string };
+      };
+
+      switch (status) {
+        case 400:
+          throw new Error(
+            `Bad Request: ${errorData?.error?.message || "Invalid request parameters"}`,
+          );
+        case 401:
+          throw new Error(
+            "Unauthorized: Invalid or expired access token. Please check your credentials or refresh your token.",
+          );
+        case 403:
+          throw new Error("Forbidden: Access denied or insufficient permissions");
+        case 404:
+          throw new Error("Not Found: Resource not found");
+        case 409:
+          throw new Error("Conflict: Resource already exists");
+        case 422:
+          throw new Error(
+            `Unprocessable Entity: ${errorData?.error?.message || "Validation failed"}`,
+          );
+        case 429:
+          throw new Error(
+            "Too Many Requests: Rate limit exceeded. Please wait before making more requests.",
+          );
+        case 500:
+          throw new Error(
+            "Internal Server Error: Temporary error occurred. Please try again later.",
+          );
+        case 503:
+          throw new Error("Service Unavailable: Server is temporarily unavailable");
+        case 504:
+          throw new Error("Gateway Timeout: Request timed out. Please try again.");
+        default:
+          throw new Error(`API Request failed with status ${status}`);
+      }
+    } else if (error.code === "ECONNABORTED") {
+      throw new Error("Request timed out. Please try again.");
+    }
   }
 }
 

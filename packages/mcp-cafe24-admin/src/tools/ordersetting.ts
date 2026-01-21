@@ -6,16 +6,28 @@ import {
 } from "../schemas/ordersetting.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
+interface OrderSettingResult {
+  shop_no?: number;
+  claim_request?: string;
+  stock_recover?: string;
+  auto_delivery_completion?: string;
+  delivery_completion_after_days?: number;
+  auto_cancel?: string;
+  exchange_shipping_fee?: string;
+  return_shipping_fee?: string;
+  [key: string]: unknown;
+}
+
 async function cafe24_get_order_setting(params: z.infer<typeof OrderSettingParamsSchema>) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
     const data = await makeApiRequest("/admin/orders/setting", "GET", undefined, queryParams);
     const responseData = data as { order?: Record<string, unknown> } | Record<string, unknown>;
-    const order = (responseData.order || responseData) as Record<string, any>;
+    const order = (responseData.order || responseData) as OrderSettingResult;
 
     return {
       content: [
@@ -42,14 +54,14 @@ async function cafe24_update_order_setting(params: z.infer<typeof OrderSettingUp
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
 
     const data = await makeApiRequest("/admin/orders/setting", "PUT", requestBody);
     const responseData = data as { order?: Record<string, unknown> } | Record<string, unknown>;
-    const order = (responseData.order || responseData) as Record<string, any>;
+    const order = (responseData.order || responseData) as OrderSettingResult;
 
     return {
       content: [

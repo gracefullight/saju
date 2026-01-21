@@ -9,14 +9,14 @@ import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_get_product_common_setting(params: ProductSettingParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
     const data = await makeApiRequest("/admin/products/setting", "GET", undefined, queryParams);
     const responseData = data as { product?: Record<string, unknown> } | Record<string, unknown>;
-    const product = (responseData.product || responseData) as Record<string, any>;
+    const product = (responseData.product || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -48,14 +48,14 @@ async function cafe24_update_product_common_setting(params: ProductSettingUpdate
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
 
     const data = await makeApiRequest("/admin/products/setting", "PUT", requestBody);
     const responseData = data as { product?: Record<string, unknown> } | Record<string, unknown>;
-    const product = (responseData.product || responseData) as Record<string, any>;
+    const product = (responseData.product || responseData) as Record<string, unknown>;
 
     return {
       content: [

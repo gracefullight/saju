@@ -1,6 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type DashboardParams, DashboardParamsSchema } from "@/schemas/dashboard.js";
-import type { Dashboard, SummaryStat } from "@/types/index.js";
+import type { Dashboard, SalesStat, SummaryStat } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_get_dashboard(params: DashboardParams) {
@@ -29,27 +29,7 @@ async function cafe24_get_dashboard(params: DashboardParams) {
       content: [
         {
           type: "text" as const,
-          text:
-            `## Dashboard (Shop #${dashboard.shop_no || 1})\n\n` +
-            `### Today (${todayStats.date || "N/A"})\n` +
-            `- **Order Price**: ${todayStats.order_price || "0.00"}\n` +
-            `- **Paid Price**: ${todayStats.paid_price || "0.00"}\n` +
-            `- **Refund Price**: ${todayStats.refund_price || "0.00"}\n` +
-            `- **Orders**: ${todayStats.order_count || 0} | **Paid**: ${todayStats.payed_count || 0} | **Refunds**: ${todayStats.refund_count || 0}\n` +
-            `- **Shipping**: ${todayStats.shipping_count || 0} | **Shipped**: ${todayStats.shipped_count || 0}\n` +
-            `- **Canceled**: ${todayStats.canceled_count || 0} | **Returned**: ${todayStats.returned_count || 0} | **Exchanged**: ${todayStats.exchanged_count || 0}\n\n` +
-            `### Weekly Summary\n` +
-            `- **Total Orders**: ${weeklyStats.ordered_total_price || "0.00"} (${weeklyStats.ordered_count || 0} orders)\n` +
-            `- **Total Paid**: ${weeklyStats.payed_total_price || "0.00"} (${weeklyStats.payed_count || 0} payments)\n` +
-            `- **Total Refunds**: ${weeklyStats.refunded_total_price || "0.00"} (${weeklyStats.refunded_count || 0} refunds)\n\n` +
-            `### Monthly Summary\n` +
-            `- **Total Orders**: ${monthlyStats.ordered_total_price || "0.00"} (${monthlyStats.ordered_count || 0} orders)\n` +
-            `- **Total Paid**: ${monthlyStats.payed_total_price || "0.00"} (${monthlyStats.payed_count || 0} payments)\n` +
-            `- **Total Refunds**: ${monthlyStats.refunded_total_price || "0.00"} (${monthlyStats.refunded_count || 0} refunds)\n\n` +
-            `### Store Status\n` +
-            `- **Sold Out Products**: ${dashboard.sold_out_products_count || 0}\n` +
-            `- **New Members**: ${dashboard.new_members_count || 0}\n` +
-            `- **Boards**: ${boardList.length}\n`,
+          text: formatDashboard(dashboard, todayStats, weeklyStats, monthlyStats, boardList),
         },
       ],
       structuredContent: {
@@ -65,6 +45,70 @@ async function cafe24_get_dashboard(params: DashboardParams) {
   } catch (error) {
     return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
+}
+
+function formatDashboard(
+  dashboard: Dashboard,
+  todayStats: SalesStat,
+  weeklyStats: SummaryStat,
+  monthlyStats: SummaryStat,
+  boardList: unknown[],
+): string {
+  const shopNo = dashboard.shop_no || 1;
+
+  return (
+    `## Dashboard (Shop #${shopNo})\n\n` +
+    formatDailyStats(todayStats) +
+    formatWeeklyStats(weeklyStats) +
+    formatMonthlyStats(monthlyStats) +
+    `### Store Status\n` +
+    `- **Sold Out Products**: ${dashboard.sold_out_products_count || 0}\n` +
+    `- **New Members**: ${dashboard.new_members_count || 0}\n` +
+    `- **Boards**: ${boardList.length}\n`
+  );
+}
+
+function formatDailyStats(stats: SalesStat): string {
+  const date = stats.date || "N/A";
+  const orderPrice = stats.order_price || "0.00";
+  const paidPrice = stats.paid_price || "0.00";
+  const refundPrice = stats.refund_price || "0.00";
+
+  return (
+    `### Today (${date})\n` +
+    `- **Order Price**: ${orderPrice}\n` +
+    `- **Paid Price**: ${paidPrice}\n` +
+    `- **Refund Price**: ${refundPrice}\n` +
+    `- **Orders**: ${stats.order_count || 0} | **Paid**: ${stats.payed_count || 0} | **Refunds**: ${stats.refund_count || 0}\n` +
+    `- **Shipping**: ${stats.shipping_count || 0} | **Shipped**: ${stats.shipped_count || 0}\n` +
+    `- **Canceled**: ${stats.canceled_count || 0} | **Returned**: ${stats.returned_count || 0} | **Exchanged**: ${stats.exchanged_count || 0}\n\n`
+  );
+}
+
+function formatWeeklyStats(stats: SummaryStat): string {
+  const orderTotal = stats.ordered_total_price || "0.00";
+  const paidTotal = stats.payed_total_price || "0.00";
+  const refundTotal = stats.refunded_total_price || "0.00";
+
+  return (
+    `### Weekly Summary\n` +
+    `- **Total Orders**: ${orderTotal} (${stats.ordered_count || 0} orders)\n` +
+    `- **Total Paid**: ${paidTotal} (${stats.payed_count || 0} payments)\n` +
+    `- **Total Refunds**: ${refundTotal} (${stats.refunded_count || 0} refunds)\n\n`
+  );
+}
+
+function formatMonthlyStats(stats: SummaryStat): string {
+  const orderTotal = stats.ordered_total_price || "0.00";
+  const paidTotal = stats.payed_total_price || "0.00";
+  const refundTotal = stats.refunded_total_price || "0.00";
+
+  return (
+    `### Monthly Summary\n` +
+    `- **Total Orders**: ${orderTotal} (${stats.ordered_count || 0} orders)\n` +
+    `- **Total Paid**: ${paidTotal} (${stats.payed_count || 0} payments)\n` +
+    `- **Total Refunds**: ${refundTotal} (${stats.refunded_count || 0} refunds)\n\n`
+  );
 }
 
 export function registerTools(server: McpServer): void {

@@ -20,32 +20,7 @@ import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_list_orders(params: z.infer<typeof OrdersSearchParamsSchema>) {
   try {
-    const queryParams: Record<string, unknown> = {
-      shop_no: params.shop_no,
-      limit: params.limit,
-      offset: params.offset,
-      date_type: params.date_type,
-    };
-
-    if (params.start_date) queryParams.start_date = params.start_date;
-    if (params.end_date) queryParams.end_date = params.end_date;
-    if (params.order_id) queryParams.order_id = params.order_id;
-    if (params.order_status) queryParams.order_status = params.order_status;
-    if (params.payment_status) queryParams.payment_status = params.payment_status;
-    if (params.member_type) queryParams.member_type = params.member_type;
-    if (params.group_no) queryParams.group_no = params.group_no;
-    if (params.buyer_name) queryParams.buyer_name = params.buyer_name;
-    if (params.receiver_name) queryParams.receiver_name = params.receiver_name;
-    if (params.member_id) queryParams.member_id = params.member_id;
-    if (params.member_email) queryParams.member_email = params.member_email;
-    if (params.product_no) queryParams.product_no = params.product_no;
-    if (params.product_code) queryParams.product_code = params.product_code;
-    if (params.order_place_id) queryParams.order_place_id = params.order_place_id;
-    if (params.payment_method) queryParams.payment_method = params.payment_method;
-    if (params.subscription) queryParams.subscription = params.subscription;
-    if (params.market_order_no) queryParams.market_order_no = params.market_order_no;
-    if (params.market_seller_id) queryParams.market_seller_id = params.market_seller_id;
-    if (params.embed) queryParams.embed = params.embed;
+    const queryParams = buildOrderSearchParams(params);
 
     const data = await makeApiRequest<{
       orders: Order[];
@@ -60,18 +35,7 @@ async function cafe24_list_orders(params: z.infer<typeof OrdersSearchParamsSchem
           type: "text" as const,
           text:
             `# Cafe24 Orders (Total: ${orders.length} in this page)\n\n` +
-            orders
-              .map(
-                (o) =>
-                  `## Order #${o.order_id}\n` +
-                  `- **Billing Name**: ${o.billing_name}\n` +
-                  `- **Payment Method**: ${o.payment_method_name.join(", ")}\n` +
-                  `- **Amount**: ${o.payment_amount} ${o.currency}\n` +
-                  `- **Date**: ${o.order_date}\n` +
-                  `- **Shipping Status**: ${o.shipping_status}\n` +
-                  `- **Status**: ${o.paid === "T" ? "Paid" : "Unpaid"}, ${o.canceled === "T" ? "Canceled" : "Active"}\n`,
-              )
-              .join("\n"),
+            orders.map(formatOrderListItem).join("\n"),
         },
       ],
       structuredContent: {
@@ -88,29 +52,7 @@ async function cafe24_list_orders(params: z.infer<typeof OrdersSearchParamsSchem
 
 async function cafe24_count_orders(params: z.infer<typeof OrdersCountParamsSchema>) {
   try {
-    const queryParams: Record<string, unknown> = {
-      shop_no: params.shop_no,
-      date_type: params.date_type,
-    };
-
-    if (params.start_date) queryParams.start_date = params.start_date;
-    if (params.end_date) queryParams.end_date = params.end_date;
-    if (params.order_id) queryParams.order_id = params.order_id;
-    if (params.order_status) queryParams.order_status = params.order_status;
-    if (params.payment_status) queryParams.payment_status = params.payment_status;
-    if (params.member_type) queryParams.member_type = params.member_type;
-    if (params.group_no) queryParams.group_no = params.group_no;
-    if (params.buyer_name) queryParams.buyer_name = params.buyer_name;
-    if (params.receiver_name) queryParams.receiver_name = params.receiver_name;
-    if (params.member_id) queryParams.member_id = params.member_id;
-    if (params.member_email) queryParams.member_email = params.member_email;
-    if (params.product_no) queryParams.product_no = params.product_no;
-    if (params.product_code) queryParams.product_code = params.product_code;
-    if (params.order_place_id) queryParams.order_place_id = params.order_place_id;
-    if (params.subscription) queryParams.subscription = params.subscription;
-    if (params.multiple_addresses) queryParams.multiple_addresses = params.multiple_addresses;
-    if (params.first_order) queryParams.first_order = params.first_order;
-    if (params.refund_status) queryParams.refund_status = params.refund_status;
+    const queryParams = buildOrderSearchParams(params);
 
     const data = await makeApiRequest<{ count: number }>(
       "/admin/orders/count",
@@ -133,6 +75,63 @@ async function cafe24_count_orders(params: z.infer<typeof OrdersCountParamsSchem
   } catch (error) {
     return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
+}
+
+function buildOrderSearchParams(
+  params: z.infer<typeof OrdersSearchParamsSchema> | z.infer<typeof OrdersCountParamsSchema>,
+): Record<string, unknown> {
+  const queryParams: Record<string, unknown> = {
+    shop_no: params.shop_no,
+    date_type: params.date_type,
+  };
+
+  if ("limit" in params) queryParams.limit = params.limit;
+  if ("offset" in params) queryParams.offset = params.offset;
+
+  const optionalFields = [
+    "start_date",
+    "end_date",
+    "order_id",
+    "order_status",
+    "payment_status",
+    "member_type",
+    "group_no",
+    "buyer_name",
+    "receiver_name",
+    "member_id",
+    "member_email",
+    "product_no",
+    "product_code",
+    "order_place_id",
+    "payment_method",
+    "subscription",
+    "market_order_no",
+    "market_seller_id",
+    "embed",
+    "multiple_addresses",
+    "first_order",
+    "refund_status",
+  ];
+
+  for (const field of optionalFields) {
+    if ((params as Record<string, unknown>)[field] !== undefined) {
+      queryParams[field] = (params as Record<string, unknown>)[field];
+    }
+  }
+
+  return queryParams;
+}
+
+function formatOrderListItem(o: Order): string {
+  return (
+    `## Order #${o.order_id}\n` +
+    `- **Billing Name**: ${o.billing_name}\n` +
+    `- **Payment Method**: ${o.payment_method_name.join(", ")}\n` +
+    `- **Amount**: ${o.payment_amount} ${o.currency}\n` +
+    `- **Date**: ${o.order_date}\n` +
+    `- **Shipping Status**: ${o.shipping_status}\n` +
+    `- **Status**: ${o.paid === "T" ? "Paid" : "Unpaid"}, ${o.canceled === "T" ? "Canceled" : "Active"}\n`
+  );
 }
 
 async function cafe24_get_order(params: z.infer<typeof OrderDetailParamsSchema>) {

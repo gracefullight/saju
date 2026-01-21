@@ -1,11 +1,204 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
+  type BenefitCreate,
+  BenefitCreateSchema,
+  type BenefitDelete,
+  BenefitDeleteSchema,
   type BenefitSettingParams,
   BenefitSettingParamsSchema,
   type BenefitSettingUpdateParams,
   BenefitSettingUpdateParamsSchema,
+  type BenefitsSearchParams,
+  BenefitsSearchParamsSchema,
+  type BenefitUpdate,
+  BenefitUpdateSchema,
 } from "@/schemas/benefit.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import type {
+  BenefitCreateRequest,
+  BenefitResponse,
+  BenefitsCountResponse,
+  BenefitsResponse,
+  BenefitUpdateRequest,
+} from "../types/benefit.js";
+
+async function cafe24_list_benefits(params: BenefitsSearchParams) {
+  try {
+    const { shop_no, ...queryParams } = params;
+    const requestParams: Record<string, unknown> = {
+      shop_no: shop_no ?? 1,
+      ...queryParams,
+    };
+
+    const data = await makeApiRequest("/admin/benefits", "GET", undefined, requestParams);
+    const response = data as BenefitsResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Found ${response.benefits.length} benefits`,
+        },
+      ],
+      structuredContent: response.benefits as unknown as Record<string, unknown>,
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
+async function cafe24_count_benefits(params: BenefitsSearchParams) {
+  try {
+    const { shop_no, ...queryParams } = params;
+    const requestParams: Record<string, unknown> = {
+      shop_no: shop_no ?? 1,
+      ...queryParams,
+    };
+
+    const data = await makeApiRequest("/admin/benefits/count", "GET", undefined, requestParams);
+    const response = data as BenefitsCountResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Total benefits count: ${response.count}`,
+        },
+      ],
+      structuredContent: { count: response.count },
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
+async function cafe24_get_benefit(params: { shop_no?: number; benefit_no: number }) {
+  try {
+    const { shop_no, benefit_no } = params;
+    const queryParams: Record<string, unknown> = {
+      shop_no: shop_no ?? 1,
+    };
+
+    const data = await makeApiRequest(
+      `/admin/benefits/${benefit_no}`,
+      "GET",
+      undefined,
+      queryParams,
+    );
+    const response = data as BenefitResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `## Benefit: ${response.benefit.benefit_name}
+- ID: ${response.benefit.benefit_no}
+- Type: ${response.benefit.benefit_type}
+- Status: ${response.benefit.use_benefit === "T" ? "Active" : "Inactive"}
+- Period: ${
+            response.benefit.use_benefit_period === "T"
+              ? `${response.benefit.benefit_start_date} ~ ${response.benefit.benefit_end_date}`
+              : "No Limit"
+          }
+`,
+        },
+      ],
+      structuredContent: response.benefit as unknown as Record<string, unknown>,
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
+async function cafe24_create_benefit(params: BenefitCreate) {
+  try {
+    const { shop_no, ...createData } = params;
+    const requestBody: BenefitCreateRequest = {
+      shop_no: shop_no ?? 1,
+      request: createData,
+    };
+
+    const data = await makeApiRequest("/admin/benefits", "POST", requestBody);
+    const response = data as BenefitResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Successfully created benefit: ${response.benefit.benefit_name} (ID: ${response.benefit.benefit_no})`,
+        },
+      ],
+      structuredContent: response.benefit as unknown as Record<string, unknown>,
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
+async function cafe24_update_benefit(params: BenefitUpdate) {
+  try {
+    const { shop_no, benefit_no, ...updateData } = params;
+
+    // Type assertion to bypass strict typing of BenefitUpdateRequest for partial updates if needed,
+    // though the provided interface is stricter.
+    // The schema allows optional fields, so we need to construct the request carefully.
+
+    const requestBody: BenefitUpdateRequest = {
+      shop_no: shop_no ?? 1,
+      request: updateData as BenefitUpdateRequest["request"],
+    };
+
+    const data = await makeApiRequest(`/admin/benefits/${benefit_no}`, "PUT", requestBody);
+    // PUT usually returns 204 or minimal response, but Cafe24 often returns the updated object or just success
+    // Documentation says it returns parameters shop_no, benefit_no in "benefit" object
+    const response = data as BenefitResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Successfully updated benefit ${benefit_no}`,
+        },
+      ],
+      structuredContent: (response.benefit || response) as unknown as Record<string, unknown>,
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
+async function cafe24_delete_benefit(params: BenefitDelete) {
+  try {
+    const { shop_no, benefit_no } = params;
+
+    // DELETE with body? Cafe24 docs sometimes use query params for DELETE,
+    // but the example shows body-like behavior or just path.
+    // However, usually DELETE requests don't have a body. The example CURL shows headers and url.
+    // Wait, the CURL example has no body, but shows shop_no in description/response.
+    // Let's use query params for safety for shop_no.
+    const queryParams = { shop_no: shop_no ?? 1 };
+
+    const data = await makeApiRequest(
+      `/admin/benefits/${benefit_no}`,
+      "DELETE",
+      undefined,
+      queryParams,
+    );
+    const response = data as BenefitResponse;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Successfully deleted benefit ${response.benefit.benefit_no}`,
+        },
+      ],
+      structuredContent: response.benefit as unknown as Record<string, unknown>,
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
 
 async function cafe24_get_benefit_setting(params: BenefitSettingParams) {
   try {
@@ -153,5 +346,65 @@ export function registerTools(server: McpServer): void {
       },
     },
     cafe24_update_benefit_setting,
+  );
+
+  server.registerTool(
+    "cafe24_list_benefits",
+    {
+      title: "List Benefits",
+      description: "Search and list benefits",
+      inputSchema: BenefitsSearchParamsSchema,
+    },
+    cafe24_list_benefits,
+  );
+
+  server.registerTool(
+    "cafe24_count_benefits",
+    {
+      title: "Count Benefits",
+      description: "Get total count of benefits matching search criteria",
+      inputSchema: BenefitsSearchParamsSchema,
+    },
+    cafe24_count_benefits,
+  );
+
+  server.registerTool(
+    "cafe24_get_benefit",
+    {
+      title: "Get Benefit",
+      description: "Retrieve details of a specific benefit",
+      inputSchema: BenefitDeleteSchema, // Reusing delete schema as it has same shop_no+benefit_no structure
+    },
+    cafe24_get_benefit,
+  );
+
+  server.registerTool(
+    "cafe24_create_benefit",
+    {
+      title: "Create Benefit",
+      description: "Create a new benefit",
+      inputSchema: BenefitCreateSchema,
+    },
+    cafe24_create_benefit,
+  );
+
+  server.registerTool(
+    "cafe24_update_benefit",
+    {
+      title: "Update Benefit",
+      description: "Update an existing benefit",
+      inputSchema: BenefitUpdateSchema,
+    },
+    cafe24_update_benefit,
+  );
+
+  server.registerTool(
+    "cafe24_delete_benefit",
+    {
+      title: "Delete Benefit",
+      description: "Delete a benefit",
+      inputSchema: BenefitDeleteSchema,
+    },
+    cafe24_delete_benefit,
   );
 }

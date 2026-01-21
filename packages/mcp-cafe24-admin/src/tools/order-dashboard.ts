@@ -4,57 +4,97 @@ import {
   GetOrderDashboardParamsSchema,
 } from "../schemas/order-dashboard.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { GetOrderDashboardResponse } from "../types/order-dashboard.js";
+import type { GetOrderDashboardResponse, OrderDashboard } from "../types/order-dashboard.js";
 
 async function cafe24_get_order_dashboard(params: GetOrderDashboardParams) {
   try {
     const { shop_no } = params;
-    const data = (await makeApiRequest<GetOrderDashboardResponse>(
+    const data = await makeApiRequest<GetOrderDashboardResponse>(
       "/admin/orders/dashboard",
       "GET",
       undefined,
       { shop_no },
-    )) as unknown as Record<string, unknown>;
+    );
 
-    const dashboard = (data.dashboard as any) || {};
+    const dashboard = data.dashboard;
 
     return {
       content: [
         {
           type: "text" as const,
-          text:
-            `# Order Dashboard (Shop #${dashboard.shop_no || shop_no})\n\n` +
-            `## Order Counts\n` +
-            `- **Total Orders**: ${dashboard.total_order_count || 0}\n` +
-            `- **Total Paid**: ${dashboard.total_paid_count || 0}\n` +
-            `- **Total Refunds**: ${dashboard.total_refund_count || 0}\n\n` +
-            `## Amounts\n` +
-            `- **Order Amount**: ${dashboard.total_order_amount || "0.00"}\n` +
-            `- **Paid Amount**: ${dashboard.total_paid_amount || "0.00"}\n` +
-            `- **Refund Amount**: ${dashboard.total_refund_amount || "0.00"}\n\n` +
-            `## Claims Status\n` +
-            `### Requests\n` +
-            `- **Cancellation**: ${dashboard.cancellation_request_count || 0}\n` +
-            `- **Exchange**: ${dashboard.exchange_request_count || 0}\n` +
-            `- **Return**: ${dashboard.return_request_count || 0}\n\n` +
-            `### Processing\n` +
-            `- **Cancellation**: ${dashboard.cancellation_processing_count || 0}\n` +
-            `- **Exchange**: ${dashboard.exchange_processing_count || 0}\n` +
-            `- **Return**: ${dashboard.return_processing_count || 0}\n\n` +
-            `### Received\n` +
-            `- **Cancellation**: ${dashboard.cancellation_received_count || 0}\n` +
-            `- **Exchange**: ${dashboard.exchange_received_count || 0}\n` +
-            `- **Return**: ${dashboard.return_received_count || 0}\n\n` +
-            `- **Refund Pending**: ${dashboard.refund_pending_count || 0}\n`,
+          text: formatOrderDashboard(dashboard, shop_no),
         },
       ],
-      structuredContent: data,
+      structuredContent: data as unknown as Record<string, unknown>,
     };
   } catch (error) {
     return {
       content: [{ type: "text" as const, text: handleApiError(error) }],
     };
   }
+}
+
+function formatOrderDashboard(dashboard: OrderDashboard, shop_no?: number): string {
+  const {
+    shop_no: dashboardShopNo,
+    total_order_count,
+    total_paid_count,
+    total_refund_count,
+    total_order_amount,
+    total_paid_amount,
+    total_refund_amount,
+    cancellation_request_count,
+    exchange_request_count,
+    return_request_count,
+    cancellation_processing_count,
+    exchange_processing_count,
+    return_processing_count,
+    cancellation_received_count,
+    exchange_received_count,
+    return_received_count,
+    refund_pending_count,
+  } = dashboard;
+
+  const orderCounts =
+    `## Order Counts\n` +
+    `- **Total Orders**: ${total_order_count}\n` +
+    `- **Total Paid**: ${total_paid_count}\n` +
+    `- **Total Refunds**: ${total_refund_count}\n\n`;
+
+  const amounts =
+    `## Amounts\n` +
+    `- **Order Amount**: ${total_order_amount}\n` +
+    `- **Paid Amount**: ${total_paid_amount}\n` +
+    `- **Refund Amount**: ${total_refund_amount}\n\n`;
+
+  const requests =
+    `### Requests\n` +
+    `- **Cancellation**: ${cancellation_request_count}\n` +
+    `- **Exchange**: ${exchange_request_count}\n` +
+    `- **Return**: ${return_request_count}\n\n`;
+
+  const processing =
+    `### Processing\n` +
+    `- **Cancellation**: ${cancellation_processing_count}\n` +
+    `- **Exchange**: ${exchange_processing_count}\n` +
+    `- **Return**: ${return_processing_count}\n\n`;
+
+  const received =
+    `### Received\n` +
+    `- **Cancellation**: ${cancellation_received_count}\n` +
+    `- **Exchange**: ${exchange_received_count}\n` +
+    `- **Return**: ${return_received_count}\n\n`;
+
+  return (
+    `# Order Dashboard (Shop #${dashboardShopNo || shop_no})\n\n` +
+    orderCounts +
+    amounts +
+    `## Claims Status\n` +
+    requests +
+    processing +
+    received +
+    `- **Refund Pending**: ${refund_pending_count}\n`
+  );
 }
 
 export function registerTools(server: McpServer): void {

@@ -9,14 +9,14 @@ import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_get_policy(params: PolicyParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
     const data = await makeApiRequest("/admin/policy", "GET", undefined, queryParams);
     const responseData = data as { policy?: Record<string, unknown> } | Record<string, unknown>;
-    const policy = (responseData.policy || responseData) as Record<string, any>;
+    const policy = (responseData.policy || responseData) as Record<string, unknown>;
 
     const truncate = (str: string | undefined | null) => {
       if (!str) return "N/A";
@@ -29,8 +29,8 @@ async function cafe24_get_policy(params: PolicyParams) {
           type: "text" as const,
           text:
             `## Policy Settings (Shop #${policy.shop_no || 1})\n\n` +
-            `- **Terms of Use**: ${truncate(policy.terms_using_mall)}\n` +
-            `- **Privacy Policy (All)**: ${truncate(policy.privacy_all)}\n` +
+            `- **Terms of Use**: ${truncate(policy.terms_using_mall as string)}\n` +
+            `- **Privacy Policy (All)**: ${truncate(policy.privacy_all as string)}\n` +
             `- **Privacy Policy (Signup)**: ${policy.use_privacy_join === "T" ? "Enabled" : "Disabled"}\n` +
             `- **Withdrawal Policy**: ${policy.use_withdrawal === "T" ? "Enabled" : "Disabled"} (Required: ${policy.required_withdrawal === "T" ? "Yes" : "No"})\n`,
         },
@@ -55,14 +55,14 @@ async function cafe24_update_policy(params: PolicyUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
 
     const data = await makeApiRequest("/admin/policy", "PUT", requestBody);
     const responseData = data as { policy?: Record<string, unknown> } | Record<string, unknown>;
-    const policy = (responseData.policy || responseData) as Record<string, any>;
+    const policy = (responseData.policy || responseData) as Record<string, unknown>;
 
     return {
       content: [

@@ -13,7 +13,11 @@ import {
   type SubscriptionShipmentUpdate,
   SubscriptionShipmentUpdateSchema,
 } from "@/schemas/subscription.js";
-import type { SubscriptionShipment, SubscriptionShipmentSetting } from "@/types/index.js";
+import type {
+  SubscriptionShipment,
+  SubscriptionShipmentSetting,
+  UpdateSubscriptionShipmentItemsResponse,
+} from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_list_subscription_shipment_settings(params: SubscriptionShipmentParams) {
@@ -183,13 +187,12 @@ async function cafe24_update_subscription_shipment_items(params: SubscriptionShi
       requests,
     };
 
-    const data = await makeApiRequest(
+    const data = await makeApiRequest<UpdateSubscriptionShipmentItemsResponse>(
       `/admin/subscription/shipments/${subscription_id}/items`,
       "PUT",
       requestBody,
     );
-    const responseData = data as { items?: Record<string, unknown>[] } | Record<string, unknown>;
-    const items = (responseData.items || []) as any[];
+    const items = data.items || [];
 
     return {
       content: [

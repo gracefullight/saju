@@ -26,14 +26,14 @@ import type {
 async function cafe24_list_shipments(params: ListShipmentsParams) {
   try {
     const { order_id, shop_no } = params;
-    const data = (await makeApiRequest<ListShipmentsResponse>(
+    const data = await makeApiRequest<ListShipmentsResponse>(
       `/admin/orders/${order_id}/shipments`,
       "GET",
       undefined,
       { shop_no },
-    )) as unknown as Record<string, unknown>;
+    );
 
-    const shipments = (data.shipments as any[]) || [];
+    const shipments = data.shipments || [];
 
     return {
       content: [
@@ -41,17 +41,17 @@ async function cafe24_list_shipments(params: ListShipmentsParams) {
           type: "text" as const,
           text: `# Shipments for Order ${order_id}\n\n${shipments
             .map(
-              (s: any) =>
+              (s) =>
                 `## Shipment ${s.shipping_code}\n` +
                 `- Status: ${s.status}\n` +
                 `- Tracking No: ${s.tracking_no || "N/A"}\n` +
                 `- Shipping Company: ${s.shipping_company_code || "N/A"}\n` +
-                `- Items: ${s.items?.map((i: any) => i.order_item_code).join(", ")}\n`,
+                `- Items: ${s.items?.map((i) => i.order_item_code).join(", ")}\n`,
             )
             .join("\n")}`,
         },
       ],
-      structuredContent: data,
+      structuredContent: data as unknown as Record<string, unknown>,
     };
   } catch (error) {
     return {
@@ -145,12 +145,12 @@ async function cafe24_delete_shipment(params: DeleteShipmentParams) {
 async function cafe24_bulk_create_shipments(params: BulkCreateShipmentInput) {
   try {
     const { shop_no, requests } = params;
-    const data = (await makeApiRequest<BulkCreateShipmentResponse>("/admin/shipments", "POST", {
+    const data = await makeApiRequest<BulkCreateShipmentResponse>("/admin/shipments", "POST", {
       shop_no,
       requests,
-    })) as unknown as Record<string, unknown>;
+    });
 
-    const shipments = (data.shipments as any[]) || [];
+    const shipments = data.shipments || [];
 
     return {
       content: [
@@ -159,7 +159,7 @@ async function cafe24_bulk_create_shipments(params: BulkCreateShipmentInput) {
           text: `Successfully created ${shipments.length} shipment(s).`,
         },
       ],
-      structuredContent: data,
+      structuredContent: data as unknown as Record<string, unknown>,
     };
   } catch (error) {
     return {
@@ -171,12 +171,12 @@ async function cafe24_bulk_create_shipments(params: BulkCreateShipmentInput) {
 async function cafe24_bulk_update_shipments(params: BulkUpdateShipmentInput) {
   try {
     const { shop_no, requests } = params;
-    const data = (await makeApiRequest<BulkUpdateShipmentResponse>("/admin/shipments", "PUT", {
+    const data = await makeApiRequest<BulkUpdateShipmentResponse>("/admin/shipments", "PUT", {
       shop_no,
       requests,
-    })) as unknown as Record<string, unknown>;
+    });
 
-    const shipments = (data.shipments as any[]) || [];
+    const shipments = data.shipments || [];
 
     return {
       content: [
@@ -185,7 +185,7 @@ async function cafe24_bulk_update_shipments(params: BulkUpdateShipmentInput) {
           text: `Successfully updated ${shipments.length} shipment(s).`,
         },
       ],
-      structuredContent: data,
+      structuredContent: data as unknown as Record<string, unknown>,
     };
   } catch (error) {
     return {

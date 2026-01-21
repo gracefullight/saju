@@ -10,9 +10,8 @@ import {
   ProductPropertiesParamsSchema,
   type ProductPropertiesUpdateParams,
   ProductPropertiesUpdateParamsSchema,
-  type TextStyle,
 } from "@/schemas/product-properties.js";
-import type { DisplaySetting } from "@/types/index.js";
+import type { DisplaySetting, TextStyle } from "@/types/index.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_get_product_properties_setting(params: ProductPropertiesParams) {
@@ -28,7 +27,7 @@ async function cafe24_get_product_properties_setting(params: ProductPropertiesPa
       undefined,
       queryParams,
     );
-    const product = (data as any).product || data;
+    const product = ((data as Record<string, unknown>).product || data) as DisplaySetting;
 
     const formatTextStyle = (style?: TextStyle) => {
       if (!style) return "N/A";
@@ -76,7 +75,7 @@ async function cafe24_update_product_properties_setting(params: ProductPropertie
       "PUT",
       requestBody,
     );
-    const product = (data as any).product || data;
+    const product = ((data as Record<string, unknown>).product || data) as DisplaySetting;
 
     return {
       content: [

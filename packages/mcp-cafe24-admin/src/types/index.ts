@@ -1,4 +1,5 @@
 export * from "./article-icon.js";
+export * from "./benefit.js";
 export * from "./board.js";
 export * from "./board-article.js";
 export * from "./board-comment.js";
@@ -8,6 +9,7 @@ export * from "./cancellation.js";
 export * from "./cashreceipt.js";
 export * from "./collect-request.js";
 export * from "./common.js";
+export * from "./common-event.js";
 export * from "./customer.js";
 export * from "./customer-group.js";
 export * from "./customer-memo.js";

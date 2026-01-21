@@ -16,7 +16,7 @@ import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_list_main_products(params: ListMainProductsParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -56,7 +56,7 @@ async function cafe24_list_main_products(params: ListMainProductsParams) {
 
 async function cafe24_count_main_products(params: CountMainProductsParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -105,7 +105,10 @@ async function cafe24_add_main_products(params: AddMainProductsParams) {
     const responseData = data as
       | { product?: MainProductOperationResult }
       | MainProductOperationResult;
-    const result: MainProductOperationResult = (responseData as any).product || responseData;
+    const result: MainProductOperationResult =
+      "product" in responseData
+        ? (responseData as { product: MainProductOperationResult }).product
+        : (responseData as MainProductOperationResult);
 
     return {
       content: [
@@ -140,7 +143,10 @@ async function cafe24_update_main_products(params: UpdateMainProductsParams) {
     const responseData = data as
       | { product?: MainProductOperationResult }
       | MainProductOperationResult;
-    const result: MainProductOperationResult = (responseData as any).product || responseData;
+    const result: MainProductOperationResult =
+      "product" in responseData
+        ? (responseData as { product: MainProductOperationResult }).product
+        : (responseData as MainProductOperationResult);
 
     return {
       content: [
@@ -165,7 +171,7 @@ async function cafe24_delete_main_product(params: DeleteMainProductParams) {
     // So distinct URL.
     // Query params for shop_no? Example says parameter shop_no Default 1.
     // Usually Cafe24 accepts it as query param for GET/DELETE or Body for POST/PUT.
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -180,7 +186,10 @@ async function cafe24_delete_main_product(params: DeleteMainProductParams) {
     const responseData = data as
       | { product?: MainProductOperationResult }
       | MainProductOperationResult;
-    const result: MainProductOperationResult = (responseData as any).product || responseData;
+    const result: MainProductOperationResult =
+      "product" in responseData
+        ? (responseData as { product: MainProductOperationResult }).product
+        : (responseData as MainProductOperationResult);
 
     return {
       content: [

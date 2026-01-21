@@ -348,58 +348,7 @@ async function waitForAuthorizationCode(
 
   callbackPromise = new Promise((resolve, reject) => {
     callbackServer = http.createServer((req, res) => {
-      if (!req.url) {
-        res.statusCode = 400;
-        res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(getErrorHtml("Missing request URL"));
-        return;
-      }
-
-      const requestUrl = new URL(req.url, `http://localhost:${port}`);
-      if (requestUrl.pathname !== redirectPath) {
-        res.statusCode = 404;
-        res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(getErrorHtml("Not found"));
-        return;
-      }
-
-      const error = requestUrl.searchParams.get("error");
-      if (error) {
-        res.statusCode = 400;
-        res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(getErrorHtml(`Authorization failed: ${error}`));
-        callbackServer?.close();
-        callbackServer = null;
-        callbackPromise = null;
-        reject(new Error(`Authorization failed: ${error}`));
-        return;
-      }
-
-      const state = requestUrl.searchParams.get("state");
-      if (expectedState && state !== expectedState) {
-        res.statusCode = 400;
-        res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(getErrorHtml("Invalid state parameter"));
-        return;
-      }
-
-      const code = requestUrl.searchParams.get("code");
-      if (!code) {
-        res.statusCode = 400;
-        res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(getErrorHtml("Missing authorization code"));
-        return;
-      }
-
-      authorizationCode = code;
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "text/html; charset=utf-8");
-      res.end(getSuccessHtml());
-
-      callbackServer?.close();
-      callbackServer = null;
-      callbackPromise = null;
-      resolve(code);
+      handleCallbackRequest(req, res, redirectPath, expectedState, port, resolve, reject);
     });
 
     callbackServer.listen(port, () => {
@@ -428,6 +377,69 @@ async function waitForAuthorizationCode(
   });
 
   return callbackPromise;
+}
+
+function handleCallbackRequest(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  redirectPath: string,
+  expectedState: string | undefined,
+  port: number,
+  resolve: (value: string | PromiseLike<string>) => void,
+  reject: (reason?: unknown) => void,
+) {
+  if (!req.url) {
+    res.statusCode = 400;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.end(getErrorHtml("Missing request URL"));
+    return;
+  }
+
+  const requestUrl = new URL(req.url, `http://localhost:${port}`);
+  if (requestUrl.pathname !== redirectPath) {
+    res.statusCode = 404;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.end(getErrorHtml("Not found"));
+    return;
+  }
+
+  const error = requestUrl.searchParams.get("error");
+  if (error) {
+    res.statusCode = 400;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.end(getErrorHtml(`Authorization failed: ${error}`));
+    callbackServer?.close();
+    callbackServer = null;
+    callbackPromise = null;
+    reject(new Error(`Authorization failed: ${error}`));
+    return;
+  }
+
+  const state = requestUrl.searchParams.get("state");
+  if (expectedState && state !== expectedState) {
+    res.statusCode = 400;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.end(getErrorHtml("Invalid state parameter"));
+    return;
+  }
+
+  const code = requestUrl.searchParams.get("code");
+  if (!code) {
+    res.statusCode = 400;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.end(getErrorHtml("Missing authorization code"));
+    return;
+  }
+
+  authorizationCode = code;
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.end(getSuccessHtml());
+
+  callbackServer?.close();
+  callbackServer = null;
+  callbackPromise = null;
+  resolve(code);
 }
 
 export async function exchangeAuthorizationCode(
@@ -555,31 +567,16 @@ export async function getAccessToken(
     return envToken;
   }
 
-  // Try to load token from file if not in memory
-  if (!tokenData) {
-    tokenData = loadTokenFromFile(mallId);
-    if (tokenData) {
-      console.error(`Loaded token from file for mall: ${mallId}`);
-    }
+  // Try cached token
+  const cachedToken = getValidCachedToken(mallId);
+  if (cachedToken) {
+    return cachedToken;
   }
 
-  // Check if we have a valid (non-expired) access token
-  if (tokenData?.access_token && !isTokenExpiredByDate(tokenData.expires_at)) {
-    console.error(`Using cached access token (expires: ${tokenData.expires_at})`);
-    return tokenData.access_token;
-  }
-
-  // Try to refresh if we have a valid refresh token
-  if (tokenData?.refresh_token && !isRefreshTokenExpired(tokenData.refresh_token_expires_at)) {
-    console.error("Access token expired, refreshing using refresh token...");
-    try {
-      const newTokens = await refreshToken(mallId, clientId, clientSecret, tokenData.refresh_token);
-      return newTokens.access_token;
-    } catch (error) {
-      console.error("Failed to refresh token, starting new OAuth flow:", error);
-      // Clear invalid token data
-      tokenData = null;
-    }
+  // Try refresh token
+  const refreshedToken = await tryRefreshToken(mallId, clientId, clientSecret);
+  if (refreshedToken) {
+    return refreshedToken;
   }
 
   // OAuth flow - need new authorization
@@ -608,6 +605,43 @@ export async function getAccessToken(
   );
 
   return tokens.access_token;
+}
+
+function getValidCachedToken(mallId: string): string | null {
+  // Try to load token from file if not in memory
+  if (!tokenData) {
+    tokenData = loadTokenFromFile(mallId);
+    if (tokenData) {
+      console.error(`Loaded token from file for mall: ${mallId}`);
+    }
+  }
+
+  // Check if we have a valid (non-expired) access token
+  if (tokenData?.access_token && !isTokenExpiredByDate(tokenData.expires_at)) {
+    console.error(`Using cached access token (expires: ${tokenData.expires_at})`);
+    return tokenData.access_token;
+  }
+  return null;
+}
+
+async function tryRefreshToken(
+  mallId: string,
+  clientId: string,
+  clientSecret: string,
+): Promise<string | null> {
+  // Try to refresh if we have a valid refresh token
+  if (tokenData?.refresh_token && !isRefreshTokenExpired(tokenData.refresh_token_expires_at)) {
+    console.error("Access token expired, refreshing using refresh token...");
+    try {
+      const newTokens = await refreshToken(mallId, clientId, clientSecret, tokenData.refresh_token);
+      return newTokens.access_token;
+    } catch (error) {
+      console.error("Failed to refresh token, starting new OAuth flow:", error);
+      // Clear invalid token data
+      tokenData = null;
+    }
+  }
+  return null;
 }
 
 /**

@@ -75,48 +75,69 @@ async function cafe24_get_product_options(params: z.infer<typeof ProductOptionsG
     );
 
     const option = data.option;
-    const optionsList = option.options || [];
-
-    let content = `**Product Options for #${option.product_no}**\n`;
-    content += `- Has Option: ${option.has_option === "T" ? "Yes" : "No"}\n`;
-
-    if (option.has_option === "T") {
-      content += `- Option Type: ${getOptionTypeLabel(option.option_type)}\n`;
-      content += `- Option List Type: ${option.option_list_type === "C" ? "Integrated" : "Separated"}\n`;
-
-      if (optionsList.length > 0) {
-        content += `\n**Options (${optionsList.length}):**\n`;
-        for (const opt of optionsList) {
-          content += `\n### ${opt.option_name}\n`;
-          content += `- Code: ${opt.option_code || "N/A"}\n`;
-          content += `- Required: ${opt.required_option === "T" ? "Yes" : "No"}\n`;
-          content += `- Display Type: ${getDisplayTypeLabel(opt.option_display_type)}\n`;
-          content += `- Values: ${opt.option_value.map((v) => v.option_text).join(", ")}\n`;
-        }
-      }
-
-      if (option.use_additional_option === "T" && option.additional_options) {
-        content += `\n**Additional Options (${option.additional_options.length}):**\n`;
-        for (const addOpt of option.additional_options) {
-          content += `- ${addOpt.additional_option_name} (Required: ${addOpt.required_additional_option === "T" ? "Yes" : "No"}, Max Length: ${addOpt.additional_option_text_length})\n`;
-        }
-      }
-
-      if (option.use_attached_file_option === "T" && option.attached_file_option) {
-        content += `\n**Attached File Option:**\n`;
-        content += `- Name: ${option.attached_file_option.option_name}\n`;
-        content += `- Required: ${option.attached_file_option.required === "T" ? "Yes" : "No"}\n`;
-        content += `- Size Limit: ${option.attached_file_option.size_limit}MB\n`;
-      }
-    }
 
     return {
-      content: [{ type: "text" as const, text: content }],
+      content: [
+        {
+          type: "text" as const,
+          text: formatProductOptions(option),
+        },
+      ],
       structuredContent: { option } as unknown as Record<string, unknown>,
     };
   } catch (error) {
     return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
+}
+
+function formatProductOptions(option: ProductOption): string {
+  let content = `**Product Options for #${option.product_no}**\n`;
+  content += `- Has Option: ${option.has_option === "T" ? "Yes" : "No"}\n`;
+
+  if (option.has_option === "T") {
+    content += `- Option Type: ${getOptionTypeLabel(option.option_type)}\n`;
+    content += `- Option List Type: ${option.option_list_type === "C" ? "Integrated" : "Separated"}\n`;
+
+    content += formatOptionList(option.options);
+    content += formatAdditionalOptions(option);
+    content += formatAttachedFileOption(option);
+  }
+
+  return content;
+}
+
+function formatOptionList(optionsList?: Option[]): string {
+  if (!optionsList || optionsList.length === 0) return "";
+
+  let content = `\n**Options (${optionsList.length}):**\n`;
+  for (const opt of optionsList) {
+    content += `\n### ${opt.option_name}\n`;
+    content += `- Code: ${opt.option_code || "N/A"}\n`;
+    content += `- Required: ${opt.required_option === "T" ? "Yes" : "No"}\n`;
+    content += `- Display Type: ${getDisplayTypeLabel(opt.option_display_type)}\n`;
+    content += `- Values: ${opt.option_value.map((v) => v.option_text).join(", ")}\n`;
+  }
+  return content;
+}
+
+function formatAdditionalOptions(option: ProductOption): string {
+  if (option.use_additional_option !== "T" || !option.additional_options) return "";
+
+  let content = `\n**Additional Options (${option.additional_options.length}):**\n`;
+  for (const addOpt of option.additional_options) {
+    content += `- ${addOpt.additional_option_name} (Required: ${addOpt.required_additional_option === "T" ? "Yes" : "No"}, Max Length: ${addOpt.additional_option_text_length})\n`;
+  }
+  return content;
+}
+
+function formatAttachedFileOption(option: ProductOption): string {
+  if (option.use_attached_file_option !== "T" || !option.attached_file_option) return "";
+
+  let content = `\n**Attached File Option:**\n`;
+  content += `- Name: ${option.attached_file_option.option_name}\n`;
+  content += `- Required: ${option.attached_file_option.required === "T" ? "Yes" : "No"}\n`;
+  content += `- Size Limit: ${option.attached_file_option.size_limit}MB\n`;
+  return content;
 }
 
 async function cafe24_create_product_options(

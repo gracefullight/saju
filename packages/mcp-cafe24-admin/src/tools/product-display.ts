@@ -10,7 +10,7 @@ async function cafe24_get_product_display_setting(
   params: z.infer<typeof ProductDisplaySettingParamsSchema>,
 ) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -22,7 +22,7 @@ async function cafe24_get_product_display_setting(
       queryParams,
     );
     const responseData = data as { product?: Record<string, unknown> } | Record<string, unknown>;
-    const product = (responseData.product || responseData) as Record<string, any>;
+    const product = (responseData.product || responseData) as Record<string, unknown>;
 
     const sortLabels: Record<string, string> = {
       new_product: "New Product",
@@ -43,7 +43,7 @@ async function cafe24_get_product_display_setting(
           text:
             `## Product Display Settings (Shop #${product.shop_no || 1})\n\n` +
             `### Sorting Options\n` +
-            (product.sorting_options || [])
+            ((product.sorting_options as string[]) || [])
               .map((opt: string) => `- ${sortLabels[opt] || opt}`)
               .join("\n") +
             "\n",
@@ -65,14 +65,14 @@ async function cafe24_update_product_display_setting(
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
 
     const data = await makeApiRequest("/admin/products/display/setting", "PUT", requestBody);
     const responseData = data as { product?: Record<string, unknown> } | Record<string, unknown>;
-    const product = (responseData.product || responseData) as Record<string, any>;
+    const product = (responseData.product || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -81,7 +81,9 @@ async function cafe24_update_product_display_setting(
           text:
             `## Product Display Settings Updated (Shop #${product.shop_no || 1})\n\n` +
             `### Sorting Options\n` +
-            (product.sorting_options || []).map((opt: string) => `- ${opt}`).join("\n") +
+            ((product.sorting_options as string[]) || [])
+              .map((opt: string) => `- ${opt}`)
+              .join("\n") +
             "\n",
         },
       ],

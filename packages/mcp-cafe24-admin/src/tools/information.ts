@@ -38,18 +38,7 @@ async function cafe24_get_information(params: InformationParams) {
       content: [
         {
           type: "text" as const,
-          text:
-            `## Information Settings (${informations.length} items)\n\n` +
-            informations
-              .map(
-                (info) =>
-                  `### ${typeLabels[info.type] || info.type}\n` +
-                  `- **Type**: ${info.type}\n` +
-                  `- **Mobile Display**: ${info.display_mobile === "T" ? "Yes" : info.display_mobile === "F" ? "No" : "N/A"}\n` +
-                  `- **Enabled**: ${info.use === "T" ? "Yes" : info.use === "F" ? "No" : "N/A"}\n` +
-                  `- **Content**: ${info.content ? info.content.substring(0, 100) + (info.content.length > 100 ? "..." : "") : "N/A"}\n\n`,
-              )
-              .join(""),
+          text: formatInformationItems(informations, typeLabels),
         },
       ],
       structuredContent: {
@@ -67,6 +56,33 @@ async function cafe24_get_information(params: InformationParams) {
   } catch (error) {
     return { content: [{ type: "text" as const, text: handleApiError(error) }] };
   }
+}
+
+function formatInformationItems(
+  informations: StoreInformation[],
+  typeLabels: Record<string, string>,
+): string {
+  return (
+    `## Information Settings (${informations.length} items)\n\n` +
+    informations.map((info) => formatInformationItem(info, typeLabels)).join("")
+  );
+}
+
+function formatInformationItem(info: StoreInformation, typeLabels: Record<string, string>): string {
+  const displayMobile =
+    info.display_mobile === "T" ? "Yes" : info.display_mobile === "F" ? "No" : "N/A";
+  const enabled = info.use === "T" ? "Yes" : info.use === "F" ? "No" : "N/A";
+  const content = info.content
+    ? info.content.substring(0, 100) + (info.content.length > 100 ? "..." : "")
+    : "N/A";
+
+  return (
+    `### ${typeLabels[info.type] || info.type}\n` +
+    `- **Type**: ${info.type}\n` +
+    `- **Mobile Display**: ${displayMobile}\n` +
+    `- **Enabled**: ${enabled}\n` +
+    `- **Content**: ${content}\n\n`
+  );
 }
 
 async function cafe24_update_information(params: InformationUpdateParams) {
