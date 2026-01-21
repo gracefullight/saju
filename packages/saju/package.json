@@ -58,9 +58,9 @@
     "access": "public"
   },
   "peerDependencies": {
-    "date-fns": "^4.0.0",
-    "date-fns-tz": "^3.0.0",
-    "luxon": "^3.0.0"
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "luxon": "^3.7.2"
   },
   "peerDependenciesMeta": {
     "date-fns": {
@@ -74,14 +74,14 @@
     }
   },
   "devDependencies": {
-    "@types/luxon": "^3.4.2",
-    "@vitest/coverage-v8": "^4.0.16",
-    "@vitest/ui": "^4.0.16",
+    "@types/luxon": "^3.7.1",
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/ui": "^4.0.17",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "luxon": "^3.5.0",
-    "tsc-alias": "^1.8.10",
-    "vitest": "^4.0.16"
+    "luxon": "^3.7.2",
+    "tsc-alias": "^1.8.16",
+    "vitest": "^4.0.17"
   },
   "dependencies": {
     "lunar-javascript": "^1.7.7"
