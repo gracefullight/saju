@@ -1,6 +1,6 @@
 import axios, { type AxiosError } from "axios";
-import { getAccessToken } from "./auth";
-import { CAFE24_API_BASE_URL } from "./constants";
+import { getAccessToken } from "@/services/auth";
+import { CAFE24_API_BASE_URL } from "@/services/constants";
 
 // Get API base URL from environment
 export function getApiBaseUrl(): string {

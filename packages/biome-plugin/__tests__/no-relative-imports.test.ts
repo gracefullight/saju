@@ -92,6 +92,44 @@ export * from "barrel-package";
 `,
   );
 
+  // Test file for non-import contexts - path.resolve, object literals, etc.
+  writeFileSync(
+    join(tempDir, "non-import-contexts.ts"),
+    `// These are NOT imports and should NOT be flagged
+import path from "node:path";
+
+// path.resolve with relative paths - common in config files
+const srcDir = path.resolve(__dirname, "./src");
+const rootDir = path.resolve(__dirname, "../");
+const assetsDir = path.resolve(__dirname, "./assets");
+
+// Vite/Webpack alias configuration pattern
+const alias = {
+  "@": path.resolve(__dirname, "./src"),
+  "@components": path.resolve(__dirname, "./src/components"),
+};
+
+// Object literals with relative path strings
+const config = {
+  entry: "./src/index.ts",
+  output: "../dist",
+  include: ["./src/**/*.ts"],
+};
+
+// Function arguments with relative paths
+fs.readFileSync("./config.json");
+fs.writeFileSync("../output.txt", "data");
+glob.sync("./src/**/*.ts");
+
+// Template literals with relative paths
+const template = \`Path is ./relative/path\`;
+
+// Variable assignments
+const relativePath = "./some/path";
+const parentPath = "../parent";
+`,
+  );
+
   // Test file for single quotes
   writeFileSync(
     join(tempDir, "single-quotes.ts"),
@@ -237,6 +275,38 @@ describe("no-relative-imports", () => {
     it("allows re-exports from packages with extensions", () => {
       const output = runBiomeLint("false-positives.ts");
       expect(output).not.toContain("types-package/props.ts");
+    });
+
+    it("allows path.resolve with relative paths (config files)", () => {
+      const output = runBiomeLint("non-import-contexts.ts");
+      expect(output).not.toContain("path.resolve");
+      expect(output).not.toContain("./src");
+      expect(output).not.toContain("./assets");
+    });
+
+    it("allows object literals with relative path strings", () => {
+      const output = runBiomeLint("non-import-contexts.ts");
+      expect(output).not.toContain("entry:");
+      expect(output).not.toContain("output:");
+    });
+
+    it("allows function arguments with relative paths", () => {
+      const output = runBiomeLint("non-import-contexts.ts");
+      expect(output).not.toContain("readFileSync");
+      expect(output).not.toContain("writeFileSync");
+    });
+
+    it("allows variable assignments with relative path strings", () => {
+      const output = runBiomeLint("non-import-contexts.ts");
+      expect(output).not.toContain("relativePath");
+      expect(output).not.toContain("parentPath");
+    });
+
+    it("does not flag any relative paths in non-import contexts", () => {
+      const output = runBiomeLint("non-import-contexts.ts");
+      expect(output).not.toContain("Avoid relative import path");
+      expect(output).not.toContain("Avoid relative export path");
+      expect(output).not.toContain("Avoid relative dynamic import path");
     });
   });
 

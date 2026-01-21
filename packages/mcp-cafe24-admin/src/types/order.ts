@@ -1,4 +1,4 @@
-import type { SalesStat, SummaryStat } from "./store.js";
+import type { SalesStat, SummaryStat } from "@/types/store.js";
 
 export interface DailySales {
   date: string;

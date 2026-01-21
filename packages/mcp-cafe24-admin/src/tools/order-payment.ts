@@ -11,8 +11,8 @@ import {
   OrderPaymentTimelineSearchParamsSchema,
   UpdateOrderPaymentParamsSchema,
   UpdatePaymentsParamsSchema,
-} from "../schemas/order-payment.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order-payment.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_update_payments_status(params: z.infer<typeof UpdatePaymentsParamsSchema>) {
   try {

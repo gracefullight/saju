@@ -7,8 +7,8 @@ import {
   ListCategoryProductsSchema,
   RemoveCategoryProductSchema,
   UpdateCategoryProductSchema,
-} from "../schemas/categoryproduct.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/categoryproduct.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_category_products(params: z.infer<typeof ListCategoryProductsSchema>) {
   try {

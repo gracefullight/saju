@@ -1,4 +1,4 @@
-import type { DaumAddressResult, DaumPostcodeData } from "./daum-address.interface";
+import type { DaumAddressResult, DaumPostcodeData } from "@/lib/daum-address.interface";
 
 /**
  * Transforms raw Daum Postcode API data into a structured result object.

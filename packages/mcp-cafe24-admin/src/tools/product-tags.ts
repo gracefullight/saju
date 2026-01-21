@@ -4,8 +4,8 @@ import {
   ProductTagDeleteParamsSchema,
   ProductTagsCreateParamsSchema,
   ProductTagsGetParamsSchema,
-} from "../schemas/product-tags.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product-tags.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface ProductTagsListResponse {
   tags: {

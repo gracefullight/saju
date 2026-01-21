@@ -7,8 +7,8 @@ import {
   StoreDetailParamsSchema,
   UserDetailParamsSchema,
   UsersSearchParamsSchema,
-} from "../schemas/store.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/store.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_users(params: z.infer<typeof UsersSearchParamsSchema>) {
   try {

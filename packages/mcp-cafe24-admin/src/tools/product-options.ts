@@ -5,8 +5,8 @@ import {
   ProductOptionsDeleteParamsSchema,
   ProductOptionsGetParamsSchema,
   ProductOptionsUpdateParamsSchema,
-} from "../schemas/product-options.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product-options.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface OptionValue {
   option_image_file?: string;

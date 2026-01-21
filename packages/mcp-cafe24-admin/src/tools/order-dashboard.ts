@@ -2,9 +2,9 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   type GetOrderDashboardParams,
   GetOrderDashboardParamsSchema,
-} from "../schemas/order-dashboard.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { GetOrderDashboardResponse, OrderDashboard } from "../types/order-dashboard.js";
+} from "@/schemas/order-dashboard.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { GetOrderDashboardResponse, OrderDashboard } from "@/types/order-dashboard.js";
 
 async function cafe24_get_order_dashboard(params: GetOrderDashboardParams) {
   try {

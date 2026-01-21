@@ -15,8 +15,8 @@ import {
   CustomerSettingParamsSchema,
   CustomerSettingUpdateParamsSchema,
   CustomersSearchParamsSchema,
-} from "../schemas/customer.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/customer.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_customers(params: z.infer<typeof CustomersSearchParamsSchema>) {
   try {

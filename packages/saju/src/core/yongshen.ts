@@ -1,4 +1,4 @@
-import { analyzeStrength, type StrengthLevelKey, type StrengthLevelLabel } from "./strength";
+import { analyzeStrength, type StrengthLevelKey, type StrengthLevelLabel } from "@/core/strength";
 import {
   ELEMENTS,
   type Element,
@@ -6,7 +6,7 @@ import {
   getBranchElement,
   getElementLabel,
   getStemElement,
-} from "./ten-gods";
+} from "@/core/ten-gods";
 
 export type YongShenMethodKey = "formation" | "balance" | "climate" | "bridge" | "disease";
 

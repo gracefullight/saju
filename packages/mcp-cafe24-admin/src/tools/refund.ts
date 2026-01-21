@@ -6,13 +6,13 @@ import {
   RefundsSearchParamsSchema,
   type UpdateOrderRefundParams,
   UpdateOrderRefundParamsSchema,
-} from "../schemas/refund.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/refund.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   RefundDetailResponse,
   RefundsResponse,
   UpdateOrderRefundResponse,
-} from "../types/refund.js";
+} from "@/types/refund.js";
 
 async function cafe24_list_refunds(params: RefundsSearchParams) {
   try {

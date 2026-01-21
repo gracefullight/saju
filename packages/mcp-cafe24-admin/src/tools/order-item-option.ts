@@ -4,8 +4,8 @@ import type { OrderItemOptionsResponse } from "@/types/index.js";
 import {
   CreateOrderItemOptionsParamsSchema,
   UpdateOrderItemOptionsParamsSchema,
-} from "../schemas/order-item-option.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order-item-option.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_create_order_item_options(
   params: z.infer<typeof CreateOrderItemOptionsParamsSchema>,

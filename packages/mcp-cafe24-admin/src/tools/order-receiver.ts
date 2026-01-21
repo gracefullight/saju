@@ -4,8 +4,8 @@ import {
   OrderReceiverSearchParamsSchema,
   OrderReceiversUpdateParamsSchema,
   OrderReceiverUpdateParamsSchema,
-} from "../schemas/order-receiver.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order-receiver.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_order_receivers(
   params: z.infer<typeof OrderReceiverSearchParamsSchema>,

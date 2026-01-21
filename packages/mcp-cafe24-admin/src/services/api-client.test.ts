@@ -2,7 +2,7 @@ import type { AxiosError } from "axios";
 
 import axios from "axios";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 vi.mock("axios");
 

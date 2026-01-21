@@ -15,8 +15,8 @@ import {
   OrdersSearchParamsSchema,
   OrderUpdateParamsSchema,
   OrderUpdateStatusParamsSchema,
-} from "../schemas/order.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_orders(params: z.infer<typeof OrdersSearchParamsSchema>) {
   try {

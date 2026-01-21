@@ -5,14 +5,14 @@ import {
   CreateCommonEventSchema,
   DeleteCommonEventSchema,
   UpdateCommonEventSchema,
-} from "../schemas/common-event.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/common-event.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   CommonEventResponse,
   CommonEventsResponse,
   CreateCommonEventRequest,
   UpdateCommonEventRequest,
-} from "../types/common-event.js";
+} from "@/types/common-event.js";
 
 async function cafe24_list_common_events(params: z.infer<typeof CommonEventSearchParamsSchema>) {
   const { shop_no, limit, offset } = params;

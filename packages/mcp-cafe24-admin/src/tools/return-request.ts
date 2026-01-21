@@ -4,12 +4,12 @@ import {
   ReturnRequestCreatePayloadSchema,
   type ReturnRequestUpdatePayload,
   ReturnRequestUpdatePayloadSchema,
-} from "../schemas/return-request.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/return-request.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   ReturnRequestCreateResponse,
   ReturnRequestUpdateResponse,
-} from "../types/return-request.js";
+} from "@/types/return-request.js";
 
 async function cafe24_create_return_requests(params: ReturnRequestCreatePayload) {
   try {

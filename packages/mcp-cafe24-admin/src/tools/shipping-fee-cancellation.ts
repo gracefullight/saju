@@ -7,8 +7,8 @@ import type {
 import {
   CreateShippingFeeCancellationParamsSchema,
   ShippingFeeCancellationSearchParamsSchema,
-} from "../schemas/shipping-fee-cancellation.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/shipping-fee-cancellation.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_shipping_fee_cancellations(
   params: z.infer<typeof ShippingFeeCancellationSearchParamsSchema>,

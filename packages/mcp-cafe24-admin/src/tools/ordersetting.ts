@@ -3,8 +3,8 @@ import type { z } from "zod";
 import {
   OrderSettingParamsSchema,
   OrderSettingUpdateParamsSchema,
-} from "../schemas/ordersetting.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/ordersetting.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface OrderSettingResult {
   shop_no?: number;

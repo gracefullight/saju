@@ -6,8 +6,8 @@ import {
   DecorationImagesGetParamsSchema,
   ProductAdditionalImagesDeleteParamsSchema,
   ProductAdditionalImagesParamsSchema,
-} from "../schemas/product.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_create_product_additional_images(
   params: z.infer<typeof ProductAdditionalImagesParamsSchema>,

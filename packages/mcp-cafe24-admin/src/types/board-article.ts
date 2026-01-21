@@ -1,4 +1,4 @@
-import type { ArticleFile, AttachedFileDetail } from "./board.js";
+import type { ArticleFile, AttachedFileDetail } from "@/types/board.js";
 
 export interface BoardArticle {
   [key: string]: unknown;

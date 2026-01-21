@@ -5,7 +5,7 @@ import {
   type ProductSettingUpdateParams,
   ProductSettingUpdateParamsSchema,
 } from "@/schemas/productsetting.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_product_common_setting(params: ProductSettingParams) {
   try {

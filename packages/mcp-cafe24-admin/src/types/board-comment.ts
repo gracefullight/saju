@@ -1,4 +1,4 @@
-import type { ArticleFile } from "./board.js";
+import type { ArticleFile } from "@/types/board.js";
 
 export interface BoardComment {
   [key: string]: unknown;

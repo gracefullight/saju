@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import { CategoriesSearchParamsSchema } from "../schemas/product.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { Category } from "../types/product.js";
+import { CategoriesSearchParamsSchema } from "@/schemas/product.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { Category } from "@/types/product.js";
 
 async function cafe24_list_categories(params: z.infer<typeof CategoriesSearchParamsSchema>) {
   try {

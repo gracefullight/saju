@@ -6,9 +6,9 @@ import {
   ProductIconsCreateUpdateParamsSchema,
   ProductIconsDeleteParamsSchema,
   ProductIconsGetParamsSchema,
-} from "../schemas/product.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { ProductDiscountPrice, ProductIcons } from "../types/product.js";
+} from "@/schemas/product.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { ProductDiscountPrice, ProductIcons } from "@/types/product.js";
 
 async function cafe24_get_product_discount_price(
   params: z.infer<typeof ProductDiscountPriceParamsSchema>,

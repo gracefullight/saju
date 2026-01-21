@@ -14,12 +14,12 @@ import type {
   DaumAddressOptions,
   DaumAddressResult,
   DaumPostcodeData,
-} from "./daum-address.interface";
+} from "@/lib/daum-address.interface";
 import {
   calculateLayerPosition,
   getLayerPositionDefaults,
   transformPostcodeData,
-} from "./daum-address.utils";
+} from "@/lib/daum-address.utils";
 
 const DAUM_POSTCODE_SCRIPT_URL = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
 

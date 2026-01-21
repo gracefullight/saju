@@ -61,7 +61,7 @@ import type {
   DeleteBoardArticleResponse,
   DeleteBoardCommentResponse,
 } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_boards(params: BoardsSearchParams) {
   try {

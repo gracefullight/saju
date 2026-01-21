@@ -4,8 +4,8 @@ import {
   DecorationImagesListParamsSchema,
   IconsListParamsSchema,
   ProductImagesUploadParamsSchema,
-} from "../schemas/product-assets.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product-assets.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface DecorationImage {
   code: string;

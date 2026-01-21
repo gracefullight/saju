@@ -4,9 +4,9 @@ import {
   ArticleIconsSearchParamsSchema,
   type ArticleIconUpdateInput,
   ArticleIconUpdateSchema,
-} from "../schemas/article-icon.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { IconResponse, IconsResponse } from "../types/index.js";
+} from "@/schemas/article-icon.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { IconResponse, IconsResponse } from "@/types/index.js";
 
 async function cafe24_list_article_icons(params: ArticleIconsSearchParams) {
   try {

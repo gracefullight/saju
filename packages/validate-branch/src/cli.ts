@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { Command, Option } from "commander";
 import chalk from "chalk";
-import { getCurrentBranchName, validateWithDetails } from "./validate-branch-name";
-import { loadConfig, type Config } from "./load-config";
+import { Command, Option } from "commander";
+import { type Config, loadConfig } from "@/load-config";
+import { getCurrentBranchName, validateWithDetails } from "@/validate-branch-name";
 
 const SUCCESS_CODE = 0;
 const FAILED_CODE = 1;

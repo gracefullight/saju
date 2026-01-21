@@ -7,14 +7,14 @@ import {
   ThemesRetrieveParamsSchema,
   type ThemesSearchParams,
   ThemesSearchParamsSchema,
-} from "../schemas/theme.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/theme.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   ThemePageResponse,
   ThemeResponse,
   ThemesCountResponse,
   ThemesResponse,
-} from "../types/theme.js";
+} from "@/types/theme.js";
 
 async function cafe24_list_themes(params: ThemesSearchParams) {
   try {

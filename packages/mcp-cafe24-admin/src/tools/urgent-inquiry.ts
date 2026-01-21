@@ -8,9 +8,9 @@ import {
   UrgentInquiryReplyUpdateSchema,
   type UrgentInquirySearchParams,
   UrgentInquirySearchParamsSchema,
-} from "../schemas/urgent-inquiry.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { UrgentInquiryReplyResponse, UrgentInquiryResponse } from "../types/index.js";
+} from "@/schemas/urgent-inquiry.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { UrgentInquiryReplyResponse, UrgentInquiryResponse } from "@/types/index.js";
 
 async function cafe24_list_urgent_inquiries(params: UrgentInquirySearchParams) {
   try {

@@ -5,7 +5,7 @@ import {
   ShopListParamsSchema,
 } from "@/schemas/shop.js";
 import type { Shop } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_shops() {
   try {

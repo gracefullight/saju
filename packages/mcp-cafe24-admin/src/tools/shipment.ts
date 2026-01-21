@@ -12,8 +12,8 @@ import {
   ListShipmentsParamsSchema,
   type UpdateShipmentParams,
   UpdateShipmentParamsSchema,
-} from "../schemas/shipment.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/shipment.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   BulkCreateShipmentResponse,
   BulkUpdateShipmentResponse,
@@ -21,7 +21,7 @@ import type {
   DeleteShipmentResponse,
   ListShipmentsResponse,
   UpdateShipmentResponse,
-} from "../types/shipment.js";
+} from "@/types/shipment.js";
 
 async function cafe24_list_shipments(params: ListShipmentsParams) {
   try {

@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Supplier } from "@/types/index.js";
-import { type SuppliersSearchParams, SuppliersSearchParamsSchema } from "../schemas/supplier.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { type SuppliersSearchParams, SuppliersSearchParamsSchema } from "@/schemas/supplier.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_suppliers(params: SuppliersSearchParams) {
   try {

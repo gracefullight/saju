@@ -1,6 +1,6 @@
+import type { Gender } from "@gracefullight/saju";
 import { atom } from "jotai";
 import { atomWithLocation } from "jotai-location";
-import type { Gender } from "@gracefullight/saju";
 
 export interface SajuFormData {
   year: number;

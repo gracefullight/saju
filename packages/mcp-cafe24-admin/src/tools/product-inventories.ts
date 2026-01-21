@@ -3,8 +3,8 @@ import type { z } from "zod";
 import {
   VariantInventoryGetParamsSchema,
   VariantInventoryUpdateParamsSchema,
-} from "../schemas/product-inventories.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product-inventories.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface VariantInventory {
   shop_no: number;

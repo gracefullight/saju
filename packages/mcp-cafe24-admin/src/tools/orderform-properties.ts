@@ -11,8 +11,8 @@ import {
   OrderformPropertyCreateParamsSchema,
   OrderformPropertyDeleteParamsSchema,
   OrderformPropertyUpdateParamsSchema,
-} from "../schemas/orderform-properties.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/orderform-properties.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_orderform_properties(
   params: z.infer<typeof OrderformPropertiesListParamsSchema>,

@@ -13,14 +13,14 @@ import {
   type BenefitUpdate,
   BenefitUpdateSchema,
 } from "@/schemas/benefit.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   BenefitCreateRequest,
   BenefitResponse,
   BenefitsCountResponse,
   BenefitsResponse,
   BenefitUpdateRequest,
-} from "../types/benefit.js";
+} from "@/types/benefit.js";
 
 async function cafe24_list_benefits(params: BenefitsSearchParams) {
   try {

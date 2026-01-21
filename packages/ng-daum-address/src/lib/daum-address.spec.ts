@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import type { DaumAddressOptions, DaumPostcodeData } from "./daum-address.interface";
+import type { DaumAddressOptions, DaumPostcodeData } from "@/lib/daum-address.interface";
 import {
   calculateLayerPosition,
   getLayerPositionDefaults,
   transformPostcodeData,
-} from "./daum-address.utils";
+} from "@/lib/daum-address.utils";
 
 describe("transformPostcodeData", () => {
   describe("Address Type Selection", () => {

@@ -5,8 +5,8 @@ import {
   ExchangeRequestAcceptParamsSchema,
   ExchangeRequestCreateParamsSchema,
   ExchangeRequestUpdateParamsSchema,
-} from "../schemas/exchange-request.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/exchange-request.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_create_exchange_request(
   params: z.infer<typeof ExchangeRequestCreateParamsSchema>,

@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
 import type { CustomerPlusAppResponse } from "@/types/index.js";
-import { CustomerPlusAppParamsSchema } from "../schemas/customer-plus-app.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { CustomerPlusAppParamsSchema } from "@/schemas/customer-plus-app.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_customer_plusapp_info(
   params: z.infer<typeof CustomerPlusAppParamsSchema>,

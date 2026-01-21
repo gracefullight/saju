@@ -3,8 +3,8 @@ import type { z } from "zod";
 import {
   OrderFormSettingsParamsSchema,
   UpdateOrderFormSettingsParamsSchema,
-} from "../schemas/orderform.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/orderform.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface OrderFormSettings {
   shop_no?: number;

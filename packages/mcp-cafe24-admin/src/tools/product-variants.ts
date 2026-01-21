@@ -6,8 +6,8 @@ import {
   ProductVariantsBulkUpdateParamsSchema,
   ProductVariantsListParamsSchema,
   ProductVariantUpdateParamsSchema,
-} from "../schemas/product-variants.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product-variants.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface VariantOption {
   name: string;

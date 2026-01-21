@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { analyzeTwelveStages, getTwelveStageLabel, TWELVE_STAGES } from "../core/twelve-stages";
+import { analyzeTwelveStages, getTwelveStageLabel, TWELVE_STAGES } from "@/core/twelve-stages";
 
 describe("twelve-stages", () => {
   describe("analyzeTwelveStages", () => {

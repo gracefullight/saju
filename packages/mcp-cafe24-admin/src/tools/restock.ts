@@ -3,8 +3,8 @@ import type { z } from "zod";
 import {
   RestockNotificationParamsSchema,
   RestockNotificationUpdateParamsSchema,
-} from "../schemas/restock.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/restock.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_restock_notification_setting(
   params: z.infer<typeof RestockNotificationParamsSchema>,

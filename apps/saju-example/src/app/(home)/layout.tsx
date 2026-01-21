@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import "../globals.css";
+import "@/app/globals.css";
 
 export const metadata: Metadata = {
   title: "사주 분석기 | Saju Analyzer",

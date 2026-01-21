@@ -14,7 +14,7 @@ import type {
   BoardArticlesResponse,
   DeleteBoardArticleResponse,
 } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_board_articles(params: BoardArticlesSearchParams) {
   try {

@@ -5,7 +5,7 @@ import {
   type PaymentSettingUpdateParams,
   PaymentSettingUpdateParamsSchema,
 } from "@/schemas/payment.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface PaymentSettingResult {
   shop_no?: number;

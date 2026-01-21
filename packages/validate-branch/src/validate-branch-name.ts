@@ -1,6 +1,6 @@
-import * as git from "isomorphic-git";
 import * as fs from "node:fs";
 import { cwd } from "node:process";
+import * as git from "isomorphic-git";
 
 export type Preset = "gitflow" | "jira";
 

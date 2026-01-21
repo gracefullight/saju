@@ -11,8 +11,8 @@ import {
   MainSettingUpdateParamsSchema,
   type UpdateMainProperties,
   UpdateMainPropertiesSchema,
-} from "../schemas/main.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/main.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_main_properties(params: ListMainProperties) {
   try {

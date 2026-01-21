@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import { ProductSeoGetParamsSchema, ProductSeoUpdateParamsSchema } from "../schemas/product-seo.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { ProductSeoGetParamsSchema, ProductSeoUpdateParamsSchema } from "@/schemas/product-seo.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface ProductSeo {
   shop_no: number;

@@ -5,7 +5,7 @@ import {
   type ImageSettingUpdateParams,
   ImageSettingUpdateParamsSchema,
 } from "@/schemas/image.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_image_setting(params: ImageSettingParams) {
   try {

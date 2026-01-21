@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { loadConfig } from "../load-config.js";
-import { writeFile, unlink, mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { loadConfig } from "@/load-config.js";
 
 describe("loadConfig", () => {
   const testDir = join(tmpdir(), `validate-branch-test-${Date.now()}`);
@@ -311,7 +311,7 @@ describe("loadConfig", () => {
 
   describe("integration with validate functions", () => {
     it("should work with validateBranchName using loaded pattern", async () => {
-      const { validateBranchName } = await import("../validate-branch-name.js");
+      const { validateBranchName } = await import("@/validate-branch-name.js");
 
       const configContent = `export default {
         pattern: "^(main|develop|story/.+)$"

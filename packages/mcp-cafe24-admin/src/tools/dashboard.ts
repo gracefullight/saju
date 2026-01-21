@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type DashboardParams, DashboardParamsSchema } from "@/schemas/dashboard.js";
 import type { Dashboard, SalesStat, SummaryStat } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_dashboard(params: DashboardParams) {
   try {

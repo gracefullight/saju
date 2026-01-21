@@ -5,14 +5,14 @@ import {
   DeleteOrderMemoParamsSchema,
   OrderMemoSearchParamsSchema,
   UpdateOrderMemoParamsSchema,
-} from "../schemas/order-memo.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order-memo.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 import type {
   CreateOrderMemoResponse,
   DeleteOrderMemoResponse,
   ListOrderMemosResponse,
   UpdateOrderMemoResponse,
-} from "../types/order-memo.js";
+} from "@/types/order-memo.js";
 
 async function cafe24_list_order_memos(params: z.infer<typeof OrderMemoSearchParamsSchema>) {
   try {

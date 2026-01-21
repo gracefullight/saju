@@ -7,8 +7,8 @@ import type {
 import {
   CustomerPaymentInfoParamsSchema,
   DeletePaymentMethodParamsSchema,
-} from "../schemas/customer-payment-info.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/customer-payment-info.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_customer_payment_information(
   params: z.infer<typeof CustomerPaymentInfoParamsSchema>,

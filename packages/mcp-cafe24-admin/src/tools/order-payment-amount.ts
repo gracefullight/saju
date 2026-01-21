@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
-import { GetOrderPaymentAmountParamsSchema } from "../schemas/order-payment-amount.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { GetOrderPaymentAmountResponse } from "../types/index.js";
+import { GetOrderPaymentAmountParamsSchema } from "@/schemas/order-payment-amount.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { GetOrderPaymentAmountResponse } from "@/types/index.js";
 
 async function cafe24_get_order_payment_amount(
   params: z.infer<typeof GetOrderPaymentAmountParamsSchema>,

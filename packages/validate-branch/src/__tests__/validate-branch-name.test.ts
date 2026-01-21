@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  getCurrentBranchName,
   validateBranchName,
   validateWithDetails,
-  getCurrentBranchName,
-} from "../validate-branch-name.js";
+} from "@/validate-branch-name.js";
 
 describe("validateBranchName", () => {
   describe("with default pattern", () => {

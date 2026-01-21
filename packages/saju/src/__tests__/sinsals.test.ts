@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { analyzeSinsals, SINSAL_INFO, SINSALS } from "../core/sinsals";
+import { analyzeSinsals, SINSAL_INFO, SINSALS } from "@/core/sinsals";
 
 describe("sinsals", () => {
   describe("analyzeSinsals", () => {

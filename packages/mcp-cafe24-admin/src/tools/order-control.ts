@@ -1,8 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { z } from "zod";
 import type { PaymentControl } from "@/types/index.js";
-import { PaymentControlUpdateParamsSchema } from "../schemas/order-control.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { PaymentControlUpdateParamsSchema } from "@/schemas/order-control.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_update_payment_control(
   params: z.infer<typeof PaymentControlUpdateParamsSchema>,

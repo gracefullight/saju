@@ -4,8 +4,8 @@ import type { ListOrderBenefitsResponse, ListOrderCouponsResponse } from "@/type
 import {
   OrderBenefitsSearchParamsSchema,
   OrderCouponsSearchParamsSchema,
-} from "../schemas/order-benefit.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order-benefit.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_order_benefits(params: z.infer<typeof OrderBenefitsSearchParamsSchema>) {
   try {

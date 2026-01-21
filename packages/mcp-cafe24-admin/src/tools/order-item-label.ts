@@ -10,8 +10,8 @@ import {
   OrderItemLabelsDeleteParamsSchema,
   OrderItemLabelsListParamsSchema,
   OrderItemLabelsUpdateParamsSchema,
-} from "../schemas/order-item-label.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/order-item-label.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_order_item_labels(
   params: z.infer<typeof OrderItemLabelsListParamsSchema>,

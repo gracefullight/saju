@@ -6,7 +6,7 @@ import {
   InformationUpdateParamsSchema,
 } from "@/schemas/information.js";
 import type { StoreInformation } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_information(params: InformationParams) {
   try {

@@ -6,7 +6,7 @@ import {
   SocialAppleUpdateParamsSchema,
 } from "@/schemas/socialapple.js";
 import type { SocialAppleSetting } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_social_apple_setting(params: SocialAppleParams) {
   try {

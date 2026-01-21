@@ -5,7 +5,7 @@ import {
   getStemPolarity,
   getTenGodKey,
   type TenGodKey,
-} from "./ten-gods";
+} from "@/core/ten-gods";
 
 export const STRENGTH_LEVEL_KEYS = [
   "extremelyWeak",

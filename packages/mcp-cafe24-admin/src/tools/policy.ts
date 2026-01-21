@@ -5,7 +5,7 @@ import {
   type PolicyUpdateParams,
   PolicyUpdateParamsSchema,
 } from "@/schemas/policy.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_policy(params: PolicyParams) {
   try {

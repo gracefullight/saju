@@ -1,5 +1,5 @@
-import { getBranchIndex, isYangStem } from "@/utils";
 import type { Label } from "@/types/common";
+import { getBranchIndex, isYangStem } from "@/utils";
 
 export const TWELVE_STAGES = [
   "longLife",

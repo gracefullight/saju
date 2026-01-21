@@ -12,7 +12,7 @@ import {
   UpdateMainProductsParamsSchema,
 } from "@/schemas/mainproducts.js";
 import type { MainProduct, MainProductOperationResult } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_main_products(params: ListMainProductsParams) {
   try {

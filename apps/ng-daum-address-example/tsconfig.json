@@ -15,15 +15,12 @@
     "importHelpers": false,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "useDefineForClassFields": false,
+    "baseUrl": ".",
     "paths": {
-      "@gracefullight/ng-daum-address": [
-        "../../packages/ng-daum-address/src/index.ts"
-      ]
+      "@gracefullight/ng-daum-address": ["../../packages/ng-daum-address/src/index.ts"],
+      "@/*": ["src/*"]
     },
     "types": []
   },
@@ -33,10 +30,6 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
 }

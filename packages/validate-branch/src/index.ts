@@ -1,8 +1,8 @@
+export type { Config } from "@/load-config";
+export { loadConfig } from "@/load-config";
+export type { Preset, ValidateBranchNameOptions, ValidationResult } from "@/validate-branch-name";
 export {
+  getCurrentBranchName,
   validateBranchName,
   validateWithDetails,
-  getCurrentBranchName,
-} from "./validate-branch-name";
-export type { ValidationResult, Preset, ValidateBranchNameOptions } from "./validate-branch-name";
-export { loadConfig } from "./load-config";
-export type { Config } from "./load-config";
+} from "@/validate-branch-name";

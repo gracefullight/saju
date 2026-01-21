@@ -6,7 +6,7 @@ import {
   SeoSettingsUpdateParamsSchema,
 } from "@/schemas/seo.js";
 import type { SeoSetting } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_seo_setting(params: SeoSettingsParams) {
   try {

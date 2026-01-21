@@ -9,8 +9,8 @@ import {
   CancellationUpdateParamsSchema,
   OrderCancellationCreateParamsSchema,
   OrderCancellationUpdateParamsSchema,
-} from "../schemas/cancellation.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/cancellation.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_cancellation(params: z.infer<typeof CancellationDetailParamsSchema>) {
   try {

@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type SmsParams, SmsParamsSchema } from "@/schemas/sms.js";
 import type { SmsSetting } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_sms_setting(params: SmsParams) {
   try {

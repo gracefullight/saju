@@ -7,8 +7,8 @@ import {
   ProductCustomPropertiesDeleteParamsSchema,
   ProductCustomPropertiesGetParamsSchema,
   ProductCustomPropertiesUpdateParamsSchema,
-} from "../schemas/product.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 const statusMap: Record<string, string> = {
   N: "Approval Request (New)",

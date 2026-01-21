@@ -6,7 +6,7 @@ import {
   MobileSettingUpdateParamsSchema,
 } from "@/schemas/mobile.js";
 import type { MobileSetting } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_mobile_setting(params: MobileSettingParams) {
   try {

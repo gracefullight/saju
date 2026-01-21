@@ -7,9 +7,15 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/node_modules", "!**/dist", "!**/apps/ng-daum-address-example/**/*.html", "!**/packages/mcp-cafe24-admin/src/assets/**/*.html"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/apps/ng-daum-address-example/**/*.html",
+      "!**/packages/mcp-cafe24-admin/src/assets/**/*.html"
+    ]
   },
-  "plugins": ["node_modules/@gracefullight/biome-plugin/rules/no-relative-imports.grit"],
+  "plugins": ["packages/biome-plugin/rules/no-relative-imports.grit"],
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -33,6 +39,12 @@
     "formatter": {
       "quoteStyle": "double",
       "trailingCommas": "all"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true,
+      "tailwindDirectives": true
     }
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } }

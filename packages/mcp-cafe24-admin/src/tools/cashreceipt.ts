@@ -6,8 +6,8 @@ import {
   CashReceiptCreateParamsSchema,
   CashReceiptSearchParamsSchema,
   CashReceiptUpdateParamsSchema,
-} from "../schemas/cashreceipt.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/cashreceipt.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_list_cash_receipts(params: z.infer<typeof CashReceiptSearchParamsSchema>) {
   try {

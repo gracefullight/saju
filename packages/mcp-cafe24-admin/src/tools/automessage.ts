@@ -8,7 +8,7 @@ import {
   AutomessageSettingUpdateParamsSchema,
 } from "@/schemas/automessage.js";
 import type { AutomessageArgument, AutomessageSetting } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_automessage_arguments(params: AutomessageArgumentsParams) {
   try {

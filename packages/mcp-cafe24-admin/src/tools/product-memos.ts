@@ -6,8 +6,8 @@ import {
   ProductMemoGetParamsSchema,
   ProductMemosListParamsSchema,
   ProductMemoUpdateParamsSchema,
-} from "../schemas/product-memos.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/product-memos.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 interface ProductMemo {
   memo_no: number;

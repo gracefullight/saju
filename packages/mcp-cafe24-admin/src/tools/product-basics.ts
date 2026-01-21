@@ -7,9 +7,9 @@ import {
   ProductDetailParamsSchema,
   ProductsSearchParamsSchema,
   ProductUpdateParamsSchema,
-} from "../schemas/product.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
-import type { Product } from "../types/product.js";
+} from "@/schemas/product.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
+import type { Product } from "@/types/product.js";
 
 async function cafe24_count_products(params: z.infer<typeof ProductCountParamsSchema>) {
   try {

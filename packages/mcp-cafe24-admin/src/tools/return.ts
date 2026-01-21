@@ -5,8 +5,8 @@ import {
   CreateReturnInputSchema,
   GetReturnParamsSchema,
   UpdateReturnInputSchema,
-} from "../schemas/return.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+} from "@/schemas/return.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_retrieve_return(params: z.infer<typeof GetReturnParamsSchema>) {
   try {

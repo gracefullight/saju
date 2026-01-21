@@ -14,7 +14,7 @@ import {
   PrivacyOrdersUpdateParamsSchema,
 } from "@/schemas/privacy.js";
 import type { PrivacyAgreement } from "@/types/index.js";
-import { handleApiError, makeApiRequest } from "../services/api-client.js";
+import { handleApiError, makeApiRequest } from "@/services/api-client.js";
 
 async function cafe24_get_privacy_join_setting(params: PrivacyJoinParams) {
   try {
