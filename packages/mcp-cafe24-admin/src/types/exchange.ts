@@ -90,7 +90,7 @@ export interface ExchangeItem {
   origin_place: string;
   gift: string;
   item_granting_gift: string | null;
-  product_bundle_list: Array<any>;
+  product_bundle_list: Array<unknown>;
   market_cancel_request: string | null;
   market_cancel_request_quantity: string | null;
   market_fail_reason: string | null;
@@ -196,7 +196,7 @@ export interface Exchange {
   items: ExchangeItem[];
   exchanged_items: ExchangeItem[];
   include_tax: string;
-  tax: any;
+  tax: unknown;
   carrier_id: string | null;
   return_invoice_success: string | null;
   return_invoice_fail_reason: string | null;

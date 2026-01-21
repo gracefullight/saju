@@ -9,15 +9,15 @@ import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_get_image_setting(params: ImageSettingParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
     const data = await makeApiRequest("/admin/images/setting", "GET", undefined, queryParams);
     const responseData = data as { image?: Record<string, unknown> } | Record<string, unknown>;
-    const image = (responseData.image || responseData) as Record<string, any>;
-    const sizes = image.product_image_size || {};
+    const image = (responseData.image || responseData) as Record<string, unknown>;
+    const sizes = (image.product_image_size || {}) as Record<string, unknown>;
 
     return {
       content: [
@@ -49,15 +49,15 @@ async function cafe24_update_image_setting(params: ImageSettingUpdateParams) {
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
 
     const data = await makeApiRequest("/admin/images/setting", "PUT", requestBody);
     const responseData = data as { image?: Record<string, unknown> } | Record<string, unknown>;
-    const image = (responseData.image || responseData) as Record<string, any>;
-    const sizes = image.product_image_size || {};
+    const image = (responseData.image || responseData) as Record<string, unknown>;
+    const sizes = (image.product_image_size || {}) as Record<string, unknown>;
 
     return {
       content: [

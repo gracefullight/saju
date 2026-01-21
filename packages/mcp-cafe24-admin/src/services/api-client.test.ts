@@ -72,7 +72,10 @@ describe("API Client", () => {
       };
       vi.mocked(axios).mockResolvedValue(mockResponse);
 
-      await makeApiRequest<{ items: any[] }>("/test", "GET", undefined, { limit: 10, offset: 0 });
+      await makeApiRequest<{ items: unknown[] }>("/test", "GET", undefined, {
+        limit: 10,
+        offset: 0,
+      });
 
       expect(axios).toHaveBeenCalledWith({
         method: "GET",

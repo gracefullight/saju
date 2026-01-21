@@ -21,7 +21,7 @@ async function cafe24_get_kakaoalimtalk_setting(
   params: z.infer<typeof KakaoAlimtalkSettingParamsSchema>,
 ) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -35,7 +35,7 @@ async function cafe24_get_kakaoalimtalk_setting(
     const responseData = data as
       | { kakaoalimtalk?: Record<string, unknown> }
       | Record<string, unknown>;
-    const kakao = (responseData.kakaoalimtalk || responseData) as Record<string, any>;
+    const kakao = (responseData.kakaoalimtalk || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -62,7 +62,7 @@ async function cafe24_update_kakaoalimtalk_setting(
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };
@@ -71,7 +71,7 @@ async function cafe24_update_kakaoalimtalk_setting(
     const responseData = data as
       | { kakaoalimtalk?: Record<string, unknown> }
       | Record<string, unknown>;
-    const kakao = (responseData.kakaoalimtalk || responseData) as Record<string, any>;
+    const kakao = (responseData.kakaoalimtalk || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -120,14 +120,14 @@ const KakaoSyncUpdateParamsSchema = z
 
 async function cafe24_get_kakaosync_setting(params: z.infer<typeof KakaoSyncParamsSchema>) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
 
     const data = await makeApiRequest("/admin/socials/kakaosync", "GET", undefined, queryParams);
     const responseData = data as { kakaosync?: Record<string, unknown> } | Record<string, unknown>;
-    const sync = (responseData.kakaosync || responseData) as Record<string, any>;
+    const sync = (responseData.kakaosync || responseData) as Record<string, unknown>;
 
     return {
       content: [
@@ -164,7 +164,7 @@ async function cafe24_update_kakaosync_setting(
 
     const data = await makeApiRequest("/admin/socials/kakaosync", "PUT", requestBody);
     const responseData = data as { kakaosync?: Record<string, unknown> } | Record<string, unknown>;
-    const sync = (responseData.kakaosync || responseData) as Record<string, any>;
+    const sync = (responseData.kakaosync || responseData) as Record<string, unknown>;
 
     return {
       content: [

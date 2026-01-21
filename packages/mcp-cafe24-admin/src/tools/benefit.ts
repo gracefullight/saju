@@ -9,7 +9,7 @@ import { handleApiError, makeApiRequest } from "../services/api-client.js";
 
 async function cafe24_get_benefit_setting(params: BenefitSettingParams) {
   try {
-    const queryParams: Record<string, any> = {};
+    const queryParams: Record<string, unknown> = {};
     if (params.shop_no) {
       queryParams.shop_no = params.shop_no;
     }
@@ -75,7 +75,7 @@ async function cafe24_update_benefit_setting(params: BenefitSettingUpdateParams)
   try {
     const { shop_no, ...settings } = params;
 
-    const requestBody: Record<string, any> = {
+    const requestBody: Record<string, unknown> = {
       shop_no: shop_no ?? 1,
       request: settings,
     };

@@ -1,12 +1,14 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
+  type ArticleIconsSearchParams,
   ArticleIconsSearchParamsSchema,
+  type ArticleIconUpdateInput,
   ArticleIconUpdateSchema,
 } from "../schemas/article-icon.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type { IconResponse, IconsResponse } from "../types/index.js";
 
-async function cafe24_list_article_icons(params: any) {
+async function cafe24_list_article_icons(params: ArticleIconsSearchParams) {
   try {
     const validatedParams = ArticleIconsSearchParamsSchema.parse(params);
     const response = await makeApiRequest<IconsResponse>(
@@ -44,7 +46,7 @@ async function cafe24_list_article_icons(params: any) {
   }
 }
 
-async function cafe24_update_article_icon(params: any) {
+async function cafe24_update_article_icon(params: ArticleIconUpdateInput) {
   try {
     const { shop_no, ...rest } = ArticleIconUpdateSchema.parse(params);
     const response = await makeApiRequest<IconResponse>(

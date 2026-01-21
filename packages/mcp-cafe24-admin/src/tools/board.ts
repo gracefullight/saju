@@ -1,7 +1,17 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
-  type BoardAllCommentsSearchParams,
-  BoardAllCommentsSearchParamsSchema,
+  type BoardDetailParams,
+  BoardDetailParamsSchema,
+  type BoardSettingParams,
+  BoardSettingParamsSchema,
+  type BoardSettingUpdateParams,
+  BoardSettingUpdateParamsSchema,
+  type BoardsSearchParams,
+  BoardsSearchParamsSchema,
+  type BoardUpdateInput,
+  BoardUpdateSchema,
+} from "@/schemas/board.js";
+import {
   type BoardArticleCreateInput,
   BoardArticleCreateSchema,
   type BoardArticleDeleteInput,
@@ -10,12 +20,18 @@ import {
   BoardArticlesSearchParamsSchema,
   type BoardArticleUpdateInput,
   BoardArticleUpdateSchema,
+} from "@/schemas/board-article.js";
+import {
+  type BoardAllCommentsSearchParams,
+  BoardAllCommentsSearchParamsSchema,
   type BoardCommentCreateInput,
   BoardCommentCreateSchema,
   type BoardCommentDeleteInput,
   BoardCommentDeleteSchema,
   type BoardCommentsSearchParams,
   BoardCommentsSearchParamsSchema,
+} from "@/schemas/board-comment.js";
+import {
   type BoardCommentTemplateCreateInput,
   BoardCommentTemplateCreateSchema,
   type BoardCommentTemplateDeleteInput,
@@ -26,21 +42,13 @@ import {
   BoardCommentTemplatesSearchParamsSchema,
   type BoardCommentTemplateUpdateInput,
   BoardCommentTemplateUpdateSchema,
-  type BoardDetailParams,
-  BoardDetailParamsSchema,
+} from "@/schemas/board-comment-template.js";
+import {
   type BoardSEODetailParams,
   BoardSEODetailParamsSchema,
   type BoardSEOUpdateInput,
   BoardSEOUpdateSchema,
-  type BoardSettingParams,
-  BoardSettingParamsSchema,
-  type BoardSettingUpdateParams,
-  BoardSettingUpdateParamsSchema,
-  type BoardsSearchParams,
-  BoardsSearchParamsSchema,
-  type BoardUpdateInput,
-  BoardUpdateSchema,
-} from "@/schemas/board.js";
+} from "@/schemas/board-seo.js";
 import type {
   Board,
   BoardArticleResponse,
@@ -102,7 +110,7 @@ async function cafe24_list_boards(params: BoardsSearchParams) {
                 if (b.board_guide) {
                   details += `- **Guide**: ${b.board_guide}\n`;
                 }
-                return details + "\n";
+                return `${details}\n`;
               })
               .join(""),
         },

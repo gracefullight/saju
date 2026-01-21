@@ -18,11 +18,26 @@ async function cafe24_list_category_properties(params: ListCategoryProperties) {
       "/admin/categories/properties",
       "GET",
       undefined,
-      queryParams as Record<string, any>,
+      queryParams as Record<string, unknown>,
       requestHeaders,
     );
 
-    const responseData = data as { category?: Record<string, any> };
+    const responseData = data as {
+      category?: {
+        display_group?: string;
+        separated_category?: string;
+        category_no?: number;
+        properties?: Array<{
+          key: string;
+          name: string;
+          display: string;
+          display_name: string;
+          font_type: string;
+          font_size: number;
+          font_color: string;
+        }>;
+      };
+    };
     const category = responseData.category || {};
     const properties = category.properties || [];
 
@@ -36,7 +51,7 @@ async function cafe24_list_category_properties(params: ListCategoryProperties) {
             `Separated Category: ${category.separated_category}\n\n` +
             properties
               .map(
-                (p: any) =>
+                (p) =>
                   `- Key: ${p.key}\n` +
                   `  Name: ${p.name}\n` +
                   `  Display: ${p.display === "T" ? "Yes" : "No"}\n` +
@@ -114,7 +129,7 @@ async function cafe24_update_category_properties(params: UpdateCategoryPropertie
       requestHeaders,
     );
 
-    const responseData = data as { category?: Record<string, any> };
+    const responseData = data as { category?: { display_group?: string; properties?: unknown[] } };
     const result = responseData.category || {};
 
     return {

@@ -19,7 +19,7 @@ export interface ReturnItem {
   status_text?: string;
   shipping_company_name?: string;
   tracking_no?: string;
-  [key: string]: any; // Allow for other fields present in the extensive JSON
+  [key: string]: unknown; // Allow for other fields present in the extensive JSON
 }
 
 export interface ReturnAddress {
@@ -94,7 +94,7 @@ export interface ReturnDetail {
   exposed_undone_reason?: string | null;
   items: ReturnItem[];
   include_tax?: string;
-  tax?: any[];
+  tax?: unknown[];
   carrier_id?: string | null;
   return_invoice_success?: string | null;
   return_invoice_fail_reason?: string | null;
