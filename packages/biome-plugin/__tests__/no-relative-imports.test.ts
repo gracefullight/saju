@@ -53,6 +53,65 @@ export * from "@/all";
 export * as ns from "@/namespace";
 `,
   );
+
+  // Test file for false positives - these should NOT be flagged
+  writeFileSync(
+    join(tempDir, "false-positives.ts"),
+    `// File extensions in package imports should NOT be flagged
+import type { Config } from "some-package/config.ts";
+import { helper } from "package/file.js";
+import styles from "css-package/styles.css";
+import data from "json-loader/data.json";
+
+// Node.js built-in modules
+import { readFile } from "node:fs";
+import path from "node:path";
+
+// Regular package imports
+import React from "react";
+import { useState } from "react";
+import lodash from "lodash";
+import { debounce } from "lodash/debounce";
+
+// Scoped packages
+import { Button } from "@radix-ui/react-button";
+import type { Theme } from "@emotion/react";
+
+// Package with dots in name (edge case)
+import { something } from "package.name";
+import { other } from "@scope/package.name";
+
+// Dynamic imports from packages
+const pkg = await import("some-package/module.ts");
+const json = await import("data-pkg/config.json");
+
+// Re-exports from packages
+export { Component } from "external-package";
+export type { Props } from "types-package/props.ts";
+export * from "barrel-package";
+`,
+  );
+
+  // Test file for single quotes
+  writeFileSync(
+    join(tempDir, "single-quotes.ts"),
+    `import { foo } from './utils';
+import { bar } from '../components';
+const lazy = await import('./lazy');
+export { qux } from './exports';
+export * from '../all';
+`,
+  );
+
+  // Test file for deeply nested relative paths
+  writeFileSync(
+    join(tempDir, "deep-relative.ts"),
+    `import { a } from "../../utils";
+import { b } from "../../../components";
+import { c } from "../../../../deep/nested/path";
+export { d } from "../../exports";
+`,
+  );
 });
 
 afterAll(() => {
@@ -132,6 +191,105 @@ describe("no-relative-imports", () => {
       expect(output).not.toContain("Avoid relative import path");
       expect(output).not.toContain("Avoid relative export path");
       expect(output).not.toContain("Avoid relative dynamic import path");
+    });
+  });
+
+  describe("should not report false positives", () => {
+    it("allows file extensions in package imports (.ts, .js, .css, .json)", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("some-package/config.ts");
+      expect(output).not.toContain("package/file.js");
+      expect(output).not.toContain("css-package/styles.css");
+      expect(output).not.toContain("json-loader/data.json");
+    });
+
+    it("allows node: protocol imports", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("node:fs");
+      expect(output).not.toContain("node:path");
+    });
+
+    it("allows regular package imports", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("Avoid relative import path");
+      expect(output).not.toContain("Avoid relative export path");
+      expect(output).not.toContain("Avoid relative dynamic import path");
+    });
+
+    it("allows scoped package imports", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("@radix-ui/react-button");
+      expect(output).not.toContain("@emotion/react");
+    });
+
+    it("allows packages with dots in name", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("package.name");
+      expect(output).not.toContain("@scope/package.name");
+    });
+
+    it("allows dynamic imports from packages with extensions", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("some-package/module.ts");
+      expect(output).not.toContain("data-pkg/config.json");
+    });
+
+    it("allows re-exports from packages with extensions", () => {
+      const output = runBiomeLint("false-positives.ts");
+      expect(output).not.toContain("types-package/props.ts");
+    });
+  });
+
+  describe("should detect relative imports with single quotes", () => {
+    it("detects ./ imports with single quotes", () => {
+      const output = runBiomeLint("single-quotes.ts");
+      expect(output).toContain("./utils");
+      expect(output).toContain("Avoid relative import path");
+    });
+
+    it("detects ../ imports with single quotes", () => {
+      const output = runBiomeLint("single-quotes.ts");
+      expect(output).toContain("../components");
+      expect(output).toContain("Avoid relative import path");
+    });
+
+    it("detects dynamic imports with single quotes", () => {
+      const output = runBiomeLint("single-quotes.ts");
+      expect(output).toContain("./lazy");
+      expect(output).toContain("Avoid relative dynamic import path");
+    });
+
+    it("detects exports with single quotes", () => {
+      const output = runBiomeLint("single-quotes.ts");
+      expect(output).toContain("./exports");
+      expect(output).toContain("../all");
+      expect(output).toContain("Avoid relative export path");
+    });
+  });
+
+  describe("should detect deeply nested relative imports", () => {
+    it("detects ../../ paths", () => {
+      const output = runBiomeLint("deep-relative.ts");
+      expect(output).toContain("../../utils");
+      expect(output).toContain("Avoid relative import path");
+    });
+
+    it("detects ../../../ paths", () => {
+      const output = runBiomeLint("deep-relative.ts");
+      expect(output).toContain("../../../components");
+      expect(output).toContain("Avoid relative import path");
+    });
+
+    it("detects ../../../../ paths", () => {
+      const output = runBiomeLint("deep-relative.ts");
+      expect(output).toContain("../../../../deep/nested/path");
+      expect(output).toContain("Avoid relative import path");
+    });
+
+    it("detects deeply nested export paths", () => {
+      const output = runBiomeLint("deep-relative.ts");
+      expect(output).toContain("../../exports");
+      expect(output).toContain("Avoid relative export path");
     });
   });
 });
