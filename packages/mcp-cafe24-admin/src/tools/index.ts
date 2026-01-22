@@ -9,6 +9,7 @@ import { registerTools as registerBoardTools } from "@/tools/board.js";
 import { registerTools as registerBrandTools } from "@/tools/brand.js";
 import { registerTools as registerBundleProductTools } from "@/tools/bundleproduct.js";
 import { registerTools as registerCancellationTools } from "@/tools/cancellation.js";
+import { registerTools as registerCarrierTools } from "@/tools/carrier.js";
 import { registerTools as registerCartTools } from "@/tools/cart.js";
 import { registerTools as registerCashReceiptTools } from "@/tools/cashreceipt.js";
 import { registerTools as registerCategoryDecorationImagesTools } from "@/tools/category-decoration-images.js";
@@ -127,6 +128,7 @@ export function registerAllTools(server: McpServer): void {
   registerBrandTools(server);
   registerCancellationTools(server);
   registerCartTools(server);
+  registerCarrierTools(server);
   registerCashReceiptTools(server);
   registerCategoryDecorationImagesTools(server);
   registerCategoryProductTools(server);
