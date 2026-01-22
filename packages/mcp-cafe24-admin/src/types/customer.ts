@@ -240,3 +240,20 @@ export interface CustomerWishlistParams {
   member_id: string;
   shop_no?: number;
 }
+
+export interface CustomerInvitation {
+  shop_no: number;
+  member_id: string;
+}
+
+export interface CustomerInvitationParams {
+  shop_no?: number;
+  member_id: string;
+  request: {
+    invitation_type: "email";
+  };
+}
+
+export interface CustomerInvitationResponse extends Record<string, unknown> {
+  invitation: CustomerInvitation;
+}

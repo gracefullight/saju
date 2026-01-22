@@ -3,6 +3,7 @@ import type { z } from "zod";
 import {
   CustomerAutoUpdateParamsSchema,
   CustomerDetailParamsSchema,
+  CustomerInvitationParamsSchema,
   CustomerPrivacyParamsSchema,
   CustomerSettingParamsSchema,
   CustomerSettingUpdateParamsSchema,
@@ -17,6 +18,7 @@ import type {
   Customer,
   CustomerAutoUpdateParams,
   CustomerAutoUpdateResponse,
+  CustomerInvitationResponse,
   CustomerPrivacyDetailResponse,
   CustomerPrivacyParams,
   CustomerPrivacyResponse,
@@ -514,6 +516,32 @@ async function cafe24_count_customer_wishlist(
   }
 }
 
+async function cafe24_send_customer_invitation(
+  params: z.infer<typeof CustomerInvitationParamsSchema>,
+) {
+  try {
+    const { member_id, ...body } = params;
+    const data = await makeApiRequest<CustomerInvitationResponse>(
+      `/admin/customers/${member_id}/invitation`,
+      "POST",
+      body,
+    );
+    const invitation = data.invitation;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Successfully sent invitation to customer **${invitation.member_id}** (Shop #${invitation.shop_no}).`,
+        },
+      ],
+      structuredContent: data,
+    };
+  } catch (error) {
+    return { content: [{ type: "text" as const, text: handleApiError(error) }] };
+  }
+}
+
 export function registerTools(server: McpServer): void {
   server.registerTool(
     "cafe24_list_customers",
@@ -714,5 +742,22 @@ export function registerTools(server: McpServer): void {
       },
     },
     cafe24_update_customer_privacy_info,
+  );
+
+  server.registerTool(
+    "cafe24_send_customer_invitation",
+    {
+      title: "Send Cafe24 Customer Invitation",
+      description:
+        "Send an account invitation to a specific customer by member ID. This is typically used to invite customers to join the mall via email.",
+      inputSchema: CustomerInvitationParamsSchema,
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: false,
+        openWorldHint: false,
+      },
+    },
+    cafe24_send_customer_invitation,
   );
 }
