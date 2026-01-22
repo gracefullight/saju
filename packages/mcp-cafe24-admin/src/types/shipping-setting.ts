@@ -5,13 +5,13 @@ export interface ShippingPeriod {
   maximum: number;
 }
 
-export interface ShippingFeeRate {
+export interface GeneralShippingRate {
   min_value: string;
   max_value: string;
   shipping_fee: string;
 }
 
-export interface ShippingOverseaShippingCountry {
+export interface GeneralOverseaShippingCountry {
   country_code: string;
 }
 
@@ -23,9 +23,9 @@ export interface CountryShippingFee {
   shipping_fee: string;
 }
 
-export interface ShippingReturnAddress {
+export interface GeneralReturnAddress {
   zipcode: string;
-  ziptype: "KOR" | "JPN" | "VNM" | "PHL" | string;
+  ziptype: string;
   address1: string;
   address2: string;
 }
@@ -62,7 +62,7 @@ export interface WishedDeliveryTime {
   };
 }
 
-export interface ShippingCountryHsCode {
+export interface GeneralCountryHsCode {
   hs_code: string;
   country_code: string;
 }
@@ -113,20 +113,20 @@ export interface ShippingSetting extends Record<string, unknown> {
   shipping_fee: string | null;
   free_shipping_price: string | null;
   shipping_fee_by_quantity: string | null;
-  shipping_rates: ShippingFeeRate[] | null;
+  shipping_rates: GeneralShippingRate[] | null;
   shipping_fee_criteria: "D" | "L" | "A" | "R";
   prepaid_shipping_fee: "C" | "P" | "B";
   oversea_shipping_country: Cafe24Enum;
-  oversea_shipping_country_list: ShippingOverseaShippingCountry[] | null;
+  oversea_shipping_country_list: GeneralOverseaShippingCountry[] | null;
   country_shipping_fee: Cafe24Enum;
   country_shipping_fee_list: CountryShippingFee[] | null;
   international_shipping_insurance: Cafe24Enum;
-  return_address: ShippingReturnAddress;
+  return_address: GeneralReturnAddress;
   package_volume: PackageVolume;
   wished_delivery_date: WishedDeliveryDate;
   wished_delivery_time: WishedDeliveryTime;
   hs_code: string | null;
-  country_hs_code: ShippingCountryHsCode[] | null;
+  country_hs_code: GeneralCountryHsCode[] | null;
   oversea_additional_fee: Cafe24Enum;
   oversea_additional_fee_list: OverseaAdditionalFee[] | null;
   individual_shipping_fee: Cafe24Enum;
