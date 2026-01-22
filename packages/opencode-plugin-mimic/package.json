@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@opencode-ai/plugin": "latest",
+    "@opencode-ai/sdk": "latest",
     "date-fns": "^4.1.0"
   },
   "devDependencies": {
