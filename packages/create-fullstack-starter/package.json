@@ -31,7 +31,15 @@
     "starter",
     "template",
     "scaffold",
-    "cli"
+    "cli",
+    "nextjs",
+    "fastapi",
+    "flutter",
+    "terraform",
+    "mise",
+    "monorepo",
+    "generator",
+    "boilerplate"
   ],
   "author": {
     "name": "Eunkwang Shin",

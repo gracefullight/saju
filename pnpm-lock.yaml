@@ -287,6 +287,28 @@ importers:
         specifier: ^0.16.0
         version: 0.16.0
 
+  packages/opencode-plugin-mimic:
+    dependencies:
+      '@opencode-ai/plugin':
+        specifier: latest
+        version: 1.1.31
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      opencode-ai:
+        specifier: '*'
+        version: 1.1.31
+    devDependencies:
+      '@types/node':
+        specifier: ^24
+        version: 24.10.9
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(@swc/core@1.15.8)(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+
   packages/saju:
     dependencies:
       lunar-javascript:
@@ -1560,6 +1582,12 @@ packages:
   '@npmcli/run-script@10.0.3':
     resolution: {integrity: sha512-ER2N6itRkzWbbtVmZ9WKaWxVlKlOeBFF1/7xx+KA5J1xKa4JjUwBdb6tDpk0v1qA+d+VDwHI9qmLcXSWcmi+Rw==}
     engines: {node: ^20.17.0 || >=22.9.0}
+
+  '@opencode-ai/plugin@1.1.31':
+    resolution: {integrity: sha512-9ArzJjHIKzmph3ySM5+hm5yNy9K6Xlkq4mtgDKdj0KIAHJyIShbxeWopzzpfZ2mvbCg1W0B7UuJ9KR13MxIaUQ==}
+
+  '@opencode-ai/sdk@1.1.31':
+    resolution: {integrity: sha512-u273CSLeNEqmE3suulCrXDLzJzW1dfFeRheUjnfwSvmhSpf6UqM4em4MpV2CBB2WoyC0VvWg8rNwSkvDzPmEdw==}
 
   '@oxc-project/types@0.106.0':
     resolution: {integrity: sha512-QdsH3rZq480VnOHSHgPYOhjL8O8LBdcnSjM408BpPCCUc0JYYZPG9Gafl9i3OcGk/7137o+gweb4cCv3WAUykg==}
@@ -3823,6 +3851,65 @@ packages:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
     engines: {node: '>=18'}
 
+  opencode-ai@1.1.31:
+    resolution: {integrity: sha512-tqioBzsOnV3nWb8aCaPtA5qWzgCMTIQrQ6RGkKwidYmtyCZu+4D/cFJqoIkYwo4zxw9hpTumJBM2/oECGCKkFQ==}
+    hasBin: true
+
+  opencode-darwin-arm64@1.1.31:
+    resolution: {integrity: sha512-xuJHIFSqzPqB9Sfejuf8BAq0eqULlILXb+sN0iSxFx2EshFUxHSW+HepSphVQq1nw3vuxY4rtKgOCmluh/z9zQ==}
+    cpu: [arm64]
+    os: [darwin]
+
+  opencode-darwin-x64-baseline@1.1.31:
+    resolution: {integrity: sha512-f1D6JsRcQRbtvuq9UwpR/wA55BEF2+D8n4DR5P1QC/cQCAocBQRVxnoSE0jdOaDgeSnE4feXI+0TdIXNTCz4yg==}
+    cpu: [x64]
+    os: [darwin]
+
+  opencode-darwin-x64@1.1.31:
+    resolution: {integrity: sha512-0hEK6StHEJLFwKSKoBvAxbVRq20PeY0B0et4bYL96RCAS0Q74WsX1fqvXo0MKXzCfGZ6jE5T16ltchxaakKkpQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  opencode-linux-arm64-musl@1.1.31:
+    resolution: {integrity: sha512-hYXPp0ZxUT3sVd6ibpw/oM7Yopq1uh4JSgdY+zhzXT64iTR0c7a3yBWnDHbBAX3kI527mnd/CSa3zwZuPuPRTA==}
+    cpu: [arm64]
+    os: [linux]
+
+  opencode-linux-arm64@1.1.31:
+    resolution: {integrity: sha512-d+wiiWnbz5MnEFULpCD07uWUbyz32rW4UuIr28FRqd95Gm78rkBpys9yvX6f7zzRRsedi3uEZUnNqUswSySMsQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  opencode-linux-x64-baseline-musl@1.1.31:
+    resolution: {integrity: sha512-DGKY1griZhSV61hJe99OYvs77YquKosfuojRJ2TdXivTG7oE7olnb4ea1lBXV0T4fK/UtbiUlJ+LR7F+YheLMg==}
+    cpu: [x64]
+    os: [linux]
+
+  opencode-linux-x64-baseline@1.1.31:
+    resolution: {integrity: sha512-ytkN44rHIW66NM8vYn4l/9xmmw+ut3cMeIGKfqrSt6Sr0QKS9oiyfESifE6Mp2Dfmwn0f3WowbdbpSjbjvMChA==}
+    cpu: [x64]
+    os: [linux]
+
+  opencode-linux-x64-musl@1.1.31:
+    resolution: {integrity: sha512-osWhUSB/lQSOmDPpt835GfbWgOdqT/s15adUw2DzYpv+BPkoQx/3cVC4HEkcHa4XTXpHf7o0YbfXdxiKO7i0YA==}
+    cpu: [x64]
+    os: [linux]
+
+  opencode-linux-x64@1.1.31:
+    resolution: {integrity: sha512-6aQANvBHWEcxfIgOoSa3ZBRv5zHVcRTt0r09WCr399kDPU8dMvDzxKE8p8YrbKEtnKVoBzCQK7zV/agLSTs7qQ==}
+    cpu: [x64]
+    os: [linux]
+
+  opencode-windows-x64-baseline@1.1.31:
+    resolution: {integrity: sha512-Tr29NS2uQZPpqgUT43Q3DFZ943Bl6ldN4RbNWxeW2k9lSEO7z/FMbJzIpkzDzw9I7R/zekfp8MiP0x4Y28RPGQ==}
+    cpu: [x64]
+    os: [win32]
+
+  opencode-windows-x64@1.1.31:
+    resolution: {integrity: sha512-kusywePZGDY5/M9pgeYxpVtvROODBg5HUWhqvC2j+QY91nNhIXtAxH6gk4lws6CUiOKrCUYqtTcr+lYMMewLzA==}
+    cpu: [x64]
+    os: [win32]
+
   ora@9.0.0:
     resolution: {integrity: sha512-m0pg2zscbYgWbqRR6ABga5c3sZdEon7bSgjnlXC64kxtxLOyjRcbbUkLj7HFyy/FTD+P2xdBWu8snGhYI0jc4A==}
     engines: {node: '>=20'}
@@ -4858,6 +4945,9 @@ packages:
     resolution: {integrity: sha512-pM/SU9d3YAggzi6MtR4h7ruuQlqKtad8e9S0fmxcMi+ueAK5Korys/aWcV9LIIHTVbj01NdzxcnXSN+O74ZIVA==}
     peerDependencies:
       zod: ^3.25 || ^4
+
+  zod@4.1.8:
+    resolution: {integrity: sha512-5R1P+WwQqmmMIEACyzSvo4JXHY5WiAFHRMg+zBZKgKS+Q1viRa0C1hmUKtHltoIFKtIdki3pRxkmpP74jnNYHQ==}
 
   zod@4.3.5:
     resolution: {integrity: sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==}
@@ -6052,6 +6142,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@opencode-ai/plugin@1.1.31':
+    dependencies:
+      '@opencode-ai/sdk': 1.1.31
+      zod: 4.1.8
+
+  '@opencode-ai/sdk@1.1.31': {}
+
   '@oxc-project/types@0.106.0': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
@@ -6727,6 +6824,7 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 7.3.1(@types/node@25.0.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.1)(tsx@4.21.0)
+    optional: true
 
   '@vitest/mocker@4.0.17(vite@7.3.1(@types/node@25.0.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0))':
     dependencies:
@@ -6791,7 +6889,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 4.0.17(@types/node@25.0.9)(@vitest/ui@4.0.17)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.1)(tsx@4.21.0)
+      vitest: 4.0.17(@types/node@24.10.9)(@vitest/ui@4.0.17)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0)
 
   '@vitest/utils@4.0.16':
     dependencies:
@@ -8292,6 +8390,53 @@ snapshots:
     dependencies:
       mimic-function: 5.0.1
 
+  opencode-ai@1.1.31:
+    optionalDependencies:
+      opencode-darwin-arm64: 1.1.31
+      opencode-darwin-x64: 1.1.31
+      opencode-darwin-x64-baseline: 1.1.31
+      opencode-linux-arm64: 1.1.31
+      opencode-linux-arm64-musl: 1.1.31
+      opencode-linux-x64: 1.1.31
+      opencode-linux-x64-baseline: 1.1.31
+      opencode-linux-x64-baseline-musl: 1.1.31
+      opencode-linux-x64-musl: 1.1.31
+      opencode-windows-x64: 1.1.31
+      opencode-windows-x64-baseline: 1.1.31
+
+  opencode-darwin-arm64@1.1.31:
+    optional: true
+
+  opencode-darwin-x64-baseline@1.1.31:
+    optional: true
+
+  opencode-darwin-x64@1.1.31:
+    optional: true
+
+  opencode-linux-arm64-musl@1.1.31:
+    optional: true
+
+  opencode-linux-arm64@1.1.31:
+    optional: true
+
+  opencode-linux-x64-baseline-musl@1.1.31:
+    optional: true
+
+  opencode-linux-x64-baseline@1.1.31:
+    optional: true
+
+  opencode-linux-x64-musl@1.1.31:
+    optional: true
+
+  opencode-linux-x64@1.1.31:
+    optional: true
+
+  opencode-windows-x64-baseline@1.1.31:
+    optional: true
+
+  opencode-windows-x64@1.1.31:
+    optional: true
+
   ora@9.0.0:
     dependencies:
       chalk: 5.6.2
@@ -9230,6 +9375,7 @@ snapshots:
       lightningcss: 1.30.2
       sass: 1.97.1
       tsx: 4.21.0
+    optional: true
 
   vite@7.3.1(@types/node@25.0.9)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0):
     dependencies:
@@ -9403,6 +9549,7 @@ snapshots:
       - terser
       - tsx
       - yaml
+    optional: true
 
   vitest@4.0.17(@types/node@25.0.9)(@vitest/ui@4.0.17)(jiti@2.6.1)(jsdom@27.4.0)(less@4.5.1)(lightningcss@1.30.2)(sass@1.97.2)(tsx@4.21.0):
     dependencies:
@@ -9546,6 +9693,8 @@ snapshots:
   zod-to-json-schema@3.25.1(zod@4.3.5):
     dependencies:
       zod: 4.3.5
+
+  zod@4.1.8: {}
 
   zod@4.3.5: {}
 

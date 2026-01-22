@@ -31,7 +31,16 @@
     "git",
     "branch",
     "validation",
-    "cli"
+    "cli",
+    "git-hooks",
+    "lint",
+    "naming-convention",
+    "workflow",
+    "ci",
+    "gitflow",
+    "husky",
+    "standard",
+    "quality-control"
   ],
   "author": {
     "name": "Eunkwang Shin",

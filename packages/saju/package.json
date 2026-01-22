@@ -38,7 +38,18 @@
     "four-pillars",
     "bazi",
     "chinese-astrology",
-    "korean-astrology"
+    "korean-astrology",
+    "astrology",
+    "divination",
+    "zodiac",
+    "heavenly-stems",
+    "earthly-branches",
+    "lunisolar",
+    "calendar",
+    "typescript",
+    "fortune-telling",
+    "ten-gods",
+    "yongshen"
   ],
   "author": {
     "name": "Eunkwang Shin",

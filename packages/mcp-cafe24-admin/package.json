@@ -25,7 +25,19 @@
     "admin",
     "api",
     "model-context-protocol",
-    "sdk"
+    "sdk",
+    "server",
+    "llm",
+    "ai",
+    "chatbot",
+    "integration",
+    "ecommerce",
+    "shopping-mall",
+    "auth",
+    "oauth",
+    "store",
+    "product",
+    "order"
   ],
   "author": {
     "name": "Eunkwang Shin",

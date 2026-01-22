@@ -34,6 +34,10 @@
     "packages/biome-plugin": {
       "release-type": "node",
       "component": "@gracefullight/biome-plugin"
+    },
+    "packages/opencode-plugin-mimic": {
+      "release-type": "node",
+      "component": "opencode-plugin-mimic"
     }
   }
 }

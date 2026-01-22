@@ -1,0 +1,15 @@
+# Build
+node_modules/
+dist/
+
+# Tests
+coverage/
+*.log
+
+# Development
+.vscode/
+.idea/
+.DS_Store
+
+# State (per-project, not in package)
+.opencode/

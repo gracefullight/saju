@@ -8,7 +8,15 @@
     "postcode",
     "address",
     "korean-address",
-    "kakao"
+    "kakao",
+    "component",
+    "popup",
+    "layer",
+    "inline",
+    "search",
+    "zipcode",
+    "postal-code",
+    "korea"
   ],
   "license": "MIT",
   "author": {

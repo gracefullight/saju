@@ -14,7 +14,14 @@
     "biome",
     "plugin",
     "gritql",
-    "linter"
+    "linter",
+    "lint",
+    "static-analysis",
+    "code-quality",
+    "no-relative-imports",
+    "typescript",
+    "imports",
+    "alias"
   ],
   "author": {
     "name": "Eunkwang Shin",
