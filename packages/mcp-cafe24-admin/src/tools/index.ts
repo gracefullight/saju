@@ -3,6 +3,7 @@ import { registerTools as registerAppTools } from "@/tools/app.js";
 import { registerTools as registerAppstoreOrderTools } from "@/tools/appstore-order.js";
 import { registerTools as registerAppstorePaymentTools } from "@/tools/appstore-payment.js";
 import { registerArticleIconTools } from "@/tools/article-icon.js";
+import { registerTools as registerAutomailTools } from "@/tools/automails.js";
 import { registerTools as registerAutomessageTools } from "@/tools/automessage.js";
 import { registerTools as registerBenefitTools } from "@/tools/benefit.js";
 import { registerTools as registerBoardTools } from "@/tools/board.js";
@@ -87,7 +88,9 @@ import { registerTools as registerProductVariantsTools } from "@/tools/product-v
 import { registerTools as registerProductWishlistTools } from "@/tools/products-wishlist.js";
 import { registerTools as registerPromotionTools } from "@/tools/promotion.js";
 import { registerTools as registerRecipeTools } from "@/tools/recipe.js";
+import { registerTools as registerRecipientGroupsTools } from "@/tools/recipient-groups.js";
 import { registerTools as registerRedirectTools } from "@/tools/redirect.js";
+
 import { registerTools as registerRefundTools } from "@/tools/refund.js";
 import { registerTools as registerRegionalSurchargeTools } from "@/tools/regional-surcharges.js";
 import { registerTools as registerReportsTools } from "@/tools/reports.js";
@@ -117,6 +120,7 @@ import { registerTools as registerSupplierRegionalSurchargeTools } from "@/tools
 import { registerTools as registerSupplierUserTools } from "@/tools/supplier-users.js";
 import { registerTools as registerTaxManagerTools } from "@/tools/taxmanager.js";
 import { registerTools as registerThemeTools } from "@/tools/theme.js";
+import { registerTools as registerTranslationsTools } from "@/tools/translations.js";
 import { registerTools as registerTrendTools } from "@/tools/trend.js";
 import { registerUrgentInquiryTools } from "@/tools/urgent-inquiry.js";
 import { registerTools as registerWebhookLogsTools } from "@/tools/webhook-logs.js";
@@ -130,6 +134,7 @@ export function registerAllTools(server: McpServer): void {
   registerAppstoreOrderTools(server);
   registerAppstorePaymentTools(server);
   registerAutomessageTools(server);
+  registerAutomailTools(server);
   registerBenefitTools(server);
   registerBoardTools(server);
   registerBrandTools(server);
@@ -212,7 +217,9 @@ export function registerAllTools(server: McpServer): void {
   registerProductInventoriesTools(server);
   registerPromotionTools(server);
   registerRedirectTools(server);
+  registerRecipientGroupsTools(server);
   registerRefundTools(server);
+
   registerRecipeTools(server);
   registerReturnTools(server);
   registerRegionalSurchargeTools(server);
@@ -248,4 +255,5 @@ export function registerAllTools(server: McpServer): void {
   registerWebhookLogsTools(server);
   registerWebhookSettingTools(server);
   registerProductWishlistTools(server);
+  registerTranslationsTools(server);
 }

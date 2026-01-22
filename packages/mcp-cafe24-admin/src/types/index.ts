@@ -81,6 +81,7 @@ export * from "@/types/supplier.js";
 export * from "@/types/supplier-regional-surcharges.js";
 export * from "@/types/supplier-users.js";
 export * from "@/types/theme.js";
+export * from "@/types/translations.js";
 export * from "@/types/trend.js";
 export * from "@/types/urgent-inquiry.js";
 export * from "@/types/webhook-logs.js";

@@ -4,6 +4,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
+      "@": path.resolve(__dirname, "src"),
       "./constants.js": path.resolve(__dirname, "src/constants.ts"),
       "./types.js": path.resolve(__dirname, "src/types.ts"),
     },
