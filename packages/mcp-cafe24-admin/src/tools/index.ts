@@ -22,6 +22,7 @@ import { registerTools as registerCommonEventTools } from "@/tools/common-event.
 import { registerTools as registerCouponTools } from "@/tools/coupon.js";
 import { registerTools as registerCouponIssuanceCustomersTools } from "@/tools/coupon-issuance-customers.js";
 import { registerTools as registerCouponIssuesTools } from "@/tools/coupon-issues.js";
+import { registerTools as registerCreditsTools } from "@/tools/credits.js";
 import { registerTools as registerCurrencyTools } from "@/tools/currency.js";
 import { registerTools as registerCustomerTools } from "@/tools/customer.js";
 import { registerTools as registerCustomerCouponTools } from "@/tools/customer-coupons.js";
@@ -83,6 +84,7 @@ import { registerTools as registerProductSeoTools } from "@/tools/product-seo.js
 import { registerTools as registerProductSettingTools } from "@/tools/product-setting.js";
 import { registerTools as registerProductTagsTools } from "@/tools/product-tags.js";
 import { registerTools as registerProductVariantsTools } from "@/tools/product-variants.js";
+import { registerTools as registerProductWishlistTools } from "@/tools/products-wishlist.js";
 import { registerTools as registerPromotionTools } from "@/tools/promotion.js";
 import { registerTools as registerRecipeTools } from "@/tools/recipe.js";
 import { registerTools as registerRedirectTools } from "@/tools/redirect.js";
@@ -152,6 +154,7 @@ export function registerAllTools(server: McpServer): void {
   registerCouponIssuesTools(server);
   registerSerialCouponIssueTools(server);
   registerCurrencyTools(server);
+  registerCreditsTools(server);
   registerCustomerTools(server);
   registerCustomerCouponTools(server);
   registerCustomerEventTools(server);
@@ -244,4 +247,5 @@ export function registerAllTools(server: McpServer): void {
   registerUrgentInquiryTools(server);
   registerWebhookLogsTools(server);
   registerWebhookSettingTools(server);
+  registerProductWishlistTools(server);
 }
