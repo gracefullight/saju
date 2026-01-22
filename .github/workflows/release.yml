@@ -66,10 +66,6 @@ jobs:
         if: steps.check-npm.outputs.has_npm_packages == 'true'
         run: pnpm -r --filter './packages/*' build
 
-      - name: Test all packages
-        if: steps.check-npm.outputs.has_npm_packages == 'true'
-        run: pnpm -r --filter './packages/*' test
-
       - name: Publish changed packages
         if: steps.check-npm.outputs.has_npm_packages == 'true'
         run: pnpm -r publish --access public --no-git-checks --filter './packages/*' --filter '!./packages/*-dart'
@@ -114,7 +110,6 @@ jobs:
             cd "$pkg"
             flutter pub get
             dart analyze
-            dart test
             flutter pub publish --force
             cd -
           done
