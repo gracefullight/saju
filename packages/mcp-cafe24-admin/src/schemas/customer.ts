@@ -171,3 +171,16 @@ export const CustomersPrivacyUpdateParamsSchema = z
       .describe("Update request fields"),
   })
   .strict();
+
+export const CustomerInvitationParamsSchema = z
+  .object({
+    member_id: z.string().max(16).describe("Member ID"),
+    shop_no: z.number().int().min(1).default(1).describe("Shop Number (default: 1)"),
+    request: z
+      .object({
+        invitation_type: z.enum(["email"]).describe("Account invite method"),
+      })
+      .strict()
+      .describe("Invitation request fields"),
+  })
+  .strict();

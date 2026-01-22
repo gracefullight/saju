@@ -28,3 +28,54 @@ export const SendSMSSchema = z
   .describe("Parameters for sending SMS/LMS");
 
 export type SendSMS = z.infer<typeof SendSMSSchema>;
+
+export const GetSMSBalanceSchema = z
+  .object({
+    shop_no: z.number().int().min(1).default(1).describe("Shop Number"),
+  })
+  .strict()
+  .describe("Parameters for getting SMS balance");
+
+export type GetSMSBalance = z.infer<typeof GetSMSBalanceSchema>;
+
+export const ListSMSReceiversSchema = z
+  .object({
+    recipient_type: z
+      .enum(["All", "S", "A"])
+      .optional()
+      .describe("Recipient classification (All, S: Supplier, A: Admin)"),
+    supplier_name: z.string().optional().describe("Supplier name"),
+    supplier_id: z.string().optional().describe("Supplier ID"),
+    user_name: z.string().optional().describe("Admin name"),
+    user_id: z.string().optional().describe("Admin ID"),
+    manager_name: z.string().optional().describe("Person In Charge (PIC)"),
+    cellphone: z.string().optional().describe("Mobile"),
+    offset: z.number().int().min(0).max(8000).default(0).describe("Start location of list"),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .default(10)
+      .describe("Maximum number of items to return"),
+  })
+  .strict()
+  .describe("Parameters for listing SMS receivers");
+
+export type ListSMSReceivers = z.infer<typeof ListSMSReceiversSchema>;
+
+export const ListSMSSendersSchema = z
+  .object({
+    offset: z.number().int().min(0).max(8000).default(0).describe("Start location of list"),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .default(10)
+      .describe("Maximum number of items to return"),
+  })
+  .strict()
+  .describe("Parameters for listing SMS senders");
+
+export type ListSMSSenders = z.infer<typeof ListSMSSendersSchema>;
