@@ -66,6 +66,8 @@ export * from "@/types/shipping-supplier.js";
 export * from "@/types/store.js";
 export * from "@/types/subscription.js";
 export * from "@/types/supplier.js";
+export * from "@/types/supplier-regional-surcharges.js";
+export * from "@/types/supplier-users.js";
 export * from "@/types/theme.js";
 export * from "@/types/trend.js";
 export * from "@/types/urgent-inquiry.js";

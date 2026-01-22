@@ -37,3 +37,27 @@ export const deleteSupplierRegionalSurchargeParametersSchema = z.object({
   supplier_id: z.string().max(20),
   regional_surcharge_no: z.number(),
 });
+
+export const SupplierUserRegionalSurchargeSettingsParamsSchema = z
+  .object({
+    shop_no: z.number().default(1).describe("Shop Number"),
+    supplier_id: z.string().max(20).describe("Supplier ID"),
+  })
+  .strict();
+
+export const UpdateSupplierUserRegionalSurchargeSettingsParamsSchema = z
+  .object({
+    shop_no: z.number().default(1).describe("Shop Number"),
+    supplier_id: z.string().max(20).describe("Supplier ID"),
+    use_regional_surcharge: z.enum(["T", "F"]).describe("Enable/Disable regional surcharge"),
+    region_setting_type: z
+      .enum(["A", "N", "Z"])
+      .describe("Shipping zones (A: Quick, N: Area name, Z: Postal code)"),
+    jeju_surcharge_amount: z.number().min(0).max(999999999).describe("Surcharge for Jeju Island"),
+    remote_area_surcharge_amount: z
+      .number()
+      .min(0)
+      .max(999999999)
+      .describe("Surcharge for remote areas"),
+  })
+  .strict();

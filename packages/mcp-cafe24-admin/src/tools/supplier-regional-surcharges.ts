@@ -4,11 +4,14 @@ import {
   createSupplierRegionalSurchargeParametersSchema,
   deleteSupplierRegionalSurchargeParametersSchema,
   listSupplierRegionalSurchargesParametersSchema,
+  SupplierUserRegionalSurchargeSettingsParamsSchema,
+  UpdateSupplierUserRegionalSurchargeSettingsParamsSchema,
 } from "../schemas/supplier-regional-surcharges.js";
 import { handleApiError, makeApiRequest } from "../services/api-client.js";
 import type {
   ListSupplierRegionalSurchargesResponse,
   SupplierRegionalSurchargeResponse,
+  SupplierUserRegionalSurchargeSettingsResponse,
 } from "../types/supplier-regional-surcharges.js";
 
 async function cafe24_list_supplier_regional_surcharges(
@@ -105,6 +108,63 @@ async function cafe24_delete_supplier_regional_surcharge(
   }
 }
 
+async function cafe24_get_supplier_user_regional_surcharge_settings(
+  params: z.infer<typeof SupplierUserRegionalSurchargeSettingsParamsSchema>,
+) {
+  try {
+    const { supplier_id, shop_no } = params;
+    const data = await makeApiRequest<SupplierUserRegionalSurchargeSettingsResponse>(
+      `/admin/suppliers/users/${supplier_id}/regionalsurcharges/setting`,
+      "GET",
+      undefined,
+      { shop_no },
+    );
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Regional surcharge settings for supplier ${supplier_id}:\n${JSON.stringify(data.regionalsurcharge, null, 2)}`,
+        },
+      ],
+      structuredContent: data,
+    };
+  } catch (error) {
+    return {
+      content: [{ type: "text" as const, text: handleApiError(error) }],
+    };
+  }
+}
+
+async function cafe24_update_supplier_user_regional_surcharge_settings(
+  params: z.infer<typeof UpdateSupplierUserRegionalSurchargeSettingsParamsSchema>,
+) {
+  try {
+    const { supplier_id, shop_no, ...rest } = params;
+    const requestBody = {
+      shop_no,
+      request: rest,
+    };
+    const data = await makeApiRequest<SupplierUserRegionalSurchargeSettingsResponse>(
+      `/admin/suppliers/users/${supplier_id}/regionalsurcharges/setting`,
+      "PUT",
+      requestBody,
+    );
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Successfully updated regional surcharge settings for supplier ${supplier_id}`,
+        },
+      ],
+      structuredContent: data,
+    };
+  } catch (error) {
+    return {
+      content: [{ type: "text" as const, text: handleApiError(error) }],
+    };
+  }
+}
+
 export function registerTools(server: McpServer): void {
   server.registerTool(
     "cafe24_list_supplier_regional_surcharges",
@@ -134,5 +194,25 @@ export function registerTools(server: McpServer): void {
       inputSchema: deleteSupplierRegionalSurchargeParametersSchema,
     },
     cafe24_delete_supplier_regional_surcharge,
+  );
+
+  server.registerTool(
+    "cafe24_get_supplier_user_regional_surcharge_settings",
+    {
+      title: "Get Supplier User Regional Surcharge Settings",
+      description: "Retrieve regional surcharge settings for a supplier user.",
+      inputSchema: SupplierUserRegionalSurchargeSettingsParamsSchema,
+    },
+    cafe24_get_supplier_user_regional_surcharge_settings,
+  );
+
+  server.registerTool(
+    "cafe24_update_supplier_user_regional_surcharge_settings",
+    {
+      title: "Update Supplier User Regional Surcharge Settings",
+      description: "Update regional surcharge settings for a supplier user.",
+      inputSchema: UpdateSupplierUserRegionalSurchargeSettingsParamsSchema,
+    },
+    cafe24_update_supplier_user_regional_surcharge_settings,
   );
 }

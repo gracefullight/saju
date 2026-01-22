@@ -18,3 +18,15 @@ export interface ListSupplierRegionalSurchargesResponse extends Record<string, u
 export interface SupplierRegionalSurchargeResponse extends Record<string, unknown> {
   regionalsurcharge: SupplierRegionalSurcharge;
 }
+export interface SupplierUserRegionalSurchargeSettings extends Record<string, unknown> {
+  shop_no: number;
+  supplier_id: string;
+  use_regional_surcharge: "T" | "F";
+  region_setting_type: "A" | "N" | "Z";
+  jeju_surcharge_amount: string | number;
+  remote_area_surcharge_amount: string | number;
+}
+
+export interface SupplierUserRegionalSurchargeSettingsResponse extends Record<string, unknown> {
+  regionalsurcharge: SupplierUserRegionalSurchargeSettings;
+}
