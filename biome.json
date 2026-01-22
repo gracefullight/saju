@@ -12,7 +12,9 @@
       "!**/node_modules",
       "!**/dist",
       "!**/apps/ng-daum-address-example/**/*.html",
-      "!**/packages/mcp-cafe24-admin/src/assets/**/*.html"
+      "!**/packages/mcp-cafe24-admin/src/assets/**/*.html",
+      "!**/apps/mcp-cafe24-admin-example/next-env.d.ts",
+      "!**/.opencode/mimic/state.json"
     ]
   },
   "plugins": ["packages/biome-plugin/rules/no-relative-imports.grit"],
