@@ -224,6 +224,10 @@ pnpm run build
 pnpm run dev  # watch mode
 ```
 
+## Inspiration
+
+Heavily inspired by the concepts of [Homunculus](https://github.com/humanplane/homunculus).
+
 ## License
 
 MIT

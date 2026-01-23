@@ -215,6 +215,10 @@ MCP 서버를 검색하고 프로젝트 설정에 추가합니다.
 
 > Git 기반 기능은 git 저장소가 필요합니다. 저장소가 없으면 관련 섹션이 비어 보일 수 있습니다.
 
+## 영감 (Inspiration)
+
+이 프로젝트는 [Homunculus](https://github.com/humanplane/homunculus)의 컨셉에서 깊은 영감을 받아 제작되었습니다.
+
 ## 라이선스
 
 MIT
