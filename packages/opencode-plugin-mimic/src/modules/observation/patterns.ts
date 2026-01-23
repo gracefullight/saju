@@ -1,3 +1,4 @@
+import { BUILTIN_TOOLS } from "@/constants/tools";
 import type { MimicContext } from "@/core/context";
 import { detectCommitPatterns, getCommitMessages } from "@/lib/git";
 import type { Pattern } from "@/types";
@@ -72,6 +73,9 @@ export async function surfacePatterns(ctx: MimicContext): Promise<string[]> {
         });
         break;
       case "tool":
+        if (BUILTIN_TOOLS.has(pattern.description)) {
+          continue;
+        }
         suggestion = ctx.i18n.t("suggest.tool", {
           pattern: pattern.description,
           count: pattern.count,
