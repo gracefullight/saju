@@ -192,7 +192,6 @@ Search for MCP servers and add them to project configuration.
 
 List all evolved capabilities.
 
-
 ## Pattern Thresholds
 
 | Pattern Type | Threshold | Result |
