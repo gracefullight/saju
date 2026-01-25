@@ -21,35 +21,49 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Build all packages
-        run: pnpm -r --filter './packages/*' build
+        run: bun run --filter './packages/*' build
 
       - name: Build all apps
-        run: pnpm -r --filter './apps/*' --filter '!./apps/mcp-cafe24-admin-example' build
+        run: |
+          for app in apps/*; do
+            if [ "$app" == "apps/mcp-cafe24-admin-example" ]; then continue; fi
+            if [ -d "$app" ]; then
+              echo "Building $app..."
+              bun run --filter "./$app" build
+            fi
+          done
 
       - name: Merge all apps to deploy directory
         run: |
           mkdir -p deploy_dist
           
-          pnpm -r --filter './apps/*' --filter '!./apps/mcp-cafe24-admin-example' exec -- sh -c '
-            if [ -d "out" ]; then
-              app_dir=$(basename $(pwd))
-              echo "Copying $app_dir..."
-              cp -r out "../../deploy_dist/$app_dir"
+          for app in apps/*; do
+            if [ "$app" == "apps/mcp-cafe24-admin-example" ]; then continue; fi
+            if [ -d "$app" ]; then
+              (
+                cd "$app"
+                if [ -d "out" ]; then
+                  app_dir=$(basename $(pwd))
+                  echo "Copying $app_dir..."
+                  cp -r out "../../deploy_dist/$app_dir"
+                fi
+              )
             fi
-          '
+          done
 
       - name: Generate index.html
         run: |
@@ -93,14 +107,20 @@ jobs:
               <ul class="app-list">
           EOF
           
-          pnpm -r --filter './apps/*' --filter '!./apps/mcp-cafe24-admin-example' exec -- sh -c '
-            app_name=$(basename $(pwd))
-            echo "  <li class=\"app-item\">" >> ../../deploy_dist/index.html
-            echo "    <a href=\"/pkgs/${app_name}/\" class=\"app-link\">" >> ../../deploy_dist/index.html
-            echo "      🚀 ${app_name} →" >> ../../deploy_dist/index.html
-            echo "    </a>" >> ../../deploy_dist/index.html
-            echo "  </li>" >> ../../deploy_dist/index.html
-          '
+          for app in apps/*; do
+            if [ "$app" == "apps/mcp-cafe24-admin-example" ]; then continue; fi
+            if [ -d "$app" ]; then
+              (
+                cd "$app"
+                app_name=$(basename $(pwd))
+                echo "  <li class=\"app-item\">" >> ../../deploy_dist/index.html
+                echo "    <a href=\"/pkgs/${app_name}/\" class=\"app-link\">" >> ../../deploy_dist/index.html
+                echo "      🚀 ${app_name} →" >> ../../deploy_dist/index.html
+                echo "    </a>" >> ../../deploy_dist/index.html
+                echo "  </li>" >> ../../deploy_dist/index.html
+              )
+            fi
+          done
           
           cat >> deploy_dist/index.html << EOF
               </ul>

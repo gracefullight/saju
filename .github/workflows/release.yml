@@ -46,29 +46,39 @@ jobs:
           HAS_NPM=$(echo "$PATHS" | jq -r '[.[] | select(endswith("-dart") | not)] | length > 0')
           echo "has_npm_packages=$HAS_NPM" >> $GITHUB_OUTPUT
 
-      - name: Setup pnpm
+      - name: Setup Bun
         if: steps.check-npm.outputs.has_npm_packages == 'true'
-        uses: pnpm/action-setup@v4
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: Setup Node.js
         if: steps.check-npm.outputs.has_npm_packages == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         if: steps.check-npm.outputs.has_npm_packages == 'true'
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Build all packages
         if: steps.check-npm.outputs.has_npm_packages == 'true'
-        run: pnpm -r --filter './packages/*' build
+        run: bun run --filter './packages/*' build
 
       - name: Publish changed packages
         if: steps.check-npm.outputs.has_npm_packages == 'true'
-        run: pnpm -r publish --access public --no-git-checks --filter './packages/*' --filter '!./packages/*-dart'
+        run: |
+          PATHS='${{ needs.release-please.outputs.paths_released }}'
+          for pkg in $(echo "$PATHS" | jq -r '.[]'); do
+            if [[ "$pkg" == packages/* ]] && [[ "$pkg" != *"-dart" ]]; then
+               echo "Publishing $pkg..."
+               cd "$pkg"
+               bun publish --access public
+               cd -
+            fi
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
