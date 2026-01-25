@@ -11,9 +11,9 @@
     "url": "git+https://github.com/gracefullight/pkgs.git"
   },
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "bun run --filter '*' build",
     "lint": "biome check .",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "bun run --filter '*' typecheck",
     "lint:fix": "biome check --write .",
     "format": "biome format --write ."
   },
@@ -25,5 +25,9 @@
     "tsx": "^4.21.0",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.28.1"
+  "packageManager": "bun@1.2.4",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
 }
