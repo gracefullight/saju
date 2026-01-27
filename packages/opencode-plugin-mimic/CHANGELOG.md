@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/gracefullight/pkgs/compare/opencode-plugin-mimic@0.1.10...opencode-plugin-mimic@0.1.11) (2026-01-27)
+
+
+### Features
+
+* **mimic:** implement git tools, error learning, and context-aware instincts ([4915bd8](https://github.com/gracefullight/pkgs/commit/4915bd8dc86d547e8d0dbeb545ee0c5d22fd0b78))
+
 ## [0.1.10](https://github.com/gracefullight/pkgs/compare/opencode-plugin-mimic@0.1.9...opencode-plugin-mimic@0.1.10) (2026-01-24)
 
 
