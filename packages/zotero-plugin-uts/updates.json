@@ -1,0 +1,18 @@
+{
+  "addons": {
+    "uts-copy@gracefullight.dev": {
+      "updates": [
+        {
+          "version": "1.0.0",
+          "update_link": "https://github.com/gracefullight/pkgs/releases/download/zotero-plugin-uts-v1.0.0/zotero-plugin-uts.xpi",
+          "applications": {
+            "zotero": {
+              "strict_min_version": "7.0",
+              "strict_max_version": "8.*"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

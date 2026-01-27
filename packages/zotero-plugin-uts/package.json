@@ -2,12 +2,42 @@
   "name": "zotero-plugin-uts",
   "version": "0.0.1",
   "type": "module",
+  "description": "Zotero plugin to copy bibliography in UTS APA 7th format",
+  "author": {
+    "name": "gracefullight",
+    "email": "gracefullight.dev@gmail.com",
+    "url": "https://github.com/gracefullight"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/gracefullight/pkgs/tree/main/packages/zotero-plugin-uts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gracefullight/pkgs.git",
+    "directory": "packages/zotero-plugin-uts"
+  },
+  "bugs": {
+    "url": "https://github.com/gracefullight/pkgs/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/gracefullight"
+  },
+  "keywords": [
+    "zotero",
+    "zotero-plugin",
+    "citation",
+    "bibliography",
+    "uts",
+    "apa7"
+  ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
+    "vitest": "^4.0.17",
     "zotero-types": "^4.1.0-beta.4"
   },
   "dependencies": {}

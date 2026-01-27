@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "@gracefullight/pkgs",
@@ -164,7 +165,7 @@
     },
     "packages/opencode-plugin-mimic": {
       "name": "opencode-plugin-mimic",
-      "version": "0.1.10",
+      "version": "0.1.11",
       "dependencies": {
         "@opencode-ai/plugin": "latest",
         "@opencode-ai/sdk": "latest",
@@ -234,6 +235,7 @@
       "devDependencies": {
         "tsup": "^8.0.0",
         "typescript": "^5.0.0",
+        "vitest": "^4.0.17",
         "zotero-types": "^4.1.0-beta.4",
       },
     },

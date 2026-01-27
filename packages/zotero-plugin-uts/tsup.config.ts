@@ -1,30 +1,41 @@
-import { defineConfig } from 'tsup';
+import path from "node:path";
+import { defineConfig } from "tsup";
 
 export default defineConfig([
   {
-    entry: {'index': 'src/index.ts'},
-    format: ['iife'],
-    globalName: 'ZoteroPluginUTS',
-    outDir: 'addon',
-    target: 'es2020',
+    entry: { index: "src/index.ts" },
+    format: ["iife"],
+    globalName: "ZoteroPluginUTS",
+    outDir: "addon",
+    target: "es2022",
     noExternal: [/(.*)/],
-    minify: false,
+    minify: true,
     clean: false,
     splitting: false,
+    esbuildOptions(options) {
+      options.alias = {
+        "@": path.resolve(__dirname, "src"),
+      };
+    },
   },
   {
-    entry: {'bootstrap': 'src/bootstrap.ts'},
-    format: ['iife'], // Wrap in IIFE, but assignments to globalThis will leak out to sandbox global
-    outDir: 'addon',
-    target: 'es2020',
+    entry: { bootstrap: "src/bootstrap.ts" },
+    format: ["iife"],
+    outDir: "addon",
+    target: "es2022",
     noExternal: [/(.*)/],
-    minify: false,
+    minify: true,
     clean: false,
     splitting: false,
     outExtension() {
       return {
-        js: '.js',
-      }
-    }
-  }
+        js: ".js",
+      };
+    },
+    esbuildOptions(options) {
+      options.alias = {
+        "@": path.resolve(__dirname, "src"),
+      };
+    },
+  },
 ]);

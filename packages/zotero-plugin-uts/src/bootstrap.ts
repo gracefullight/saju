@@ -1,58 +1,53 @@
-// @ts-ignore
-declare const Zotero: any;
-// @ts-ignore
-declare const Services: any;
+import type { MozillaServices, PluginContext, ZoteroAPI } from "@/types";
 
-function log(msg: string) {
-    Zotero.debug("UTS Copy: " + msg);
+declare const Zotero: ZoteroAPI;
+declare const Services: MozillaServices;
+
+interface ZoteroPluginUTSModule {
+  startup: (context: PluginContext) => Promise<void>;
+  shutdown: () => void;
+  onWindowLoad: (window: Window) => void;
+  onWindowUnload: (window: Window) => void;
 }
 
-// @ts-ignore
-globalThis.install = function() {
-    log("Installed");
+declare const ZoteroPluginUTS: ZoteroPluginUTSModule | undefined;
+
+function log(msg: string): void {
+  Zotero.debug(`UTS Copy: ${msg}`);
 }
 
-// @ts-ignore
-globalThis.startup = async function({ id, version, rootURI }: { id: string, version: string, rootURI: string }) {
-    log("Starting");
-    Services.scriptloader.loadSubScript(rootURI + 'index.global.js');
+globalThis.install = () => {
+  log("Installed");
+};
 
-    // @ts-ignore
-    if (typeof ZoteroPluginUTS !== 'undefined') {
-        // @ts-ignore
-        await ZoteroPluginUTS.startup({ id, version, rootURI });
-    }
-}
+globalThis.startup = async (context: PluginContext) => {
+  log("Starting");
+  Services.scriptloader.loadSubScript(`${context.rootURI}index.global.js`);
 
-// @ts-ignore
-globalThis.onMainWindowLoad = function({ window }: { window: Window }) {
-    // @ts-ignore
-    if (typeof ZoteroPluginUTS !== 'undefined') {
-        // @ts-ignore
-        ZoteroPluginUTS.addToWindow(window);
-    }
-}
+  if (typeof ZoteroPluginUTS !== "undefined") {
+    await ZoteroPluginUTS.startup(context);
+  }
+};
 
-// @ts-ignore
-globalThis.onMainWindowUnload = function({ window }: { window: Window }) {
-    // @ts-ignore
-    if (typeof ZoteroPluginUTS !== 'undefined') {
-        // @ts-ignore
-        ZoteroPluginUTS.removeFromWindow(window);
-    }
-}
+globalThis.onMainWindowLoad = ({ window }: { window: Window }) => {
+  if (typeof ZoteroPluginUTS !== "undefined") {
+    ZoteroPluginUTS.onWindowLoad(window);
+  }
+};
 
-// @ts-ignore
-globalThis.shutdown = function() {
-    log("Shutting down");
-    // @ts-ignore
-    if (typeof ZoteroPluginUTS !== 'undefined') {
-        // @ts-ignore
-        ZoteroPluginUTS.shutdown();
-    }
-}
+globalThis.onMainWindowUnload = ({ window }: { window: Window }) => {
+  if (typeof ZoteroPluginUTS !== "undefined") {
+    ZoteroPluginUTS.onWindowUnload(window);
+  }
+};
 
-// @ts-ignore
-globalThis.uninstall = function() {
-    log("Uninstalled");
-}
+globalThis.shutdown = () => {
+  log("Shutting down");
+  if (typeof ZoteroPluginUTS !== "undefined") {
+    ZoteroPluginUTS.shutdown();
+  }
+};
+
+globalThis.uninstall = () => {
+  log("Uninstalled");
+};
