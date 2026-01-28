@@ -5,10 +5,7 @@ on:
     branches: [main]
     paths:
       - "apps/mcp-cafe24-admin-example/**"
-      - "packages/**"
-      - "bun.lock"
-      - "package.json"
-      - ".github/workflows/vercel.yml"
+      - ".github/workflows/deploy-vercel.yml"
 
 concurrency:
   group: vercel-cafe24-admin-${{ github.ref }}
