@@ -3,16 +3,6 @@
     "uts-citation@gracefullight.dev": {
       "updates": [
         {
-          "version": "0.1.0",
-          "update_link": "https://github.com/gracefullight/pkgs/releases/download/zotero-plugin-uts@0.1.0/zotero-plugin-uts@0.1.0.xpi",
-          "applications": {
-            "zotero": {
-              "strict_min_version": "7.0",
-              "strict_max_version": "8.*"
-            }
-          }
-        },
-        {
           "version": "0.1.1",
           "update_link": "https://github.com/gracefullight/pkgs/releases/download/zotero-plugin-uts@0.1.1/zotero-plugin-uts@0.1.1.xpi",
           "applications": {
