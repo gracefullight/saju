@@ -174,7 +174,7 @@ jobs:
 
           # Update updates.json using jq
           cat "$UPDATE_FILE" | jq --arg v "$VERSION" --arg t "$TAG" '
-            .addons["uts-copy@gracefullight.dev"].updates |= . + [{
+            .addons["uts-citation@gracefullight.dev"].updates |= . + [{
               "version": $v,
               "update_link": ("https://github.com/gracefullight/pkgs/releases/download/\($t)/zotero-plugin-uts@\($v).xpi"),
               "applications": {
