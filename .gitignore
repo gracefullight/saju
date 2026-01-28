@@ -16,3 +16,5 @@ pubspec.lock
 
 .opencode/mimic/
 
+# Zotero plugin
+*.xpi
