@@ -201,6 +201,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
 
+      - name: Upload XPI as artifact
+        if: steps.check-zotero.outputs.has_zotero_package == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: zotero-plugin-uts-xpi
+          path: packages/zotero-plugin-uts/zotero-plugin-uts@*.xpi
+          retention-days: 30
+
       - name: Upload .xpi to Release
         if: steps.check-zotero.outputs.has_zotero_package == 'true'
         uses: softprops/action-gh-release@v2
