@@ -9,7 +9,7 @@ import type { ZoteroAPI } from "@/types";
 
 declare const Zotero: ZoteroAPI;
 
-const PREF_PREFIX = "extensions.zotero.uts-copy";
+const PREF_PREFIX = "extensions.zotero.uts-citation";
 const PREF_FIRST_RUN = `${PREF_PREFIX}.firstRun`;
 const PREF_VERSION = `${PREF_PREFIX}.version`;
 
@@ -34,7 +34,7 @@ function setPref(key: string, value: boolean): void {
   try {
     Services.prefs.setBoolPref(key, value);
   } catch (e) {
-    Zotero.debug(`UTS Copy: Failed to set pref ${key}: ${e}`);
+    Zotero.debug(`UTS Citation: Failed to set pref ${key}: ${e}`);
   }
 }
 
@@ -50,7 +50,7 @@ function setCharPref(key: string, value: string): void {
   try {
     Services.prefs.setCharPref(key, value);
   } catch (e) {
-    Zotero.debug(`UTS Copy: Failed to set char pref ${key}: ${e}`);
+    Zotero.debug(`UTS Citation: Failed to set char pref ${key}: ${e}`);
   }
 }
 
@@ -73,16 +73,16 @@ export function setInstalledVersion(version: string): void {
 export function showWelcomeNotification(): void {
   try {
     const pw = new Zotero.ProgressWindow();
-    pw.changeHeadline("UTS APA 7th Copy Installed!");
+    pw.changeHeadline("UTS APA 7th Citation Installed!");
     pw.addDescription(
-      `Thank you for installing UTS Copy!\n\n` +
+      `Thank you for installing UTS Citation!\n\n` +
         `Use Ctrl+Shift+U (Cmd+Shift+U on Mac) to copy citations.\n\n` +
         `If you find this plugin helpful, please consider supporting development.`,
     );
     pw.show();
     pw.startCloseTimer(8000);
   } catch (e) {
-    Zotero.debug(`UTS Copy: Welcome notification error: ${e}`);
+    Zotero.debug(`UTS Citation: Welcome notification error: ${e}`);
   }
 }
 
@@ -97,7 +97,7 @@ export function checkFirstRun(currentVersion: string): void {
   }
 }
 
-export function registerPreferencePane(): void {
+export function registerPreferencePane(rootURI: string): void {
   try {
     const Zotero7 = Zotero as ZoteroAPI & {
       PreferencePanes?: {
@@ -106,6 +106,7 @@ export function registerPreferencePane(): void {
           src: string;
           label: string;
           image: string;
+          defaultXUL?: boolean;
         }) => void;
       };
     };
@@ -113,14 +114,25 @@ export function registerPreferencePane(): void {
     if (Zotero7.PreferencePanes) {
       Zotero7.PreferencePanes.register({
         pluginID: PLUGIN_ID,
-        src: "chrome://uts-copy/content/preferences.xhtml",
-        label: "UTS Copy",
-        image: "chrome://uts-copy/content/icon.svg",
+        src: `${rootURI}content/preferences.xhtml`,
+        label: "UTS Citation",
+        image: `${rootURI}content/icon.svg`,
+        defaultXUL: true,
       });
-      Zotero.debug("UTS Copy: Preference pane registered");
+      Zotero.debug("UTS Citation: Preference pane registered");
     }
   } catch (e) {
-    Zotero.debug(`UTS Copy: Failed to register preference pane: ${e}`);
+    Zotero.debug(`UTS Citation: Failed to register preference pane: ${e}`);
+  }
+}
+
+export function onPrefsEvent(type: string, data: { window: Window }): void {
+  switch (type) {
+    case "load":
+      Zotero.debug("UTS Citation: Preferences loaded");
+      break;
+    default:
+      break;
   }
 }
 

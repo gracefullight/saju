@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
-  "name": "UTS APA 7th Copy",
-  "version": "0.1.0",
+  "name": "UTS APA 7th Citation",
+  "version": "0.1.1",
   "description": "Copy bibliography in UTS APA 7th format to clipboard",
   "author": "gracefullight",
   "homepage_url": "https://github.com/gracefullight/pkgs/tree/main/packages/zotero-plugin-uts",
   "developer": {
     "name": "gracefullight",
-    "url": "https://github.com/gracefullight"
+    "url": "https://github.com/sponsors/gracefullight"
   },
   "icons": {
     "48": "icon.svg",
@@ -15,10 +15,10 @@
   },
   "applications": {
     "zotero": {
-      "id": "uts-copy@gracefullight.dev",
+      "id": "uts-citation@gracefullight.dev",
       "update_url": "https://raw.githubusercontent.com/gracefullight/pkgs/main/packages/zotero-plugin-uts/updates.json",
       "strict_min_version": "7.0",
-      "strict_max_version": "8.*"
+      "strict_max_version": "8.0.*"
     }
   }
 }

@@ -7,14 +7,14 @@ export async function installStyle(rootURI: string) {
     const styleURI = `${rootURI}uts-apa.csl`;
     const response = await fetch(styleURI);
     if (!response.ok) {
-      Zotero.debug(`UTS Copy: Failed to fetch style ${styleURI}`);
+      Zotero.debug(`UTS Citation: Failed to fetch style ${styleURI}`);
       return;
     }
     const styleContent = await response.text();
 
-    await Zotero.Styles.install(styleContent, styleURI, false);
-    Zotero.debug("UTS Copy: Installed UTS APA 7th style");
+    await Zotero.Styles.install(styleContent, styleURI, true);
+    Zotero.debug("UTS Citation: Installed UTS APA 7th style");
   } catch (e) {
-    Zotero.debug(`UTS Copy: Error installing style: ${e}`);
+    Zotero.debug(`UTS Citation: Error installing style: ${e}`);
   }
 }

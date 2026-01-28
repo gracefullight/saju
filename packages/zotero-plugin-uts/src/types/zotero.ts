@@ -45,6 +45,11 @@ export interface ZoteroMenu {
   unregisterMenu: (pluginID: string, menuID: string) => void;
 }
 
+export interface ZoteroPrefs {
+  get: (key: string) => unknown;
+  set: (key: string, value: unknown) => void;
+}
+
 export interface ZoteroAPI {
   debug: (msg: string) => void;
   getMainWindows: () => Window[];
@@ -53,6 +58,7 @@ export interface ZoteroAPI {
   QuickCopy: ZoteroQuickCopy;
   ProgressWindow: new () => ZoteroProgressWindow;
   Menu?: ZoteroMenu;
+  Prefs?: ZoteroPrefs;
 }
 
 export interface MozillaClipboard {
@@ -76,4 +82,8 @@ export interface PluginContext {
   id: string;
   version: string;
   rootURI: string;
+}
+
+export interface XULDocument extends Document {
+  createXULElement?: (tagName: string) => Element;
 }

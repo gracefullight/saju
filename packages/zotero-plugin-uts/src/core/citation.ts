@@ -1,4 +1,5 @@
 import { STYLE_ID } from "@/constants";
+import { checkAndShowNudge } from "@/core/nudge";
 import type { MozillaComponents, ZoteroAPI } from "@/types";
 import { extractTextFromBiblio, formatCitationMessage, getBibliographyFormat } from "@/utils";
 
@@ -10,12 +11,12 @@ export type CopyResult = { success: true; count: number } | { success: false; er
 function showNotification(message: string, isError = false): void {
   try {
     const pw = new Zotero.ProgressWindow();
-    pw.changeHeadline(isError ? "UTS Copy Error" : "UTS Copy");
+    pw.changeHeadline(isError ? "UTS Citation Error" : "UTS Citation");
     pw.addDescription(message);
     pw.show();
     pw.startCloseTimer(3000);
   } catch (e) {
-    Zotero.debug(`UTS Copy: Notification error: ${e}`);
+    Zotero.debug(`UTS Citation: Notification error: ${e}`);
   }
 }
 
@@ -59,14 +60,15 @@ export async function copyCitation(): Promise<void> {
 
     if (result.success) {
       showNotification(formatCitationMessage(result.count));
-      Zotero.debug(`UTS Copy: Copied ${result.count} citation(s) to clipboard`);
+      Zotero.debug(`UTS Citation: Copied ${result.count} citation(s) to clipboard`);
+      checkAndShowNudge();
     } else {
       showNotification(result.error, true);
-      Zotero.debug(`UTS Copy Error: ${result.error}`);
+      Zotero.debug(`UTS Citation Error: ${result.error}`);
     }
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : String(e);
     showNotification(`Error: ${errorMessage}`, true);
-    Zotero.debug(`UTS Copy Error: ${errorMessage}`);
+    Zotero.debug(`UTS Citation Error: ${errorMessage}`);
   }
 }

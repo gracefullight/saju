@@ -1,6 +1,6 @@
 import { KEY_ID, MENU_ID, MENU_LABEL, PLUGIN_ID, TOOLS_MENU_ID } from "@/constants";
 import { pluginState } from "@/core/plugin-state";
-import type { ZoteroAPI } from "@/types";
+import type { XULDocument, ZoteroAPI } from "@/types";
 
 declare const Zotero: ZoteroAPI;
 
@@ -42,35 +42,36 @@ function registerMenusV8(onCommand: () => Promise<void>): void {
     commandListener: onCommand,
   });
 
-  Zotero.debug("UTS Copy: Registered menus via Zotero 8 API");
+  Zotero.debug("UTS Citation: Registered menus via Zotero 8 API");
 }
 
 function unregisterMenusV8(): void {
   Zotero.Menu?.unregisterMenu(PLUGIN_ID, MENU_ID);
   Zotero.Menu?.unregisterMenu(PLUGIN_ID, TOOLS_MENU_ID);
-  Zotero.debug("UTS Copy: Unregistered menus via Zotero 8 API");
+  Zotero.debug("UTS Citation: Unregistered menus via Zotero 8 API");
 }
 
 function registerMenusLegacy(onCommand: () => Promise<void>): void {
   for (const win of Zotero.getMainWindows()) {
     addMenusToWindow(win, onCommand);
   }
-  Zotero.debug("UTS Copy: Registered menus via legacy API");
+  Zotero.debug("UTS Citation: Registered menus via legacy API");
 }
 
 function unregisterMenusLegacy(): void {
   for (const win of Zotero.getMainWindows()) {
     removeMenusFromWindow(win);
   }
-  Zotero.debug("UTS Copy: Unregistered menus via legacy API");
+  Zotero.debug("UTS Citation: Unregistered menus via legacy API");
 }
 
 function addMenusToWindow(window: Window, onCommand: () => Promise<void>): void {
-  const document = window.document;
+  const document = window.document as XULDocument;
 
+  // Keyboard shortcut must be added BEFORE menu items that reference it
+  addKeyboardShortcut(document, onCommand);
   addContextMenu(document, onCommand);
   addToolsMenu(document, onCommand);
-  addKeyboardShortcut(document, onCommand);
 }
 
 function removeMenusFromWindow(window: Window): void {
@@ -78,10 +79,14 @@ function removeMenusFromWindow(window: Window): void {
 
   document.getElementById(MENU_ID)?.remove();
   document.getElementById(TOOLS_MENU_ID)?.remove();
-  document.getElementById(KEY_ID)?.remove();
+
+  const keyElement = document.getElementById(KEY_ID);
+  if (keyElement) {
+    keyElement.remove();
+  }
 }
 
-function addContextMenu(document: Document, onCommand: () => Promise<void>): void {
+function addContextMenu(document: XULDocument, onCommand: () => Promise<void>): void {
   const itemMenu = document.getElementById("zotero-itemmenu");
   if (!itemMenu) return;
 
@@ -93,7 +98,7 @@ function addContextMenu(document: Document, onCommand: () => Promise<void>): voi
   itemMenu.appendChild(menuItem);
 }
 
-function addToolsMenu(document: Document, onCommand: () => Promise<void>): void {
+function addToolsMenu(document: XULDocument, onCommand: () => Promise<void>): void {
   const toolsMenu = document.getElementById("menu_ToolsPopup");
   if (!toolsMenu) return;
 
@@ -106,7 +111,7 @@ function addToolsMenu(document: Document, onCommand: () => Promise<void>): void 
   toolsMenu.appendChild(menuItem);
 }
 
-function addKeyboardShortcut(document: Document, onCommand: () => Promise<void>): void {
+function addKeyboardShortcut(document: XULDocument, onCommand: () => Promise<void>): void {
   const keyset =
     document.getElementById("mainKeyset") ??
     document.querySelector("keyset") ??
@@ -126,7 +131,7 @@ function addKeyboardShortcut(document: Document, onCommand: () => Promise<void>)
   keyset.appendChild(key);
 }
 
-function createMenuItem(document: Document): Element {
+function createMenuItem(document: XULDocument): Element {
   const menuItem = document.createXULElement
     ? document.createXULElement("menuitem")
     : document.createElement("menuitem");

@@ -1,58 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE window>
-<window
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  xmlns:html="http://www.w3.org/1999/xhtml"
->
-  <vbox id="uts-copy-preferences" class="main-section">
-    <groupbox>
-      <label><html:h2>UTS APA 7th Copy</html:h2></label>
-
-      <vbox class="uts-copy-about">
-        <label value="Copy bibliography in UTS APA 7th format to clipboard" />
-        <label value="Based on APA 7th Referencing Guide (Jan 2025) from UTS Library" />
-
-        <separator class="thin" />
-
-        <label><html:strong>Keyboard Shortcut</html:strong></label>
-        <label value="Ctrl+Shift+U (Cmd+Shift+U on Mac)" />
-
-        <separator />
-
-        <label><html:strong>About</html:strong></label>
-        <label value="Author: gracefullight" />
-        <hbox>
-          <label value="Homepage: " />
-          <label
-            class="zotero-text-link"
-            value="GitHub"
-            href="https://github.com/gracefullight/pkgs/tree/main/packages/zotero-plugin-uts"
-          />
-        </hbox>
-
-        <separator />
-
-        <label><html:strong>Support Development</html:strong></label>
-        <label value="If you find this plugin helpful, please consider supporting:" />
-
-        <hbox align="center">
-          <button
-            id="uts-copy-github-sponsor"
-            label="♥ GitHub Sponsors"
-            oncommand="Zotero.launchURL('https://github.com/sponsors/gracefullight')"
-          />
-          <button
-            id="uts-copy-coffee"
-            label="☕ Buy Me a Coffee"
-            oncommand="Zotero.launchURL('https://buymeacoffee.com/gracefullight')"
-          />
-        </hbox>
-
-        <separator />
-
-        <label><html:strong>License</html:strong></label>
-        <label value="MIT License" />
-      </vbox>
-    </groupbox>
+<linkset>
+  <html:link rel="localization" href="uts-citation-preferences.ftl" />
+</linkset>
+<groupbox onload="Zotero.ZoteroPluginUTS?.onPrefsEvent('load', { window })">
+  <label><html:h2>UTS APA 7th Citation</html:h2></label>
+  <vbox class="uts-citation-about">
+    <label value="Copy bibliography in UTS APA 7th format to clipboard" />
+    <label value="Based on APA 7th Referencing Guide (Jan 2025) from UTS Library" />
+    <separator class="thin" />
+    <label><html:strong>Keyboard Shortcut</html:strong></label>
+    <label value="Ctrl+Shift+U (Cmd+Shift+U on Mac)" />
+    <separator />
+    <label><html:strong>About</html:strong></label>
+    <label value="Author: gracefullight" />
+    <hbox>
+      <label value="Homepage: " />
+      <label class="zotero-text-link" value="GitHub" href="https://github.com/gracefullight/pkgs/tree/main/packages/zotero-plugin-uts" />
+    </hbox>
+    <separator />
+    <label><html:strong>Support Development</html:strong></label>
+    <label value="If you find this plugin helpful, please consider supporting:" />
+    <hbox align="center" style="gap: 8px;">
+      <button id="uts-citation-github-star" label="Star on GitHub" oncommand="Zotero.launchURL('https://github.com/gracefullight/pkgs')" />
+      <button id="uts-citation-github-sponsor" label="GitHub Sponsors" oncommand="Zotero.launchURL('https://github.com/sponsors/gracefullight')" />
+      <button id="uts-citation-coffee" label="Buy Me a Coffee" oncommand="Zotero.launchURL('https://buymeacoffee.com/gracefullight')" />
+    </hbox>
+    <separator />
+    <label><html:strong>License</html:strong></label>
+    <label value="MIT License" />
   </vbox>
-</window>
+</groupbox>

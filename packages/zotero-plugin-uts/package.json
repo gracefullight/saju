@@ -32,7 +32,7 @@
   ],
   "scripts": {
     "build": "tsup",
-    "build:xpi": "npm run build && zip -r zotero-plugin-uts@$(node -p \"require('./package.json').version\").xpi addon/*",
+    "build:xpi": "npm run build && cd addon && zip -r ../zotero-plugin-uts@$(node -p \"require('../package.json').version\").xpi .",
     "test": "vitest"
   },
   "devDependencies": {

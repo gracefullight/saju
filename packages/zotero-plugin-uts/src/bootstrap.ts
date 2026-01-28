@@ -12,8 +12,17 @@ interface ZoteroPluginUTSModule {
 
 declare const ZoteroPluginUTS: ZoteroPluginUTSModule | undefined;
 
+declare const globalThis: {
+  install: () => void;
+  startup: (context: PluginContext) => Promise<void>;
+  onMainWindowLoad: (params: { window: Window }) => void;
+  onMainWindowUnload: (params: { window: Window }) => void;
+  shutdown: () => void;
+  uninstall: () => void;
+};
+
 function log(msg: string): void {
-  Zotero.debug(`UTS Copy: ${msg}`);
+  Zotero.debug(`UTS Citation: ${msg}`);
 }
 
 globalThis.install = () => {
@@ -25,6 +34,7 @@ globalThis.startup = async (context: PluginContext) => {
   Services.scriptloader.loadSubScript(`${context.rootURI}index.global.js`);
 
   if (typeof ZoteroPluginUTS !== "undefined") {
+    (Zotero as unknown as Record<string, unknown>).ZoteroPluginUTS = ZoteroPluginUTS;
     await ZoteroPluginUTS.startup(context);
   }
 };

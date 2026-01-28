@@ -4,7 +4,7 @@ import { extractTextFromBiblio, formatCitationMessage, getBibliographyFormat } f
 
 describe("constants", () => {
   it("should have correct plugin ID", () => {
-    expect(PLUGIN_ID).toBe("uts-copy@gracefullight.dev");
+    expect(PLUGIN_ID).toBe("uts-citation@gracefullight.dev");
   });
 
   it("should have correct style ID", () => {
@@ -12,8 +12,8 @@ describe("constants", () => {
   });
 
   it("should have correct menu IDs", () => {
-    expect(MENU_ID).toBe("uts-copy-menuitem");
-    expect(TOOLS_MENU_ID).toBe("uts-copy-tools-menuitem");
+    expect(MENU_ID).toBe("uts-citation-menuitem");
+    expect(TOOLS_MENU_ID).toBe("uts-citation-tools-menuitem");
   });
 });
 
