@@ -14,18 +14,34 @@ A lightweight, headless social sharing library for React. Highly customizable an
 
 ```mermaid
 flowchart TD
-    User[👤 User Action<br/>Click Share Button] --> Hook[⚛️ useHeadlessShare Hook<br/>State Management & SDK Loading]
-    Hook --> Registry[📋 Strategy Registry<br/>Map<platform, ShareStrategy>]
+    User[User Action<br/>Click Share Button] --> Hook[useHeadlessShare Hook<br/>State Management & SDK Loading]
+    Hook --> Registry[Strategy Registry<br/>Map<platform, ShareStrategy>]
     Registry --> Strategy{Platform Strategy}
     
-    Strategy -->|SDK Lazy Load| Kakao[KakaoStrategy]
-    Strategy -->|SDK Lazy Load| Facebook[FacebookStrategy]
-    Strategy -->|Direct URL| Direct[Direct URL Strategies<br/>Twitter, Pinterest, etc.]
-    Strategy -->|Web Share API| Native[NativeStrategy]
-    Strategy -->|Clipboard| Link[LinkStrategy]
-    Strategy -->|Custom| Custom[Custom Strategy<br/>registerShareStrategy]
+    subgraph SDKStrategies [SDK-Based]
+        Kakao[KakaoStrategy]
+        Facebook[FacebookStrategy]
+    end
     
-    Kakao --> Exec[🚀 Share Execution]
+    subgraph URLStrategies [Direct URL]
+        Direct[Direct URL Strategies<br/>Twitter, Pinterest, etc.]
+    end
+    
+    subgraph FallbackStrategies [Fallback]
+        Native[NativeStrategy<br/>Web Share API]
+        Link[LinkStrategy<br/>Clipboard]
+    end
+    
+    subgraph Extensible [Extensible]
+        Custom[Custom Strategy<br/>registerShareStrategy]
+    end
+    
+    Strategy -->|SDK Lazy Load| SDKStrategies
+    Strategy -->|Direct URL| URLStrategies
+    Strategy -->|Fallback| FallbackStrategies
+    Strategy -->|Custom| Extensible
+    
+    Kakao --> Exec[Share Execution]
     Facebook --> Exec
     Direct --> Exec
     Native --> Exec
@@ -34,12 +50,6 @@ flowchart TD
     
     style Hook fill:#d5e8d4,stroke:#82b366
     style Registry fill:#fff2cc,stroke:#d6b656
-    style Kakao fill:#e1d5e7,stroke:#9673a6
-    style Facebook fill:#e1d5e7,stroke:#9673a6
-    style Direct fill:#f8cecc,stroke:#b85450
-    style Native fill:#ffe6cc,stroke:#d79b00
-    style Link fill:#ffe6cc,stroke:#d79b00
-    style Custom fill:#e6f3ff,stroke:#0070c0,stroke-dasharray: 5 5
     style Exec fill:#f5f5f5,stroke:#666666
 ```
 

@@ -14,18 +14,34 @@ React를 위한 가볍고 유연한 헤드리스 소셜 공유 라이브러리�
 
 ```mermaid
 flowchart TD
-    User[👤 사용자 액션<br/>공유 버튼 클릭] --> Hook[⚛️ useHeadlessShare Hook<br/>상태 관리 및 SDK 로딩]
-    Hook --> Registry[📋 전략 레지스트리<br/>Map<platform, ShareStrategy>]
+    User[사용자 액션<br/>공유 버튼 클릭] --> Hook[useHeadlessShare Hook<br/>상태 관리 및 SDK 로딩]
+    Hook --> Registry[전략 레지스트리<br/>Map<platform, ShareStrategy>]
     Registry --> Strategy{플랫폼 전략}
     
-    Strategy -->|SDK 지연 로딩| Kakao[KakaoStrategy]
-    Strategy -->|SDK 지연 로딩| Facebook[FacebookStrategy]
-    Strategy -->|직접 URL| Direct[직접 URL 전략<br/>Twitter, Pinterest 등]
-    Strategy -->|Web Share API| Native[NativeStrategy]
-    Strategy -->|클립보드| Link[LinkStrategy]
-    Strategy -->|커스텀| Custom[커스텀 전략<br/>registerShareStrategy]
+    subgraph SDKStrategies [SDK 기반]
+        Kakao[KakaoStrategy]
+        Facebook[FacebookStrategy]
+    end
     
-    Kakao --> Exec[🚀 공유 실행]
+    subgraph URLStrategies [직접 URL]
+        Direct[직접 URL 전략<br/>Twitter, Pinterest 등]
+    end
+    
+    subgraph FallbackStrategies [Fallback]
+        Native[NativeStrategy<br/>Web Share API]
+        Link[LinkStrategy<br/>클립보드]
+    end
+    
+    subgraph Extensible [확장 가능]
+        Custom[커스텀 전략<br/>registerShareStrategy]
+    end
+    
+    Strategy -->|SDK 지연 로딩| SDKStrategies
+    Strategy -->|직접 URL| URLStrategies
+    Strategy -->|Fallback| FallbackStrategies
+    Strategy -->|커스텀| Extensible
+    
+    Kakao --> Exec[공유 실행]
     Facebook --> Exec
     Direct --> Exec
     Native --> Exec
@@ -34,12 +50,6 @@ flowchart TD
     
     style Hook fill:#d5e8d4,stroke:#82b366
     style Registry fill:#fff2cc,stroke:#d6b656
-    style Kakao fill:#e1d5e7,stroke:#9673a6
-    style Facebook fill:#e1d5e7,stroke:#9673a6
-    style Direct fill:#f8cecc,stroke:#b85450
-    style Native fill:#ffe6cc,stroke:#d79b00
-    style Link fill:#ffe6cc,stroke:#d79b00
-    style Custom fill:#e6f3ff,stroke:#0070c0,stroke-dasharray: 5 5
     style Exec fill:#f5f5f5,stroke:#666666
 ```
 
