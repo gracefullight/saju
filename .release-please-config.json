@@ -40,6 +40,10 @@
       "release-type": "node",
       "component": "zotero-plugin-uts",
       "extra-files": ["updates.json", "addon/manifest.json"]
+    },
+    "packages/react-share": {
+      "release-type": "node",
+      "component": "@gracefullight/react-share"
     }
   }
 }

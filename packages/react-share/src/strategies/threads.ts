@@ -1,0 +1,18 @@
+import type { ShareStrategy } from "@/types";
+
+import { formatShareText } from "@/utils/text";
+import { openShareWindow } from "@/utils/window";
+
+export const threadsStrategy: ShareStrategy = {
+  share: (data, options) => {
+    const { url, title, description } = data;
+    const maxLength = options?.textMaxLength ?? 100;
+
+    const shareText = formatShareText(title, description, url, {
+      descriptionMaxLength: maxLength,
+    });
+
+    const shareUrl = `https://www.threads.net/intent/post?text=${encodeURIComponent(shareText)}`;
+    openShareWindow(shareUrl);
+  },
+};

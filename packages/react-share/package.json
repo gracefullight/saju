@@ -1,0 +1,95 @@
+{
+  "name": "@gracefullight/react-share",
+  "version": "0.1.0",
+  "description": "A lightweight, headless social sharing library for React",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write ."
+  },
+  "keywords": [
+    "react",
+    "share",
+    "social",
+    "social-sharing",
+    "headless",
+    "kakao",
+    "facebook",
+    "twitter",
+    "pinterest",
+    "whatsapp",
+    "line",
+    "threads",
+    "web-share-api",
+    "clipboard",
+    "typescript"
+  ],
+  "author": {
+    "name": "Eunkwang Shin",
+    "email": "gracefullight.dev@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gracefullight/pkgs.git",
+    "directory": "packages/react-share"
+  },
+  "license": "MIT",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/gracefullight"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "dependencies": {
+    "@types/facebook-js-sdk": "^3.3.12",
+    "@types/kakao-js-sdk": "^1.39.5"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.1",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "happy-dom": "^16.8.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.3.6",
+    "type-fest": "^4.33.0",
+    "vitest": "^4.0.18"
+  }
+}
