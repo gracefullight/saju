@@ -23,7 +23,7 @@ flowchart TD
     Strategy -->|직접 URL| Direct[직접 URL 전략<br/>Twitter, Pinterest 등]
     Strategy -->|Web Share API| Native[NativeStrategy]
     Strategy -->|클립보드| Link[LinkStrategy]
-    Strategy -->|커스텀| Custom[커스텀 전략<br/>registerShareStrategy()]
+    Strategy -->|커스텀| Custom[커스텀 전략<br/>registerShareStrategy]
     
     Kakao --> Exec[🚀 공유 실행]
     Facebook --> Exec
